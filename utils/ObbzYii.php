@@ -3,7 +3,7 @@
  * @Author Mattakorn Limkool
  */
 
-namespace Obbz\utils;
+namespace obbz\yii2\utils;
 
 /**
  * Class SC - Yii shortcut

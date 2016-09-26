@@ -10,7 +10,7 @@ use yii\base\BootstrapInterface;
 /**
  * Class Bootstrap
  * @package claudejanz\mygii
- * @author Claude Janz  
+ * @author Claude Janz
  */
 class Bootstrap implements BootstrapInterface
 {
