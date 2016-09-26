@@ -23,8 +23,8 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app->hasModule('gii')) {
-            if (!isset($app->getModule('gii')->generators['doubleModel'])) {
-                $app->getModule('gii')->generators['doubleModel'] = 'claudejanz\mygii\generators\model\Generator';
+            if (!isset($app->getModule('gii')->generators['obbzModel'])) {
+                $app->getModule('gii')->generators['obbzModel'] = 'obbz\yii2\gii\model\Generator';
             }
         }
     }
