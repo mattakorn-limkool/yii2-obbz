@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "obbz\\yii2\\": "*"
+            "obbz\\yii2\\": ""
         }
     },
     "extra": {
