@@ -1,7 +1,7 @@
 <?php
 
 
-namespace claudejanz\mygii;
+namespace obbz\yii2;
 
 use yii\base\Application;
 use yii\base\BootstrapInterface;
