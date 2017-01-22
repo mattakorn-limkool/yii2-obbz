@@ -81,16 +81,16 @@ SwaggerUIAsset::register($this);
 <body class="swagger-section">
 <?php $this->beginBody() ?>
 <div id='header'>
-<!--  --><?php //if($this->showToolBar): ?>
-<!--    <div class="swagger-ui-wrap">-->
-<!--      <a id="logo" href="http://swagger.io">swagger</a>-->
-<!--      <form id='api_selector'>-->
-<!--        <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>-->
-<!--        <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="password"/></div>-->
-<!--        <div class='input'><a id="explore" href="#" data-sw-translate>Explore</a></div>-->
-<!--      </form>-->
-<!--    </div>-->
-<!--  --><?php //endif; ?>
+  <?php if($showToolBar): ?>
+    <div class="swagger-ui-wrap">
+      <a id="logo" href="http://swagger.io">swagger</a>
+      <form id='api_selector'>
+        <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
+        <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="password"/></div>
+        <div class='input'><a id="explore" href="#" data-sw-translate>Explore</a></div>
+      </form>
+    </div>
+  <?php endif; ?>
 </div>
 
 <div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>

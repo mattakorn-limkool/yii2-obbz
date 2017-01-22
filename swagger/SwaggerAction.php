@@ -39,12 +39,12 @@ class SwaggerAction extends Action
     public function run()
     {
         $this->controller->layout = false;
-//        $this->controller->showToolBar = $this->showToolBar;
 
         $view = $this->controller->getView();
 
         return $view->renderFile(__DIR__ . '/index.php', [
             'rest_url' => $this->restUrl,
+            'showToolBar' => $this->showToolBar,
         ], $this->controller);
     }
 }
