@@ -30,7 +30,9 @@ foreach ($relations as $name => $relation) {
 ?>
 
 /**
- * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
+* This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
+* DO NOT MODIFY THIS FILE!
+* If any changes are necessary, you must set or override the required property or method in class
 *
 <?php foreach ($tableSchema->columns as $column): ?>
     * @property <?= "{$column->phpType} \${$column->name}\n" ?>
@@ -44,13 +46,26 @@ foreach ($relations as $name => $relation) {
 */
 class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-/**
-* @inheritdoc
-*/
-public static function tableName()
-{
-return '<?= $generator->generateTableName($tableName) ?>';
-}
+
+    /**
+    * Default Scenario
+    */
+    const SC_SEARCH = "search";
+    const SC_CREATE = "create";
+    const SC_UPDATE = "update";
+    const SC_DELETE = "delete";
+    const SC_BE_SEARCH = "be_search";
+    const SC_BE_CREATE = "be_create";
+    const SC_BE_UPDATE = "be_update";
+    const SC_BE_DELETE = "be_delete";
+
+    /**
+    * @inheritdoc
+    */
+    public static function tableName()
+    {
+        return '<?= $generator->generateTableName($tableName) ?>';
+    }
 <?php if ($generator->db !== 'db'): ?>
 
     /**
@@ -58,29 +73,17 @@ return '<?= $generator->generateTableName($tableName) ?>';
     */
     public static function getDb()
     {
-    return Yii::$app->get('<?= $generator->db ?>');
+        return Yii::$app->get('<?= $generator->db ?>');
     }
 <?php endif; ?>
 
-/**
-* @inheritdoc
-*/
-public function rules()
-{
-        return [<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>];
-}
 
-/**
-* @inheritdoc
-*/
-public function attributeLabels()
-{
-return [
-<?php foreach ($labels as $name => $label): ?>
-    <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
-<?php endforeach; ?>
-];
-}
+    public function rules()
+    {
+        return [<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>];
+    }
+
+
 <?php foreach ($relations as $name => $relation): ?>
 
     /**
@@ -88,7 +91,7 @@ return [
     */
     public function get<?= $name ?>()
     {
-    <?= $relation[0] . "\n" ?>
+        <?= $relation[0] . "\n" ?>
     }
 <?php endforeach; ?>
 <?php if ($queryClassName): ?>
@@ -103,6 +106,6 @@ return [
     public static function find()
     {
         return new <?= $queryClassFullName ?>(get_called_class());
-}
+    }
 <?php endif; ?>
 }

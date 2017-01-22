@@ -20,8 +20,14 @@
         "kartik-v/yii2-widget-activeform": "*",
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-detail-view": "*",
+        "zircote/swagger-php": "^2.0",
+        "bower-asset/swagger-ui": "2.1.4",
+		
         "php": ">=5.3.0"
     },
+	"require-dev": {
+		"fabpot/php-cs-fixer": "^1.11"
+	}	
     "autoload": {
         "psr-4": {
             "obbz\\yii2\\": ""

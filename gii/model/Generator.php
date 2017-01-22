@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace obbz\yii2\gii\model;
 
@@ -14,7 +9,7 @@ use yii\gii\CodeFile;
 /**
  * This generator will generate one or multiple ActiveRecord classes for the specified database table.
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * @author Mattakorn Limkool
  * @since 2.0
  */
 class Generator extends \yii\gii\generators\model\Generator
@@ -26,7 +21,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function getName()
     {
-        return 'Double Model Generator';
+        return 'Obbz Model Generator';
     }
 
     /**
