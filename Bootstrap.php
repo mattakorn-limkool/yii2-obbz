@@ -9,8 +9,6 @@ use yii\base\BootstrapInterface;
 
 /**
  * Class Bootstrap
- * @package claudejanz\mygii
- * @author Claude Janz
  */
 class Bootstrap implements BootstrapInterface
 {
@@ -25,6 +23,7 @@ class Bootstrap implements BootstrapInterface
         if ($app->hasModule('gii')) {
             if (!isset($app->getModule('gii')->generators['obbzModel'])) {
                 $app->getModule('gii')->generators['obbzModel'] = 'obbz\yii2\gii\model\Generator';
+                $app->getModule('gii')->generators['obbzCrud'] = 'obbz\yii2\gii\crud\Generator';
             }
         }
     }

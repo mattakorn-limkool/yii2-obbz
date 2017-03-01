@@ -4,7 +4,7 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\model\Generator */
+/* @var $generator obbz\yii2\gii\model\Generator */
 /* @var $tableName string full table name */
 /* @var $className string class name */
 /* @var $queryClassName string query class name */
@@ -14,11 +14,14 @@
 /* @var $relations array list of relations (name => relation declaration) */
 
 echo "<?php\n";
+
+$searchConditions = $generator->generateSearchConditions();
 ?>
 
 namespace <?= $generator->ns ?>\base;
 
 use Yii;
+
 <?php
 $hasDone = [];
 foreach ($relations as $name => $relation) {
@@ -48,18 +51,6 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
 {
 
     /**
-    * Default Scenario
-    */
-    const SC_SEARCH = "search";
-    const SC_CREATE = "create";
-    const SC_UPDATE = "update";
-    const SC_DELETE = "delete";
-    const SC_BE_SEARCH = "be_search";
-    const SC_BE_CREATE = "be_create";
-    const SC_BE_UPDATE = "be_update";
-    const SC_BE_DELETE = "be_delete";
-
-    /**
     * @inheritdoc
     */
     public static function tableName()
@@ -80,7 +71,7 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
 
     public function rules()
     {
-        return [<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>];
+        return array_merge(parent::rules(),[<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>]);
     }
 
 
@@ -96,7 +87,7 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
 <?php endforeach; ?>
 <?php if ($queryClassName): ?>
 <?php
-    $queryClassFullName = ($generator->ns === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
+    $queryClassFullName = ($generator->ns . '\base' === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
 ?>
     /**
@@ -108,4 +99,14 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
         return new <?= $queryClassFullName ?>(get_called_class());
     }
 <?php endif; ?>
+	
+	/**
+     * @param $query \yii\db\ActiveQuery
+     */
+    public function defaultQueryFilter(&$query){
+		// grid filtering conditions
+        $this->prepareCoreAttributesFilter();
+
+        <?= implode("\n        ", $searchConditions) ?>
+	}
 }

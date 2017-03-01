@@ -1,0 +1,71 @@
+<?php
+
+namespace obbz\yii2\themes\material;
+
+use yii\web\AssetBundle;
+
+/**
+ * Main backend application asset bundle.
+ */
+class MaterialAsset extends AssetBundle
+{
+    public $sourcePath = '@vendor/obbz/yii2/themes/material/assets';
+
+//    public $disableMainTitle = true;
+
+
+    public $css = [
+        //### theme ###
+        'vendors/bower_components/fullcalendar/dist/fullcalendar.min.css',
+        'vendors/bower_components/animate.css/animate.min.css',
+        'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css',
+        'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css',
+        'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css',
+//        'vendors/bootgrid/jquery.bootgrid.min.css',
+        'css/app.css',
+//        'css/app.min.1.css',
+//        'css/app.min.2.css',
+
+        //### core ###
+        // add when prod
+//        'css/custom.css',
+    ];
+    public $js = [
+        //### theme ###
+//        'vendors/bower_components/jquery/dist/jquery.min.js',
+        'vendors/bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'vendors/bower_components/flot/jquery.flot.js',
+        'vendors/bower_components/flot/jquery.flot.resize.js',
+        'vendors/bower_components/flot.curvedlines/curvedLines.js',
+        'vendors/sparklines/jquery.sparkline.min.js',
+        'vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js',
+        'vendors/bower_components/moment/min/moment.min.js',
+        'vendors/bower_components/fullcalendar/dist/fullcalendar.min.js',
+        'vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js',
+        'vendors/bower_components/Waves/dist/waves.min.js',
+        'vendors/bootstrap-growl/bootstrap-growl.min.js',
+        'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js',
+        'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
+        'vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+        'vendors/fileinput/fileinput.min.js',
+        'js/flot-charts/curved-line-chart.js',
+        'js/flot-charts/line-chart.js',
+        'js/charts.js',
+
+        'js/functions.js',
+//        'js/demo.js',
+
+        //### core ###
+        'js/common.js',
+
+    ];
+//    public $jsOptions = [
+//        'position'=>self::PO
+//    ];
+
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'rmrevin\yii\fontawesome\AssetBundle',
+    ];
+}

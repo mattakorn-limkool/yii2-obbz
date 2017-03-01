@@ -1,0 +1,135 @@
+/** global */
+.help-block-error{
+    font-size: 11px;
+    text-align: left;
+}
+.fg-float {
+    /*margin-bottom: 30px;*/
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.dl-horizontal .form-group {
+    margin-bottom: 0;
+}
+.dl-horizontal .help-block{
+    margin-bottom: 0;
+}
+
+/** social media auth */
+ul.social-auth{
+    list-style: none;
+    padding: 0;
+}
+ul.social-auth li{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+}
+ul.social-auth li.facebook{
+    background-color: #3B5998;
+}
+.btn-icon-small{
+    width: 35px;
+    line-height: 35px;
+    height: 35px;
+}
+/** end social media auth */
+
+
+/** login **/
+.login-content .lc-block h2{
+    margin: 0 0 34px;
+    font-size: 20px;
+    border-bottom: dashed 1px #ccc;
+    padding-bottom: 11px;
+    color: #333;
+}
+.lc-block:not(.lcb-alt) {
+    padding: 25px 55px 35px;
+}
+.lc-block{
+    margin-top: 82px;
+}
+body.login-content::before {
+    height: 100%;
+    background: #119ed4;
+}
+/** end login **/
+
+/** ui grid */
+.core-grid{}
+.core-grid tr .checkbox, .core-grid tr .radio{
+    margin:2px;
+}
+.sortable-widget-handler{
+    cursor: move;
+    /*margin-top: 10px;*/
+}
+.action-column-row{
+    text-align: right;
+}
+.btn-action-view, .btn-action-view:hover, .btn-action-view:focus{
+    color: #666;
+    background: #fff;
+}
+.btn-action-update, .btn-action-update:hover, .btn-action-update:focus{
+    color: #666;
+    background: #fff;
+}
+.btn-action-delete, .btn-action-delete:hover, .btn-action-delete:focus,
+.btn-action-delete-selected, .btn-action-delete-selected:hover, .btn-action-delete-selected:focus{
+    color: #fff;
+    background-color: #f6675d;
+}
+.btn-action-publish, .btn-action-publish:hover, .btn-action-publish:focus,
+.btn-action-publish-selected, .btn-action-publish-selected:hover, .btn-action-publish-selected:focus{
+    color: #26660c;
+    background: #fff;
+}
+.btn-action-unpublish, .btn-action-unpublish:hover, .btn-action-unpublish:focus,
+.btn-action-unpublish-selected, .btn-action-unpublish-selected:hover, .btn-action-unpublish-selected:focus{
+    color: #f6675d;
+    background: #fff;
+}
+
+
+.table > thead > tr > td.danger, .table > tbody > tr > td.danger, .table > tfoot > tr > td.danger, .table > thead > tr > th.danger, .table > tbody > tr > th.danger, .table > tfoot > tr > th.danger, .table > thead > tr.danger > td, .table > tbody > tr.danger > td, .table > tfoot > tr.danger > td, .table > thead > tr.danger > th, .table > tbody > tr.danger > th, .table > tfoot > tr.danger > th{
+    background-color: rgba(255, 17, 0, 0.15) !important;
+}
+
+.core-grid-status-publish{
+    color: #24a524;
+}
+.core-grid-status-unpublish{
+    color: #ec000c;
+}
+.core-filter{margin: 7px 7px 0;}
+.core-filter .form-group.action{
+    margin-left: 10px;
+}
+.table > thead > tr > th{
+    background-color: #f7f7f7;
+    /*border-top: 1px solid #e0d5d5 !important;*/
+}
+.summary{
+    text-align:right;
+    margin: 20px 10px 0;
+}
+
+/** end ui grid */
+
+/** form **/
+.fileinput .fileinput-preview {
+    width: 280px;
+    min-height: 150px;
+    height: auto;
+}
+.fileinput .fileinput-preview img{
+    margin-top: 0;
+}
+/** end form */
+
+/** warning row */
+.table > thead > tr > td.warning, .table > tbody > tr > td.warning, .table > tfoot > tr > td.warning, .table > thead > tr > th.warning, .table > tbody > tr > th.warning, .table > tfoot > tr > th.warning, .table > thead > tr.warning > td, .table > tbody > tr.warning > td, .table > tfoot > tr.warning > td, .table > thead > tr.warning > th, .table > tbody > tr.warning > th, .table > tfoot > tr.warning > th {
+    background-color: #ffedbb !important;
+}

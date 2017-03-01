@@ -49,7 +49,7 @@ SwaggerUIAsset::register($this);
         onFailure: function(data) {
           log("Unable to Load SwaggerUI");
         },
-        docExpansion: "none",
+        docExpansion: "list", // none, list
         apisSorter: "alpha",
         defaultModelRendering: 'schema',
         showRequestHeaders: false

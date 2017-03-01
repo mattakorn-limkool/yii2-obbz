@@ -40,4 +40,6 @@ class Alert extends \yii\bootstrap\Widget
                     '});
                     </script>';
     }
+
+//    public function run(){}
 }

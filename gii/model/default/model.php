@@ -14,49 +14,34 @@ echo "<?php\n";
 
 namespace <?= $generator->ns ?>;
 
+use obbz\yii2\utils\ObbzYii;
+
 class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'Base' . "\n" ?>
 {
-    #region roles
+
     public function rules(){
         return array_merge(parent::rules(),[
-
+			['image', 'file', 'extensions' => 'jpg, png', 'on'=>array_merge($this->scenarioUpdate(), $this->scenarioCreate())],
         ]);
     }
-    #endregion
 
-    #region scopes
-    public function scopes() {
-        return [
-        ];
+	public function behaviors(){
+        return array_merge(parent::behaviors(),[
+			$this->defaultImgBehavior('image', [
+                    'thumb'=> ['width'=>300, 'quality' => 100]
+                ], ['scenarios' => array_merge($this->scenarioUpdate(), $this->scenarioCreate())]) ,
+			// other behavior
+        ]);
     }
-    #endregion
 
-    #region attributeLabels
     public function attributeLabels(){
-        return [
+        return array_merge(parent::attributeLabels(),[
         <?php foreach ($labels as $name => $label): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
         <?php endforeach; ?>
-        ];
-    }
-    #endregion
-
-
-    public function search($pageSize = null, $defaultSort = '') {
-        $criteria = new CDbCriteria;
-        $sort = new CSort();
-        $sort->defaultOrder = $defaultSort;
-        <?php foreach($tableSchema->columns as $name=>$column): ?>
-            <?php $partial = ($column->type==='string' and !$column->isPrimaryKey); ?>
-            // $criteria->compare('<?php echo $name; ?>', $this-><?php echo $name; ?><?php echo $partial ? ', true' : ''; ?>);
-        <?php endforeach; ?>
-
-        return new CActiveDataProvider($this, [
-            'criteria' => $criteria,
-            'sort' => $sort,
-            'pagination' => [
-                'pageSize'=>isset($pageSize) ? $pageSize : param('default.pageSize'),
-            ],
         ]);
     }
+
+
+   
 }

@@ -7,6 +7,7 @@
 
 namespace obbz\yii2\themes\material\widgets;
 
+use obbz\yii2\utils\ObbzYii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\captcha\Captcha;
@@ -73,6 +74,8 @@ class ActiveField extends \yii\widgets\ActiveField
     public $widgetTemplate = "{label}\n{input}\n{hint}\n{error}";
     public $captchaTemplate = "{label}\n<div class=\"row\">{input}</div>\n{hint}\n{error}";
 
+    public $enableFloatLabel = true;
+
     /**
      * @inheritdoc
      */
@@ -114,6 +117,24 @@ class ActiveField extends \yii\widgets\ActiveField
         }
         return parent::render($content);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function dropDownList($items, $options = [])
+    {
+        $this->disableFloatingLabel();
+
+        // parent dropDownList
+
+//        $options = array_merge($this->inputOptions, $options);
+//        $this->addAriaAttributes($options);
+//        $this->adjustLabelFor($options);
+//        $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
+
+        return parent::dropDownList($items, $options);
+    }
+
 
     /**
      * @inheritdoc
@@ -258,6 +279,98 @@ class ActiveField extends \yii\widgets\ActiveField
     }
 
     /**
+     * upload input file/img
+     * @param array $options
+     * @return $this
+     */
+    public function fileInput($options = [])
+    {
+        $this->disableFloatingLabel();
+        $this->template = "{label}\n{input}\n{hint}\n{error}";
+        $labelName = $this->model->getAttributeLabel($this->attribute);
+        // https://github.com/yiisoft/yii2/pull/795
+        if ($this->inputOptions !== ['class' => 'form-control']) {
+            $options = array_merge($this->inputOptions, $options);
+        }
+        // https://github.com/yiisoft/yii2/issues/8779
+        if (!isset($this->form->options['enctype'])) {
+            $this->form->options['enctype'] = 'multipart/form-data';
+        }
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = '<div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-primary btn-file m-r-10">
+                        <span class="fileinput-new">Select '. $labelName .'</span>
+                        <span class="fileinput-exists">Change</span>
+                        '. Html::activeFileInput($this->model, $this->attribute, $options) .'
+                    </span>
+                    <span class="fileinput-filename"></span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
+                </div>';
+
+        return $this;
+
+    }
+
+    /**
+     * upload input img with previewer
+     * @param string $thumb
+     *          thumb = default thumb name is thumb
+     *          null = real upload file
+     *          other = custom thumb name
+     *
+     * @param array $options
+     * @return $this
+     */
+    public function imgInput($thumb = 'thumb', $options = []){
+        if(!isset($thumb)){ // == null
+            $imgPath = $this->model->getUploadUrl($this->attribute);
+        }else{
+            $imgPath = $this->model->getThumbUploadUrl($this->attribute, $thumb);
+        }
+
+        $this->disableFloatingLabel();
+        $this->template = "{label}\n{input}\n{hint}\n{error}";
+        $labelName = $this->model->getAttributeLabel($this->attribute);
+
+        // https://github.com/yiisoft/yii2/pull/795
+        if ($this->inputOptions !== ['class' => 'form-control']) {
+            $options = array_merge($this->inputOptions, $options);
+        }
+        // https://github.com/yiisoft/yii2/issues/8779
+        if (!isset($this->form->options['enctype'])) {
+            $this->form->options['enctype'] = 'multipart/form-data';
+        }
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = '<div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-preview thumbnail" data-trigger="fileinput">'. Html::img($imgPath) .'</div>
+                                <div>
+                                    <span class="btn btn-primary btn-file">
+                                        <span class="fileinput-new">Select '. $labelName .'</span>
+                                        <span class="fileinput-exists">Change</span>
+                                        '. Html::activeFileInput($this->model, $this->attribute, $options) .'
+                                    </span>
+                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                </div>
+                            </div>';
+
+        return $this;
+    }
+
+
+    public function disableFloatingLabel(){
+        $this->label(false);
+        $this->options = ['class' => 'form-group'];
+
+        if($this->form->layout == "inline"){
+            $this->inputOptions['placeholder'] = $this->model->getAttributeLabel($this->attribute);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param boolean $value whether to render a inline list
      * @return $this the field object itself
      * Make sure you call this method before [[checkboxList()]] or [[radioList()]] to have any effect.
@@ -323,8 +436,8 @@ class ActiveField extends \yii\widgets\ActiveField
             $config['errorOptions'] = ['class' => 'help-block help-block-error ' . $cssClasses['error']];
             $config['hintOptions'] = ['class' => 'help-block ' . $cssClasses['hint']];
         } elseif ($layout === 'inline') {
-            $config['labelOptions'] = ['class' => 'sr-only'];
-            $config['enableError'] = false;
+//            $config['labelOptions'] = ['class' => 'sr-only'];
+//            $config['enableError'] = false;
         }
 
         return $config;
