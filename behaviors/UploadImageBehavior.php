@@ -72,6 +72,11 @@ class UploadImageBehavior extends UploadBehavior
         }
     }
 
+    protected function generateFileName($file)
+    {
+        return uniqid() . '-' . $this->attribute . '.' . $file->extension;
+    }
+
     /**
      * @inheritdoc
      */
