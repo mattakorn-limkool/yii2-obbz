@@ -8,11 +8,12 @@
 
 namespace obbz\yii2\models;
 
+use obbz\yii2\behaviors\UploadBehavior;
+use obbz\yii2\behaviors\UploadImageBehavior;
 use obbz\yii2\utils\ObbzYii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use mongosoft\file\UploadBehavior;
-use mongosoft\file\UploadImageBehavior;
+
 
 /**
  * This is the core model class for default table
@@ -272,20 +273,23 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
         if(!isset($options['placeholder'])){
             $placeholder = "";
         }else if($options['placeholder'] === 'default'){
-            $placeholder = '@webroot/uploads/'. $this->uploadFolder .'/default.png';
+            $placeholder = '@uploadPath/default/'. $this->uploadFolder .'/default.png';
         }else{
             $placeholder = $options['placeholder'];
         }
 
         if(!isset($options['path']) or $options['path'] === 'default')
-            $path = '@webroot/uploads/'. $this->uploadFolder .'/{id}';
+            $path = '@uploadPath/'. $this->uploadFolder .'/{id}';
         else
             $path = $options['path'];
 
+
+
         if(!isset($options['url']) or $options['url'] === 'default')
-            $url = '@web/uploads/'. $this->uploadFolder .'/{id}';
+            $url = '@uploadUrl/'. $this->uploadFolder .'/{id}';
         else
             $url = $options['url'];
+
 
         return [
             'class' => UploadImageBehavior::className(),
@@ -302,5 +306,6 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
     public function defaultFileBehavior(){
         // not implemented yet
     }
+
 }
 

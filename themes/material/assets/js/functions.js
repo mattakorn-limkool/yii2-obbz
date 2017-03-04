@@ -26,7 +26,8 @@ $(document).ready(function(){
     (function () {
 
         //Get saved layout type from LocalStorage
-        var layoutStatus = localStorage.getItem('ma-layout-status');
+        //var layoutStatus = localStorage.getItem('ma-layout-status');
+        var layoutStatus = 1;
 
         if(!$('#header-2')[0]) {  //Make it work only on normal headers
             if (layoutStatus == 1) {

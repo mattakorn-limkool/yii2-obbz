@@ -75,16 +75,7 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
     }
 
 
-<?php foreach ($relations as $name => $relation): ?>
 
-    /**
-    * @return \yii\db\ActiveQuery
-    */
-    public function get<?= $name ?>()
-    {
-        <?= $relation[0] . "\n" ?>
-    }
-<?php endforeach; ?>
 <?php if ($queryClassName): ?>
 <?php
     $queryClassFullName = ($generator->ns . '\base' === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;

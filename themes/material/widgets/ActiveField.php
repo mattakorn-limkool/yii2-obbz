@@ -7,6 +7,7 @@
 
 namespace obbz\yii2\themes\material\widgets;
 
+use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\utils\ObbzYii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -124,6 +125,11 @@ class ActiveField extends \yii\widgets\ActiveField
     public function dropDownList($items, $options = [])
     {
         $this->disableFloatingLabel();
+
+        if($this->form->layout === 'default'){
+            $this->label(true);
+            $this->options = ['class' => 'form-group fg-padding'];
+        }
 
         // parent dropDownList
 
@@ -382,6 +388,10 @@ class ActiveField extends \yii\widgets\ActiveField
     }
 
     public function widget($class, $config = []){
+        $this->disableFloatingLabel();
+        $this->label(true);
+        $this->options = ['class' => 'form-group fg-padding'];
+
         $this->template = $this->widgetTemplate;
         return parent::widget($class, $config);
     }
@@ -396,6 +406,17 @@ class ActiveField extends \yii\widgets\ActiveField
         return parent::widget(Captcha::className(), $config);
     }
 
+    public function rte($config = []){
+
+//        $this->disableFloatingLabel();
+//        $this->label(true);
+
+        return $this->widget(CoreCKEditor::className(), array_merge([
+            'options' => ['rows' => 6],
+            'preset' => ObbzYii::user()->can(\backend\components\Roles::THE_CREATOR) ? 'full' : 'basic'
+        ], $config));
+    }
+
     /**
      * @param array $instanceConfig the configuration passed to this instance's constructor
      * @return array the layout specific default configuration for this instance
@@ -405,7 +426,7 @@ class ActiveField extends \yii\widgets\ActiveField
         $config = [
             'hintOptions' => [
                 'tag' => 'p',
-                'class' => 'help-block',
+                'class' => 'help-block hint-block',
             ],
             'errorOptions' => [
                 'tag' => 'p',
@@ -434,7 +455,7 @@ class ActiveField extends \yii\widgets\ActiveField
             $config['wrapperOptions'] = ['class' => $cssClasses['wrapper']];
             $config['labelOptions'] = ['class' => 'control-label ' . $cssClasses['label']];
             $config['errorOptions'] = ['class' => 'help-block help-block-error ' . $cssClasses['error']];
-            $config['hintOptions'] = ['class' => 'help-block ' . $cssClasses['hint']];
+            $config['hintOptions'] = ['class' => 'help-block hint-block ' . $cssClasses['hint']];
         } elseif ($layout === 'inline') {
 //            $config['labelOptions'] = ['class' => 'sr-only'];
 //            $config['enableError'] = false;

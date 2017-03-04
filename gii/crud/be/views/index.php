@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							"url"=>["create"],
 							"btnClass"=>"success",
 							"prefixIcon" => "plus",
-						]); ?>' ?>
+						]); ?>'."\n" ?>
 					</li>
 <!--		            <li>-->
 <!--		                <a href="">-->
@@ -59,10 +59,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <?php if ($generator->indexWidgetType === 'grid'): ?>
-			<div class="responsive-table">
+			<div class="table-responsive">
     <?= "		<?= " ?>\obbz\yii2\widgets\grid\CoreGridView::widget([
 				'dataProvider' => $dataProvider,
                 //'sortableEnable'=>false,
+				//'enableSelectedAction'=>false,
 				<?= !empty($generator->searchModelClass) ? "//'filterModel' => \$searchModel,\n        		'columns' => [\n" : "'columns' => [\n"; ?>
 					// ['class' => 'yii\grid\SerialColumn'],
 
@@ -93,18 +94,21 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 						'format' => 'html',
 						'value' => function ($model) { return  $model->displayPublishStatus(); },
 					],*/
-                    ['class' => obbz\yii2\widgets\grid\CoreActionColumn::className()],
+					[
+						'class' => obbz\yii2\widgets\grid\CoreActionColumn::className(),
+						// 'enableHeaderAction'  => false,
+					],
                 ],
             ]); ?>
 <?php else: ?>
 			<div class="list-view">
-    <?= "<?= " ?>ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]);
-        },
-    ]) ?>
+    <?= "		<?= " ?>ListView::widget([
+				'dataProvider' => $dataProvider,
+				'itemOptions' => ['class' => 'item'],
+				'itemView' => function ($model, $key, $index, $widget) {
+					return Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]);
+				},
+			]) ?>
 <?php endif; ?>
 <?= $generator->enablePjax ? "    		<?php Pjax::end(); ?>\n" : '' ?>
 

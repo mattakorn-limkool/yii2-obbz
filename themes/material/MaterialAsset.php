@@ -21,6 +21,7 @@ class MaterialAsset extends AssetBundle
         'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css',
         'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css',
         'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css',
+        'vendors/bower_components/lightgallery/light-gallery/css/lightGallery.css',
 //        'vendors/bootgrid/jquery.bootgrid.min.css',
         'css/app.css',
 //        'css/app.min.1.css',
@@ -47,6 +48,8 @@ class MaterialAsset extends AssetBundle
         'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js',
         'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
         'vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+        'vendors/bower_components/lightgallery/light-gallery/js/lightGallery.js',
+//        'vendors/bower_components/lightGallery139/dist/js/lightgallery.js',
         'vendors/fileinput/fileinput.min.js',
         'js/flot-charts/curved-line-chart.js',
         'js/flot-charts/line-chart.js',
@@ -56,7 +59,8 @@ class MaterialAsset extends AssetBundle
 //        'js/demo.js',
 
         //### core ###
-        'js/common.js',
+        // add when prod
+//        'js/common.js',
 
     ];
 //    public $jsOptions = [

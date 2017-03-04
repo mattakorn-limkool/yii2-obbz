@@ -317,19 +317,28 @@ class Generator extends \yii\gii\Generator
      */
     public function generateColumnFormat($column)
     {
-        if ($column->phpType === 'boolean') {
-            return 'boolean';
-        } elseif ($column->type === 'text') {
-            return 'ntext';
-        } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
+        if($column->name == "created_time" || $column->name == "modify_time" || $column->name == "deleted_time"  ){
             return 'datetime';
-        } elseif (stripos($column->name, 'email') !== false) {
-            return 'email';
-        } elseif (stripos($column->name, 'url') !== false) {
-            return 'url';
-        } else {
-            return 'text';
         }
+        else if($column->name == "detail" ){
+            return 'onlyText';
+        }
+        else{ // normal field
+            if ($column->phpType === 'boolean') {
+                return 'boolean';
+            } elseif ($column->type === 'text') {
+                return 'ntext';
+            } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
+                return 'datetime';
+            } elseif (stripos($column->name, 'email') !== false) {
+                return 'email';
+            } elseif (stripos($column->name, 'url') !== false) {
+                return 'url';
+            } else {
+                return 'text';
+            }
+        }
+
     }
 
     /**
@@ -604,7 +613,7 @@ class Generator extends \yii\gii\Generator
             if($this->messageCategory == "app" and empty($placeholders)){
                 $str = "ObbzYii::t('" . $string . "'" . $ph . ")";
             }else{
-                $str = "ObbzYii::t('" . $string . "', '" . $this->messageCategory . "'" . $ph . ")";
+                $str = "ObbzYii::t('" . $string . "'" . $ph . ", '" . $this->messageCategory . "')";
             }
 
         } else {

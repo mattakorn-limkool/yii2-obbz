@@ -41,6 +41,17 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
         <?php endforeach; ?>
         ]);
     }
+	
+<?php foreach ($relations as $name => $relation): ?>
+
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function get<?= $name ?>()
+    {
+        <?= $relation[0] . "\n" ?>
+    }
+<?php endforeach; ?>
 
 
    

@@ -15,13 +15,18 @@ class CoreGridView extends GridView
     public $sortableFirstColumn = true;
     /** @var bool - support action column for select checkbox */
     public $enableSelectedAction = true;
-    public $formAction = '';
+    public $formAction = ''; // current submit page
     public $formOptions = [];
+    public $additionalUrlParams = [];
     public $tableOptions = ['class' => 'core-grid table table-hover'];
 
 
     public function init()
     {
+        $this->rowOptions = function ($model, $key, $index, $grid) {
+            $rowOptionsArray = $this->rowOptionsInit($model, $key, $index, $grid);
+            return $rowOptionsArray;
+        };
 
         if($this->sortableEnable){
 

@@ -46,8 +46,8 @@ use obbz\yii2\utils\ObbzYii;
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form row">
 	<?= "<?php " ?>$form = ActiveForm::begin(); ?>
 	<div class="col-md-4">
-<?php echo "    	<?php echo " . $generator->generateActiveField('image') . " ?>\n\n"; ?>
-		</div>
+<?php echo "    	<?php echo " . $generator->generateActiveField('image') . " ?>\n"; ?>
+	</div>
 	<div class="col-md-8">
     
 <?php foreach ($generator->getColumnNames() as $attribute) {

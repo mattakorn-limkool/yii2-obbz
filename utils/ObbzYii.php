@@ -5,8 +5,10 @@
 
 namespace obbz\yii2\utils;
 use common\models\User;
+use yii\base\Exception;
 use yii\helpers\FormatConverter;
 use yii\helpers\Url;
+use yii\web\Response;
 
 /**
  * Class SC - Yii shortcut
@@ -65,6 +67,39 @@ class ObbzYii
         return \Yii::$app->request->get($name, $defaultValue);
     }
 
+    public static function setHttpImage($file){
+        $filename = basename($file);
+        $file_extension = strtolower(substr(strrchr($filename,"."),1));
+
+        switch( $file_extension ) {
+            case "gif": $ctype="image/gif"; break;
+            case "png": $ctype="image/png"; break;
+            case "jpeg":
+            case "jpg": $ctype="image/jpeg"; break;
+            default:
+                throw new Exception('Wrong Image file');
+        }
+
+        header('Content-type: ' . $ctype);
+    }
+
+    public static function setHttpHeaders($name, $mime, $encoding = 'utf-8')
+    {
+        \Yii::$app->response->format = Response::FORMAT_RAW;
+        if (strstr($_SERVER["HTTP_USER_AGENT"], "MSIE") == false) {
+            header("Cache-Control: no-cache");
+            header("Pragma: no-cache");
+        } else {
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Pragma: public");
+        }
+        header("Expires: Sat, 26 Jul 1979 05:00:00 GMT");
+        header("Content-Encoding: {$encoding}");
+        header("Content-Type: {$mime}; charset={$encoding}");
+        header("Content-Disposition: attachment; filename={$name}");
+        header("Cache-Control: max-age=0");
+    }
+
     #endregion
 
     #Yii
@@ -111,12 +146,16 @@ class ObbzYii
     /**
      * Translates a message to the specified language.
      * @param $message
-     * @param string $category
      * @param array $params
+     * @param string $category  'app' is default
      * @param null $language
      * @return string
      */
-    public static function t($message, $category = "app", $params = [], $language = null){
+    public static function t($message, $params = [], $category = null, $language = null){
+        if(!isset($category)){
+            $category = 'app';
+        }
+
         return \Yii::t($category, $message, $params, $language);
     }
     #end Yii
@@ -205,4 +244,6 @@ class ObbzYii
         echo "<pre>" . print_r($data, true) . "</pre>";
         exit;
     }
+
+
 }

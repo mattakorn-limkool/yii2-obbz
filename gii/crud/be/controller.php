@@ -41,6 +41,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use obbz\yii2\utils\ObbzYii;
+use backend\components;
+use backend\components\Roles;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -63,7 +65,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 //                    ],
                     [  // require authenticate of all action
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [Roles::EDITOR],
                     ],
                 ],
             ],

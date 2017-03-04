@@ -8,7 +8,10 @@
 
 namespace obbz\yii2\models;
 
+use Codeception\Lib\Interfaces\ActiveRecord;
+use obbz\yii2\utils\ObbzYii;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 
 class CoreActiveQuery extends ActiveQuery
 {
@@ -21,6 +24,12 @@ class CoreActiveQuery extends ActiveQuery
     public function pk($id){
         return $this->andWhere(['id'=>$id])->one();
     }
+    public function key($key){
+        return $this->andWhere(['key_name'=>$key])->one();
+    }
+    public function keyAll($key){
+        return $this->andWhere(['key_name'=>$key])->all();
+    }
     #endregion
 
     #region default scope
@@ -29,9 +38,10 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function published(){
+        $modelClass = $this->modelClass;
 //        $this->andWhere(['not','( disabled <> 0) OR ( deleted <> 0) ']);
-        $this->andWhere(['<>','disabled',1]);
-        $this->andWhere(['<>','deleted',1]);
+        $this->andWhere(['<>',$modelClass::tableName().'.disabled',1]);
+        $this->andWhere(['<>',$modelClass::tableName().'.deleted',1]);
         return $this;
     }
 
@@ -40,7 +50,8 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function unpublished(){
-        $this->andWhere('(deleted = 1 OR disabled = 1)');
+        $modelClass = $this->modelClass;
+        $this->andWhere('('.$modelClass::tableName().'.deleted = 1 OR '.$modelClass::tableName().'.disabled = 1)');
         return $this;
     }
 
@@ -49,7 +60,8 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function active(){
-        $this->andWhere(['deleted'=>0]);
+        $modelClass = $this->modelClass;
+        $this->andWhere([$modelClass::tableName().'.deleted'=>0]);
         return $this;
     }
 
@@ -58,13 +70,27 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function archived(){
-        $this->andWhere(['deleted'=> 1]);
+        $modelClass = $this->modelClass;
+        $this->andWhere([$modelClass::tableName().'.deleted'=> 1]);
         return $this;
     }
 
     public function defaultOrder(){
-        $this->orderBy(['sorting'=>SORT_ASC]);
+        $modelClass = $this->modelClass;
+        $this->orderBy([$modelClass::tableName().'.sorting'=>SORT_ASC]);
         return $this;
+    }
+    #endregion
+
+    #region data list
+    public function publishedList($showAttribute = 'title'){ // for fe
+        // todo find by cache
+        return ArrayHelper::map($this->published()->defaultOrder()->all(), 'id', $showAttribute);
+    }
+
+    public function activeList($showAttribute = 'title'){ // for be
+        // todo find by cache
+        return ArrayHelper::map($this->active()->defaultOrder()->all(), 'id', $showAttribute);
     }
     #endregion
 

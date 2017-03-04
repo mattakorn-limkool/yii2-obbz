@@ -36,3 +36,21 @@ var Obbz = {
         }
     }
 };
+
+$('.gallery-img-detail').lightGallery({
+    thumbnail:true
+    //enableTouch: true
+});
+//if(typeof(CKEDITOR) !== 'undefined'){
+//    CKEDITOR.config.toolbar = [
+//        //['Styles','Format','Font','FontSize'],
+//        //'/',
+//        //['Bold','Italic','Underline','StrikeThrough','-','Undo','Redo','-','Cut','Copy','Paste','Find','Replace','-','Outdent','Indent','-','Print'],
+//        ['Bold','Italic','Underline','StrikeThrough','-','Undo','Redo','-','Cut','Copy','Paste','-','Outdent','Indent'],
+//        //'/',
+//        ['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+//        //['Image','Table','-','Link','Flash','Smiley','TextColor','BGColor','Source']
+//        ['Image','-','Link','TextColor','BGColor']
+//    ] ;
+//
+//}

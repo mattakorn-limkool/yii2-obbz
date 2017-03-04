@@ -43,6 +43,7 @@ class Button extends Widget
         $options = array_merge([
             'class' => "btn btn-" . $this->btnClass,
             'type' => $this->type,
+
         ], $additionalOptions, $this->options);
         return Html::button($prefixIcon . $this->text . $suffixIcon ,$options);
 

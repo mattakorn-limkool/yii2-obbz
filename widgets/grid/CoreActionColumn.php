@@ -19,11 +19,12 @@ class CoreActionColumn extends ActionColumn
     public $contentOptions = ['class'=>'action-column-row'];
 
     // header config
-    public $headerOptions = ['class'=>'text-right'];
+    public $headerOptions = ['class'=>'core-grid-action-header'];
     public $enableHeaderAction = true;
     public $headerActionButtons = [];
-    public $headerActionTemplate = '<div class="core-action-selected">{publish-selected} {unpublish-selected} {delete-selected}</div>';
+    public $headerActionTemplate = '<div class="core-grid-action-selected">{publish-selected} {unpublish-selected} {delete-selected}</div>';
     public $headerButtonOptions = [];
+
 
 
     protected function initDefaultButtons()
@@ -73,20 +74,23 @@ class CoreActionColumn extends ActionColumn
 
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
 
-            $condArray = [];
-
-            $this->buttons[$name] = function ($url, $model, $key) use ($name, $iconName, $additionalOptions, $condArray) {
-                $title = $this->name2Title($name);
-                $options = array_merge([
-                    'title' => $title,
-                    'data-toggle' => 'tooltip',
-                    'aria-label' => $title,
-                    'data-pjax' => '0',
-                    'class'=>'btn btn-icon btn-icon-small btn-action-' . $name,
-                    'visible'=>'false',
-                ], $additionalOptions, $this->buttonOptions);
-                $icon = Html::tag('span', '', ['class' => "fa fa-$iconName"]);
-                return Html::a($icon, $url, $options);
+            $this->buttons[$name] = function ($url, $model, $key) use ($name, $iconName, $additionalOptions) {
+                return $this->generateButton(
+                    $name, $this->name2Title($name),
+                    $url , $iconName,
+                    array_merge($additionalOptions, $this->buttonOptions)
+                );
+//                $title = $this->name2Title($name);
+//                $options = array_merge([
+//                    'title' => $title,
+//                    'data-toggle' => 'tooltip',
+//                    'aria-label' => $title,
+//                    'data-pjax' => '0',
+//                    'class'=>'btn btn-icon btn-icon-small btn-action-' . $name,
+//                    'visible'=>'false',
+//                ], $additionalOptions, $this->buttonOptions);
+//                $icon = Html::tag('span', '', ['class' => "fa fa-$iconName"]);
+//                return Html::a($icon, $url, $options);
             };
         }
     }
@@ -94,9 +98,8 @@ class CoreActionColumn extends ActionColumn
     protected function initDefaultHeaderButton($name, $iconName, $additionalOptions = []){
         if (!isset($this->headerActionButtons[$name]) && strpos($this->headerActionTemplate, '{' . $name . '}') !== false) {
 
-            $condArray = [];
-
-            $this->headerActionButtons[$name] = function ($url) use ($name, $iconName, $additionalOptions, $condArray) {
+            $this->headerActionButtons[$name] = function ($url) use ($name, $iconName, $additionalOptions) {
+                // todo - separate to generateHeaderButton
                 $title = $this->name2Title($name);
                 $options = array_merge([
                     'title' => $title,
@@ -121,6 +124,7 @@ class CoreActionColumn extends ActionColumn
                 $name = $matches[1];
 
                 if (isset($this->headerActionButtons[$name])) {
+                    $params = $this->grid->additionalUrlParams;
                     $params[0] = $this->controller ? $this->controller . '/' . $name : $name;
                     $url = Url::toRoute($params);
                     return call_user_func($this->headerActionButtons[$name], $url);
@@ -130,6 +134,31 @@ class CoreActionColumn extends ActionColumn
             }, $this->headerActionTemplate);
         }else{
             return parent::renderHeaderCellContent();
+        }
+    }
+
+    public static function generateButton($action, $title, $url, $iconName, $options = []){
+        $options = array_merge([
+            'title' => $title,
+            'data-toggle' => 'tooltip',
+            'aria-label' => $title,
+            'data-pjax' => '0',
+            'class'=>'btn btn-icon btn-icon-small btn-action-' . $action,
+            'visible'=>'false',
+        ], $options);
+        $icon = Html::tag('span', '', ['class' => "fa fa-$iconName"]);
+        return Html::a($icon, $url, $options);
+    }
+
+    public function createUrl($action, $model, $key, $index)
+    {
+        if (is_callable($this->urlCreator)) {
+            return call_user_func($this->urlCreator, $action, $model, $key, $index, $this);
+        } else {
+            $params = is_array($key) ? $key : array_merge(['id' => (string) $key], $this->grid->additionalUrlParams);
+            $params[0] = $this->controller ? $this->controller . '/' . $action : $action;
+
+            return Url::toRoute($params);
         }
     }
 
