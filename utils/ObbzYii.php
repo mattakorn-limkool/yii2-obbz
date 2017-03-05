@@ -30,6 +30,11 @@ class ObbzYii
         return \Yii::$app->request->getBaseUrl() . $path;
     }
 
+    public static function uploadUrl($path = ''){
+        $uploadUrl = \Yii::getAlias('@uploadUrl');
+        return $uploadUrl . '/' . $path;
+    }
+
     public static function referrerUrl($defaultUrl = null){
         if(!isset(\Yii::$app->request->referrer)){
             if(self::isExternalUrl($defaultUrl)){
