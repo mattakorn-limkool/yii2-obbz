@@ -21,6 +21,7 @@ $searchConditions = $generator->generateSearchConditions();
 namespace <?= $generator->ns ?>\base;
 
 use Yii;
+use obbz\yii2\utils\ObbzYii;
 
 <?php
 $hasDone = [];
@@ -49,15 +50,15 @@ foreach ($relations as $name => $relation) {
 */
 class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-    const CACHE_PUBLISHED_ALL = '<?= $generator->generateTableName($tableName) ?>_published_all';
-    const CACHE_ACTIVE_ALL = '<?= $generator->generateTableName($tableName) ?>_active_all';
-    /**
-    * @inheritdoc
-    */
-    public static function tableName()
-    {
-        return '<?= $generator->generateTableName($tableName) ?>';
-    }
+const CACHE_PUBLISHED_ALL = '<?= $generator->generateTableName($tableName) ?>_published_all';
+const CACHE_ACTIVE_ALL = '<?= $generator->generateTableName($tableName) ?>_active_all';
+/**
+* @inheritdoc
+*/
+public static function tableName()
+{
+return '<?= $generator->generateTableName($tableName) ?>';
+}
 <?php if ($generator->db !== 'db'): ?>
 
     /**
@@ -65,48 +66,48 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
     */
     public static function getDb()
     {
-        return Yii::$app->get('<?= $generator->db ?>');
+    return Yii::$app->get('<?= $generator->db ?>');
     }
 <?php endif; ?>
 
 
-    public function rules()
-    {
-        return array_merge(parent::rules(),[<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>]);
-    }
+public function rules()
+{
+return array_merge(parent::rules(),[<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>]);
+}
 
 
 
 <?php if ($queryClassName): ?>
-<?php
+    <?php
     $queryClassFullName = ($generator->ns . '\base' === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
-?>
+    ?>
     /**
-     * @inheritdoc
-     * @return <?= $queryClassFullName ?> the active query used by this AR class.
-     */
+    * @inheritdoc
+    * @return <?= $queryClassFullName ?> the active query used by this AR class.
+    */
     public static function find()
     {
-        return new <?= $queryClassFullName ?>(get_called_class());
+    return new <?= $queryClassFullName ?>(get_called_class());
     }
 <?php endif; ?>
-	
-	/**
-     * @param $query \yii\db\ActiveQuery
-     */
-    public function defaultQueryFilter(&$query){
-		// grid filtering conditions
-        $this->prepareCoreAttributesFilter();
 
-        <?= implode("\n        ", $searchConditions) ?>
-	}
+/**
+* @param $query \yii\db\ActiveQuery
+*/
+public function defaultQueryFilter(&$query){
+// grid filtering conditions
+$this->prepareCoreAttributesFilter();
 
-    public function afterSave($insert, $changedAttributes)
-    {
-        ObbzYii::cache()->delete(self::CACHE_PUBLISHED_ALL);
-        ObbzYii::cache()->delete(self::CACHE_ACTIVE_ALL);
+<?= implode("\n        ", $searchConditions) ?>
+}
 
-        parent::afterSave($insert, $changedAttributes);
-    }
+public function afterSave($insert, $changedAttributes)
+{
+ObbzYii::cache()->delete(self::CACHE_PUBLISHED_ALL);
+ObbzYii::cache()->delete(self::CACHE_ACTIVE_ALL);
+
+parent::afterSave($insert, $changedAttributes);
+}
 }
