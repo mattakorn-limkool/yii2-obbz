@@ -127,6 +127,8 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
         }
     }
 
+
+
     /**
      * auto set logging for user change record
      * @param bool $insert

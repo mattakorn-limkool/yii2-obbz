@@ -82,15 +82,48 @@ class CoreActiveQuery extends ActiveQuery
     }
     #endregion
 
+    #region
+    public function publishedAll($cache = true){
+        $modelClass = $this->modelClass;
+        if($cache){
+            $key = $modelClass::CACHE_PUBLISHED_ALL;
+            $data = ObbzYii::cache()->get($key);
+            if($data === false){
+                // flush cache when admin edit
+                $data =  $this->published()->defaultOrder()->all();
+                ObbzYii::cache()->set($key, $data);
+                return $data;
+            }
+            return $data;
+        }else{
+            return $this->published()->defaultOrder()->all();
+        }
+    }
+    public function activeAll($cache = true){
+        $modelClass = $this->modelClass;
+        if($cache){
+            $key = $modelClass::CACHE_ACTIVE_ALL;
+            $data = ObbzYii::cache()->get($key);
+            if($data === false){
+                // flush cache when admin edit
+                $data =  $this->active()->defaultOrder()->all();
+                ObbzYii::cache()->set($key, $data);
+                return $data;
+            }
+            return $data;
+        }else{
+            return $this->active()->defaultOrder()->all();
+        }
+    }
+    #endregion
+
     #region data list
     public function publishedList($showAttribute = 'title'){ // for fe
-        // todo find by cache
-        return ArrayHelper::map($this->published()->defaultOrder()->all(), 'id', $showAttribute);
+        return ArrayHelper::map($this->publishedAll(), 'id', $showAttribute);
     }
 
     public function activeList($showAttribute = 'title'){ // for be
-        // todo find by cache
-        return ArrayHelper::map($this->active()->defaultOrder()->all(), 'id', $showAttribute);
+        return ArrayHelper::map($this->activeAll(), 'id', $showAttribute);
     }
     #endregion
 

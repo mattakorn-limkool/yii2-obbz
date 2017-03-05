@@ -49,7 +49,8 @@ foreach ($relations as $name => $relation) {
 */
 class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-
+    const CACHE_PUBLISHED_ALL = '<?= $generator->generateTableName($tableName) ?>_published_all';
+    const CACHE_ACTIVE_ALL = '<?= $generator->generateTableName($tableName) ?>_active_all';
     /**
     * @inheritdoc
     */
@@ -100,4 +101,12 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
 
         <?= implode("\n        ", $searchConditions) ?>
 	}
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        ObbzYii::cache()->delete(self::CACHE_PUBLISHED_ALL);
+        ObbzYii::cache()->delete(self::CACHE_ACTIVE_ALL);
+
+        parent::afterSave($insert, $changedAttributes);
+    }
 }

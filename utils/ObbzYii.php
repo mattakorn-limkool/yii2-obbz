@@ -135,6 +135,14 @@ class ObbzYii
     }
 
     /**
+     * get/set cache
+     * @return \yii\caching\Cache
+     */
+    public static function cache(){
+        return \Yii::$app->cache;
+    }
+
+    /**
      * get current user and mapping to db
      * @return \common\models\User
      */
