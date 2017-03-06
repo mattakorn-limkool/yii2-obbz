@@ -12,6 +12,7 @@ use obbz\yii2\utils\ObbzYii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\captcha\Captcha;
+use yii\helpers\Url;
 
 class ActiveField extends \yii\widgets\ActiveField
 {
