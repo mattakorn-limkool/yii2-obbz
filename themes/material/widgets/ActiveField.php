@@ -413,7 +413,10 @@ class ActiveField extends \yii\widgets\ActiveField
 
         return $this->widget(CoreCKEditor::className(), array_merge([
             'options' => ['rows' => 6],
-            'preset' => ObbzYii::user()->can(\backend\components\Roles::THE_CREATOR) ? 'full' : 'basic'
+            'preset' => ObbzYii::user()->can(\backend\components\Roles::THE_CREATOR) ? 'full' : 'basic',
+            'clientOptions' => [
+                'filebrowserUploadUrl' => Url::to(['/site/ckeditor-upload-img'])
+            ]
         ], $config));
     }
 
