@@ -72,6 +72,10 @@ class ObbzYii
         return \Yii::$app->request->get($name, $defaultValue);
     }
 
+    public static function queryParams(){
+        return \Yii::$app->request->queryParams;
+    }
+
     public static function setHttpImage($file){
         $filename = basename($file);
         $file_extension = strtolower(substr(strrchr($filename,"."),1));
