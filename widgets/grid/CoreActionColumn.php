@@ -162,7 +162,7 @@ class CoreActionColumn extends ActionColumn
         }
     }
 
-    public function name2Title($name){
+    public static function name2Title($name){
         $name = str_replace('-', ' ', $name);
         return \Yii::t('yii', ucfirst($name));
     }

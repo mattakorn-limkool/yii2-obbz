@@ -18,7 +18,7 @@ if(($key = array_search('image', $safeAttributes)) !== false) {
 }
 
 
-$coreAttributes = $model->getCoreAttributes();
+$coreAttributes = method_exists($model, 'getCoreAttributes') ?  $model->getCoreAttributes() : [];
 $commentAttributes = $coreAttributes;
 // unset title
 if(($key = array_search('title', $commentAttributes)) !== false) {

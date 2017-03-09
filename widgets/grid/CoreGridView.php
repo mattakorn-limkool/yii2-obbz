@@ -23,17 +23,20 @@ class CoreGridView extends GridView
 
     public function init()
     {
-        $this->rowOptions = function ($model, $key, $index, $grid) {
-            $rowOptionsArray = $this->rowOptionsInit($model, $key, $index, $grid);
-            return $rowOptionsArray;
-        };
-
-        if($this->sortableEnable){
-
+        if(!($this->rowOptions instanceof \Closure)){
             $this->rowOptions = function ($model, $key, $index, $grid) {
                 $rowOptionsArray = $this->rowOptionsInit($model, $key, $index, $grid);
-                return array_merge($rowOptionsArray, ['data-sortable-id' => $model->id]);
+                return $rowOptionsArray;
             };
+        }
+
+        if($this->sortableEnable){
+            if(!($this->rowOptions instanceof \Closure)){
+                $this->rowOptions = function ($model, $key, $index, $grid) {
+                    $rowOptionsArray = $this->rowOptionsInit($model, $key, $index, $grid);
+                    return array_merge($rowOptionsArray, ['data-sortable-id' => $model->id]);
+                };
+            }
 
             $this->options =  [
                 'data' => [
@@ -62,7 +65,7 @@ class CoreGridView extends GridView
     public function rowOptionsInit($model, $key, $index, $grid){
         // todo - check has declare by widget before
         $rowOptionsArray = [];
-        if($model->disabled){
+        if(isset($model->disabled) && $model->disabled){
             $rowOptionsArray['class'] = 'danger';
         }
         return $rowOptionsArray;
