@@ -1,15 +1,15 @@
 <?php
 
-use obbz\yii2\swagger\SwaggerUIAsset;
+use obbz\yii2\swagger\CustomAsset;
 
-SwaggerUIAsset::register($this);
+CustomAsset::register($this);
  ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Swagger UI</title>
+  <title><?php echo \Yii::$app->name . ' Api documents' ?></title>
   <?php $this->head() ?>
 
   <script type="text/javascript">
