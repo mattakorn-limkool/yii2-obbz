@@ -172,7 +172,7 @@ class Generator extends \yii\gii\generators\model\Generator
             } else {
                 $ph = '';
             }
-            $messageCategory = empty($this->messageCategory) ? $this->tableName : $this->messageCategory;
+            $messageCategory = empty($this->messageCategory) ? 'model/' . $this->tableName2name($this->tableName) : $this->messageCategory;
             $str = "\\Yii::t('". $messageCategory ."', '" . $string . "'" . $ph . ")";
 
         } else {
@@ -189,6 +189,10 @@ class Generator extends \yii\gii\generators\model\Generator
             }
         }
         return $str;
+    }
+
+    public function tableName2name($tableName){
+        return str_replace('_', '-', $tableName);
     }
 
     public function validateMessageCategory()
