@@ -21,9 +21,9 @@ class CoreActive extends CoreBaseAction
         $model = $this->findModel($id);
 
         if($model->markActive()){
-            ObbzYii::setFlashSuccess(ObbzYii::t($this->successText));
+            ObbzYii::setFlashSuccess(\Yii::t('app',$this->successText));
         }else{
-            ObbzYii::setFlashError(ObbzYii::t($this->errorText));
+            ObbzYii::setFlashError(\Yii::t('app',$this->errorText));
         }
 
         return $this->controller->redirect($this->redirectUrl);

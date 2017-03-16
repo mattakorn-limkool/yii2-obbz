@@ -172,11 +172,8 @@ class Generator extends \yii\gii\generators\model\Generator
             } else {
                 $ph = '';
             }
-            if($this->messageCategory == "app" and empty($placeholders)){
-                $str = "ObbzYii::t('" . $string . "'" . $ph . ")";
-            }else{
-                $str = "ObbzYii::t('" . $string . "', '" . $this->messageCategory . "'" . $ph . ")";
-            }
+            $messageCategory = empty($this->messageCategory) ? $this->tableName : $this->messageCategory;
+            $str = "\\Yii::t('". $messageCategory ."', '" . $string . "'" . $ph . ")";
 
         } else {
             // No I18N, replace placeholders by real words, if any
@@ -194,4 +191,8 @@ class Generator extends \yii\gii\generators\model\Generator
         return $str;
     }
 
+    public function validateMessageCategory()
+    {
+        return true;
+    }
 }

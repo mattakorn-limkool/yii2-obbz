@@ -134,7 +134,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 		
         if ($model->load(ObbzYii::post())) {
             if($model->save()){
-                ObbzYii::setFlashSuccess(ObbzYii::t('Record has been created successfully'));
+                ObbzYii::setFlashSuccess(\Yii::t('app', 'Record has been created successfully'));
                 return $this->redirect($this->mainPageUrl());
             }
         }
@@ -156,7 +156,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
         if ($model->load(ObbzYii::post())) {
             if($model->save()){
-                ObbzYii::setFlashSuccess(ObbzYii::t('Record has been updated successfully'));
+                ObbzYii::setFlashSuccess(\Yii::t('app', 'Record has been updated successfully'));
                 return $this->redirect($this->mainPageUrl());
             }
         }

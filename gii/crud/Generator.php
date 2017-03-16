@@ -286,13 +286,13 @@ class Generator extends \yii\gii\Generator
         if($attribute === "disabled"){
             return "\$form->field(\$model, 'disabled')->dropDownList(
                         \\obbz\\yii2\\models\\CoreDataList::statusPublish(),
-                        ['prompt'=>ObbzYii::t('Published/Unpublished')]
+                        ['prompt'=>\Yii::t('app', 'Published/Unpublished')]
                     )";
         }
         else if($attribute === "deleted"){
             return "\$form->field(\$model, 'deleted')->dropDownList(
                         \\obbz\\yii2\\models\\CoreDataList::statusDelete(),
-                        ['prompt'=>ObbzYii::t('Active/Deleted')]
+                        ['prompt'=>\Yii::t('app', 'Active/Deleted')]
                     )";
         }
         else{ // default column
@@ -611,9 +611,9 @@ class Generator extends \yii\gii\Generator
                 $ph = '';
             }
             if($this->messageCategory == "app" and empty($placeholders)){
-                $str = "ObbzYii::t('" . $string . "'" . $ph . ")";
+                $str = "\Yii::t('app', '" . $string . "'" . $ph . ")";
             }else{
-                $str = "ObbzYii::t('" . $string . "'" . $ph . ", '" . $this->messageCategory . "')";
+                $str = "\Yii::t('app', '" . $string . "'" . $ph . ", '" . $this->messageCategory . "')";
             }
 
         } else {

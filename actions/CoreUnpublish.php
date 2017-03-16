@@ -21,9 +21,9 @@ class CoreUnpublish extends CoreBaseAction
         $model = $this->findModel($id);
 
         if($model->markUnpublish()){
-            ObbzYii::setFlashSuccess(ObbzYii::t($this->successText));
+            ObbzYii::setFlashSuccess(\Yii::t('app', $this->successText));
         }else{
-            ObbzYii::setFlashError(ObbzYii::t($this->errorText));
+            ObbzYii::setFlashError(\Yii::t('app', $this->errorText));
         }
 
         return $this->controller->redirect($this->redirectUrl);

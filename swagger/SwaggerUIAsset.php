@@ -34,6 +34,4 @@ class SwaggerUIAsset extends AssetBundle
         'css/reset.css',
         'css/screen.css',
     ];
-
-
 }

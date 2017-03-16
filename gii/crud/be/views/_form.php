@@ -67,7 +67,7 @@ use obbz\yii2\utils\ObbzYii;
 	<div class="form-group col-md-12 text-right">
 		<?= "<?php echo " ?>\obbz\yii2\widgets\ButtonLink::widget([
 				'url'=>ObbzYii::referrerUrl(['index']),
-				'text'=>ObbzYii::t('Back'),
+				'text'=>\Yii::t('app', 'Back'),
 				'prefixIcon'=>'chevron-left'
 			]); ?>
 			<?= "<?php echo " ?>\obbz\yii2\widgets\Button::widget([

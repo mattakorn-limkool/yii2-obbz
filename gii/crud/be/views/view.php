@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <li>
 			<?= "<?php echo " ?>ButtonLink::widget([
 				"url"=>['update', 'id' => $model->id],
-				'text'=>ObbzYii::t('Update'),
+				'text'=>\Yii::t('app', 'Update'),
 				"btnClass"=>"primary",
 				'prefixIcon'=>'edit'
 			]); ?>

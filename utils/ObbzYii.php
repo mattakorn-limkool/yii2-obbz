@@ -168,13 +168,13 @@ class ObbzYii
      * @param null $language
      * @return string
      */
-    public static function t($message, $params = [], $category = null, $language = null){
-        if(!isset($category)){
-            $category = 'app';
-        }
-
-        return \Yii::t($category, $message, $params, $language);
-    }
+//    public static function t($message, $params = [], $category = null, $language = null){
+//        if(!isset($category)){
+//            $category = 'app';
+//        }
+//
+//        return \Yii::t($category, $message, $params, $language);
+//    }
     #end Yii
 
 

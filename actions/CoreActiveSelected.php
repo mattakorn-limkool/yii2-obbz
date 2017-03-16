@@ -30,10 +30,10 @@ class CoreActiveSelected extends CoreSelected
                     $model->markActive();
                 }
                 $transaction->commit();
-                ObbzYii::setFlashSuccess(ObbzYii::t($this->successText));
+                ObbzYii::setFlashSuccess(\Yii::t('app',$this->successText));
             } catch (\Exception $e) {
                 $transaction->rollBack();
-                ObbzYii::setFlashError(ObbzYii::t($this->errorText));
+                ObbzYii::setFlashError(\Yii::t('app',$this->errorText));
             }
         }
 
