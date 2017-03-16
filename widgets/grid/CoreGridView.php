@@ -23,12 +23,6 @@ class CoreGridView extends GridView
 
     public function init()
     {
-        if(!($this->rowOptions instanceof \Closure)){
-            $this->rowOptions = function ($model, $key, $index, $grid) {
-                $rowOptionsArray = $this->rowOptionsInit($model, $key, $index, $grid);
-                return $rowOptionsArray;
-            };
-        }
 
         if($this->sortableEnable){
             if(!($this->rowOptions instanceof \Closure)){
@@ -58,6 +52,13 @@ class CoreGridView extends GridView
             }
 
 
+        }else{
+            if(!($this->rowOptions instanceof \Closure)){
+                $this->rowOptions = function ($model, $key, $index, $grid) {
+                    $rowOptionsArray = $this->rowOptionsInit($model, $key, $index, $grid);
+                    return $rowOptionsArray;
+                };
+            }
         }
         parent::init();
     }
