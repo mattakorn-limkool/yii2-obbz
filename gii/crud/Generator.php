@@ -610,11 +610,13 @@ class Generator extends \yii\gii\Generator
             } else {
                 $ph = '';
             }
-            if($this->messageCategory == "app" and empty($placeholders)){
-                $str = "\Yii::t('app', '" . $string . "'" . $ph . ")";
-            }else{
-                $str = "\Yii::t('app', '" . $string . "'" . $ph . ", '" . $this->messageCategory . "')";
-            }
+
+            $str = "\\Yii::t('". $this->messageCategory  ."', '" . $string . "'" . $ph . ")";
+//            if($this->messageCategory == "app" and empty($placeholders)){
+//                $str = "\Yii::t('app', '" . $string . "'" . $ph . ")";
+//            }else{
+//                $str = "\Yii::t('app', '" . $string . "'" . $ph . ", '" . $this->messageCategory . "')";
+//            }
 
         } else {
             // No I18N, replace placeholders by real words, if any
