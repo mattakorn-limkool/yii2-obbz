@@ -99,6 +99,11 @@ class CoreActiveQuery extends ActiveQuery
             return $this->published()->defaultOrder()->all();
         }
     }
+    public function publishedFirst($cache = true){
+        $data = $this->publishedAll($cache);
+        return !empty($data) ? $data[0] : null;
+    }
+
     public function activeAll($cache = true){
         $modelClass = $this->modelClass;
         if($cache){
@@ -115,15 +120,21 @@ class CoreActiveQuery extends ActiveQuery
             return $this->active()->defaultOrder()->all();
         }
     }
+    public function activeFirst($cache = true){
+        $data = $this->activeAll($cache);
+        return !empty($data) ? $data[0] : null;
+    }
     #endregion
 
+
+
     #region data list
-    public function publishedList($showAttribute = 'title'){ // for fe
-        return ArrayHelper::map($this->publishedAll(), 'id', $showAttribute);
+    public function publishedList($showAttribute = 'title', $cache  = true){ // for fe
+        return ArrayHelper::map($this->publishedAll($cache), 'id', $showAttribute);
     }
 
-    public function activeList($showAttribute = 'title'){ // for be
-        return ArrayHelper::map($this->activeAll(), 'id', $showAttribute);
+    public function activeList($showAttribute = 'title', $cache  = true){ // for be
+        return ArrayHelper::map($this->activeAll($cache), 'id', $showAttribute);
     }
     #endregion
 

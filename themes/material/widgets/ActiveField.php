@@ -139,7 +139,7 @@ class ActiveField extends \yii\widgets\ActiveField
 //        $this->adjustLabelFor($options);
 //        $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
 
-        return parent::dropDownList($items, $options);
+        return '<div class="select">'.parent::dropDownList($items, $options) . '</div>';
     }
 
 
@@ -307,8 +307,8 @@ class ActiveField extends \yii\widgets\ActiveField
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = '<div class="fileinput fileinput-new" data-provides="fileinput">
                     <span class="btn btn-primary btn-file m-r-10">
-                        <span class="fileinput-new">Select '. $labelName .'</span>
-                        <span class="fileinput-exists">Change</span>
+                        <span class="fileinput-new">'. \Yii::t('app', 'Select {label}',['label'=>$labelName])  .'</span>
+                        <span class="fileinput-exists">'. \Yii::t('app', 'Change') .'</span>
                         '. Html::activeFileInput($this->model, $this->attribute, $options) .'
                     </span>
                     <span class="fileinput-filename"></span>

@@ -17,6 +17,7 @@ class ButtonLink extends Button
 
     public $url;
     public $type = "button";
+    public $toggleText = "";
 
     public function init(){
         if(!isset($this->url)){
@@ -33,9 +34,15 @@ class ButtonLink extends Button
             $linkJs = 'location.href =\''. $url .'\'';
         }
 
+        $toggle = [];
+        if(!empty($this->toggleText)){
+            $toggle['data-toggle'] = 'tooltip';
+            $toggle['data-original-title'] = $this->toggleText;
+        }
+
         $this->options = array_merge([
             'onclick'=>  $linkJs
-        ], $this->options);
+        ], $toggle, $this->options);
 
         return parent::run();
 

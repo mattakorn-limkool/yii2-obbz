@@ -70,6 +70,12 @@ class CoreController extends  \yii\web\Controller
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
+
+            'translate' => [
+                'class' => \obbz\yii2\actions\CoreTranslate::className(),
+                'modelClass' => $this->modelClass,
+//                'redirectUrl' => $this->mainPageUrl()
+            ],
         ];
     }
 
