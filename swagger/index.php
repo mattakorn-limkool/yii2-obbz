@@ -26,6 +26,7 @@ CustomAsset::register($this);
       }
       window.swaggerUi = new SwaggerUi({
         url: url,
+        validatorUrl: null,
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
         onComplete: function(swaggerApi, swaggerUi){
