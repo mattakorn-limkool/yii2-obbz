@@ -9,7 +9,7 @@ SwaggerUIAsset::register($this);
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Swagger UI</title>
+  <title><?php \Yii::$app->name ?> | Api document</title>
   <?php $this->head() ?>
 
   <script type="text/javascript">
