@@ -1,8 +1,8 @@
 <?php
 
-use obbz\yii2\swagger\SwaggerUIAsset;
+use obbz\yii2\swagger\CustomAsset;
 
-SwaggerUIAsset::register($this);
+CustomAsset::register($this);
  ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
