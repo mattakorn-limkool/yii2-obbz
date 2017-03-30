@@ -9,7 +9,7 @@ CustomAsset::register($this);
 <html>
 <head>
   <meta charset="UTF-8">
-  <title><?php \Yii::$app->name ?> | Api document</title>
+  <title><?php echo \Yii::$app->name ?> | Api document</title>
   <?php $this->head() ?>
 
   <script type="text/javascript">
