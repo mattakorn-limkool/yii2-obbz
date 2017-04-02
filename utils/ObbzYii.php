@@ -6,6 +6,8 @@
 namespace obbz\yii2\utils;
 use common\models\User;
 use yii\base\Exception;
+use yii\base\Model;
+use yii\db\ActiveRecord;
 use yii\helpers\FormatConverter;
 use yii\helpers\Url;
 use yii\web\Response;
@@ -255,6 +257,29 @@ class ObbzYii
         }else{
             return false;
         }
+    }
+
+    /**
+     *
+     * @param $models Model[]
+     * @param $condition array => ["field"=>"value"]  need only row that's field is equal a value
+     *  todo - add more condition such as 'like', 'not equal'
+     * @return mixed | Model[]
+     */
+    public static function modelsFilter($models, $condition){
+        $result = [];
+        foreach($models as $model){
+            $allow = true;
+            foreach($condition as $attribute => $value){
+                if($model->$attribute != $value){
+                    $allow = false;
+                }
+            }
+            if($allow){
+                $result[] = $model;
+            }
+        }
+        return $result;
     }
 
     public static function debug($data){
