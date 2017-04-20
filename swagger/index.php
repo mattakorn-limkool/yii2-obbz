@@ -52,7 +52,7 @@ CustomAsset::register($this);
         },
         docExpansion: "list", // none, list
         apisSorter: "alpha",
-        defaultModelRendering: 'schema',
+        defaultModelRendering: 'model', // model, schema
         showRequestHeaders: false
       });
       function addApiKeyAuthorization(){
