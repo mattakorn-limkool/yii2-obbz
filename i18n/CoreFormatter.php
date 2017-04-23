@@ -4,15 +4,19 @@
  */
 
 namespace obbz\yii2\i18n;
-use yii\helpers\Html;
+use yii\helpers\FormatConverter;
 use yii\i18n\Formatter;
 
 class CoreFormatter extends Formatter
 {
+    const DB_DATE_FORMAT = 'php:Y-m-d';
+    const DB_DATETIME_FORMAT = 'php:Y-m-d H:i:s';
+    const DB_TIME_FORMAT = 'php:H:i:s';
+
 //    public $locale = 'th-TH';
     public $dateFormat = 'dd/MM/yyyy';
-    public $datetimeFormat = 'dd/MM/yyyy hh:mm:ss';
-    public $timeFormat = 'hh:mm:ss';
+    public $datetimeFormat = 'dd/MM/yyyy HH:mm:ss';
+    public $timeFormat = 'HH:mm:ss';
     public $decimalSeparator = '.';
     public $thousandSeparator = ',';
     public $currencyCode = 'THB';
@@ -55,6 +59,66 @@ class CoreFormatter extends Formatter
         }
 
         return $result;
+    }
+
+    /**
+     * convert date from default format to db format
+     * @param $value
+     * @param null $fromFormat
+     * @return string
+     */
+    public function asDbDate($value = null, $fromFormat = null){
+        if(!isset($fromFormat))
+            $fromFormat = $this->dateFormat;
+        $time =  $this->timeFromFormat($value, 'date', $fromFormat);
+        return $this->asDate($time, self::DB_DATE_FORMAT);
+    }
+
+    /**
+     * convert datetime from default format to db format
+     * @param $value
+     * @param null $fromFormat
+     * @return string
+     */
+    public function asDbDatetime($value = null, $fromFormat = null){
+        if(!isset($fromFormat))
+            $fromFormat = $this->datetimeFormat;
+        $time =  $this->timeFromFormat($value, 'datetime', $fromFormat);
+        return $this->asDatetime($time, self::DB_DATETIME_FORMAT);
+    }
+
+    /**
+     * convert time from default format to db format
+     * @param $value
+     * @param null $fromFormat
+     * @return string
+     */
+    public function asDbTime($value = null, $fromFormat = null){
+        if(!isset($fromFormat))
+            $fromFormat = $this->timeFormat;
+        $time =  $this->timeFromFormat($value, 'time', $fromFormat);
+        return $this->asTime($time, self::DB_TIME_FORMAT);
+    }
+
+    /**
+     * @param $datetime
+     * @param $type
+     * @param $format
+     * @return \DateTime
+     */
+    public function timeFromFormat($datetime, $type, $format){
+        if (strncmp($format, 'php:', 4) === 0) {
+            $format = substr($format, 4);
+        } else {
+            $format = FormatConverter::convertDateIcuToPhp($format, $type, $this->locale);
+        }
+
+        if($datetime == null){ // get current datetime
+            $datetime = date($format);
+        }
+
+//        echo $format . ' ' . $datetime;
+        return \DateTime::createFromFormat($format, $datetime);
     }
 
 }

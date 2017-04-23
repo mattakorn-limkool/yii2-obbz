@@ -110,11 +110,11 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
 
                 $userId = ObbzYii::user()->getId();
                 if($this->isNewRecord){
-                    $this->created_time = ObbzYii::dateDb(null, 'datetime');
+                    $this->created_time = ObbzYii::formatter()->asDbDatetime();
                     if(!empty($userId))
                         $this->create_user_id = $userId;
                 }else{
-                    $this->modify_time = ObbzYii::dateDb(null, 'datetime');
+                    $this->modify_time = ObbzYii::formatter()->asDbDatetime();
                     if(!empty($userId))
                         $this->modify_user_id = $userId;
                 }
@@ -182,7 +182,7 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
         $userId = ObbzYii::user()->getId();
 
         $this->deleted = 1;
-        $this->deleted_time = ObbzYii::dateDb(null, 'datetime');
+        $this->deleted_time = ObbzYii::formatter()->asDbDatetime();
         if(!empty($userId))
             $this->deleted_user_id = $userId;
 

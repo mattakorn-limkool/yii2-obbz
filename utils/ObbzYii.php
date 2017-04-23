@@ -5,6 +5,7 @@
 
 namespace obbz\yii2\utils;
 use common\models\User;
+use obbz\yii2\i18n\CoreFormatter;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;
@@ -76,6 +77,13 @@ class ObbzYii
 
     public static function queryParams(){
         return \Yii::$app->request->queryParams;
+    }
+
+    /**
+     * @return CoreFormatter
+     */
+    public static function formatter(){
+        return \Yii::$app->formatter;
     }
 
     public static function setHttpImage($file){
@@ -162,77 +170,9 @@ class ObbzYii
         return User::findIdentity($userId);
     }
 
-    /**
-     * Translates a message to the specified language.
-     * @param $message
-     * @param array $params
-     * @param string $category  'app' is default
-     * @param null $language
-     * @return string
-     */
-//    public static function t($message, $params = [], $category = null, $language = null){
-//        if(!isset($category)){
-//            $category = 'app';
-//        }
-//
-//        return \Yii::t($category, $message, $params, $language);
-//    }
-    #end Yii
-
-
-    #region utils
-
-    /**
-     * get current/custom date database format
-     * @param null $dateStr
-     * @param string $type
-     * @param null $format
-     * @return bool|string
-     */
-    public static function dateDb($dateStr = null, $type='date', $format = null){
-        if ($type === 'datetime') {
-            $fmt = ($format == null) ? self::DB_DATETIME_FORMAT : $format;
-        }
-        elseif ($type === 'time') {
-            $fmt = ($format == null) ? self::DB_TIME_FORMAT : $format;
-        }
-        else {
-            $fmt = ($format == null) ? self::DB_DATE_FORMAT : $format;
-        }
-
-        if($dateStr === null){
-            if (strncmp($fmt, 'php:', 4) === 0) {
-                $fmt = substr($fmt, 4);
-            }
-            return date($fmt);
-        }else{
-            return \Yii::$app->formatter->asDate($dateStr, $fmt);
-        }
-
-    }
 
 
 
-    /**
-     * default date format  d-m-Y H:i:s
-     * @param null $date
-     * @param bool $showTime
-     * @param string $dateFormat
-     * @param string $timeFormat
-     * @return bool|string
-     */
-//    function dateFormat($date = null, $showTime=false, $dateFormat='d-m-Y', $timeFormat='H:i:s'){
-//        if($date === null){
-//            $time = time();
-//        }
-//
-//        $time = strtotime($date);
-//        if($showTime)
-//            return date($dateFormat. ' ' . $timeFormat, $time);
-//        else
-//            return date($dateFormat, $time);
-//
-//    }
     #endregion
     /**
      * Retrieves the value of an array element or object property with the given key or property name.
