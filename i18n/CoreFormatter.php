@@ -113,7 +113,7 @@ class CoreFormatter extends Formatter
             $format = FormatConverter::convertDateIcuToPhp($format, $type, $this->locale);
         }
 
-        if($datetime == null){ // get current datetime
+        if($datetime === null){ // get current datetime
             $datetime = date($format);
         }
 
