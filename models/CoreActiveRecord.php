@@ -63,6 +63,15 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
         return in_array($this->scenario, $arrayScenario);
     }
 
+    public function init(){
+
+        if(!isset($this->uploadFolder)){
+            $this->uploadFolder = $this->tableName();
+        }
+        parent::init();
+    }
+
+
     /**
      * default rules for core model
      * @return array
@@ -268,9 +277,6 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
      * @return array
      */
     public function defaultImgBehavior($attribute, $thumbs = [], $options = []){
-        if(!isset($this->uploadFolder)){
-            $this->uploadFolder = $this->tableName();
-        }
 
         if(!isset($options['placeholder'])){
             $placeholder = "";

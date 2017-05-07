@@ -84,19 +84,20 @@ class CoreActiveQuery extends ActiveQuery
 
     #region
     public function publishedAll($cache = true){
+        $query = $this->published()->with('parent')->defaultOrder();
         $modelClass = $this->modelClass;
         if($cache){
             $key = $modelClass::CACHE_PUBLISHED_ALL;
             $data = ObbzYii::cache()->get($key);
             if($data === false){
                 // flush cache when admin edit
-                $data =  $this->published()->defaultOrder()->all();
+                $data =  $query->all();
                 ObbzYii::cache()->set($key, $data);
                 return $data;
             }
             return $data;
         }else{
-            return $this->published()->defaultOrder()->all();
+            return $query->all();
         }
     }
     public function publishedFirst($cache = true){

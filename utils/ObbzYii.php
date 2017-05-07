@@ -9,9 +9,11 @@ use obbz\yii2\i18n\CoreFormatter;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
 use yii\helpers\Url;
 use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * Class SC - Yii shortcut
@@ -19,9 +21,11 @@ use yii\web\Response;
  */
 class ObbzYii
 {
-    const DB_DATETIME_FORMAT = "php:Y-m-d H:i:s";
-    const DB_DATE_FORMAT = "php:Y-m-d";
-    const DB_TIME_FORMAT = "php:H:i:s";
+    const APP_FRONTEND_ID = 'app-frontend';
+    const APP_BACKEND_ID = 'app-backend';
+    const APP_CONSOLE_ID = 'app-console';
+    const APP_API_ID = 'app-api';
+
 
     /**
      * @return string
@@ -31,6 +35,28 @@ class ObbzYii
             $path = "/" . $path;
         }
         return \Yii::$app->request->getBaseUrl() . $path;
+    }
+
+    public static function assetBaseUrl($path = null, $assetName = null){
+        if(!isset($assetName)){
+            if(\Yii::$app->id == self::APP_FRONTEND_ID){
+                $assetName = 'frontend\assets\AppAsset';
+            }else if(\Yii::$app->id == self::APP_BACKEND_ID){
+                $assetName = 'backend\assets\AppAsset';
+            }else if(\Yii::$app->id == self::APP_API_ID){
+                $assetName = 'api\assets\AppAsset';
+            }else{
+                $assetName = '';
+            }
+
+            if($path){
+                $path = "/" . $path;
+            }
+            return \Yii::$app->getAssetManager()->getBundle($assetName)->baseUrl . $path;
+        }else{
+            return '';
+        }
+
     }
 
     public static function uploadUrl($path = ''){
@@ -166,11 +192,28 @@ class ObbzYii
      * @return \common\models\User
      */
     public static function userDb(){
-        $userId = self::user()->id;
-        return User::findIdentity($userId);
+        return $userId = self::user()->identity;
+//        return User::findIdentity($userId);
     }
 
+    /**
+     * get label from menu config
+     * @param $menu
+     * @param null $path - when not define this is current path
+     * @return string
+     */
+    public static function getTitleByMenu($menu, $path = null){
 
+        if(!isset($path)){
+            $path = '/'.\Yii::$app->request->pathInfo;
+        }
+        foreach($menu as $item){
+            if($item['url'][0] == $path){
+                return $item['label'];
+            }
+        }
+        return '';
+    }
 
 
     #endregion
@@ -222,9 +265,34 @@ class ObbzYii
         return $result;
     }
 
-    public static function debug($data){
+    /**
+     * @param $model Model
+     * @return array
+     */
+    public static function performAjaxValidate($model){
+        if (\Yii::$app->request->isAjax && $model->load(\Yii::$app->request->post())) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }else{
+            return false;
+        }
+    }
+    /**
+     * @param $model Model
+     * @return array
+     */
+    public static function checkAjaxValidate($model){
+        if (\Yii::$app->request->isAjax && $model->load(\Yii::$app->request->post())) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static function debug($data, $end = true){
         echo "<pre>" . print_r($data, true) . "</pre>";
-        exit;
+        if($end)
+            exit;
     }
 
 
