@@ -29,7 +29,7 @@ class MaterialAsset extends AssetBundle
 
         //### core ###
         // add when prod
-//        'css/custom.css',
+        'css/custom.css',
     ];
     public $js = [
         //### theme ###
@@ -60,7 +60,7 @@ class MaterialAsset extends AssetBundle
 
         //### core ###
         // add when prod
-//        'js/common.js',
+        'js/common.js',
 
     ];
 //    public $jsOptions = [
