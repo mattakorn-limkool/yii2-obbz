@@ -67,6 +67,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->published()->defaultOrder();
 
         // add conditions that should always apply here
+        $this->load($params);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -74,7 +75,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
             'pagination'=>['pageSize'=>Yii::$app->params['default.pageSize']]
         ]);
 
-        $this->load($params);
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -100,6 +101,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->active()->defaultOrder();
 
         // add conditions that should always apply here
+        $this->load($params);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -107,7 +109,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
             'pagination'=>['pageSize'=>Yii::$app->params['default.pageSize']]
         ]);
 
-        $this->load($params);
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

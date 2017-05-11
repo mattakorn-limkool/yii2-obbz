@@ -5,7 +5,6 @@ use \Yii;
 
 class Alert extends \yii\bootstrap\Widget
 {
-
     public $alertTypes = [
         'error'   => 'danger',
         'danger'  => 'danger',
@@ -14,9 +13,13 @@ class Alert extends \yii\bootstrap\Widget
         'warning' => 'warning'
     ];
 
-    public function init()
-    {
+    public $pluginOptions = [];
+
+
+
+    public function init(){
         parent::init();
+
 
         $session = Yii::$app->session;
         $flashes = $session->getAllFlashes();
@@ -27,19 +30,26 @@ class Alert extends \yii\bootstrap\Widget
             if (isset($this->alertTypes[$type])) {
                 $data = (array) $data;
                 foreach ($data as $i => $message) {
-                    $textMessage .= 'Obbz.alert.message("' . $this->alertTypes[$type] . '","' .$message . '");';
+                    $title = ucfirst($type);
+                    echo \kartik\widgets\Growl::widget(array_merge([
+                        'type' => $this->alertTypes[$type],
+//                        'icon' => 'glyphicon glyphicon-ok-sign',
+                        'title' => $title,
+                        'showSeparator' => true,
+                        'body' => $message,
+                        'pluginOptions'=>[
+                            'showProgressbar'=>true,
+//                            'delay'=>500000000
+                        ]
+                    ], $this->pluginOptions));
                 }
 
                 $session->removeFlash($type);
             }
         }
-        if($hasFlashes)
-            echo    '<script>
-                    $(document).ready(function(){
-                            ' . $textMessage .
-                    '});
-                    </script>';
+
+
     }
 
-//    public function run(){}
+
 }

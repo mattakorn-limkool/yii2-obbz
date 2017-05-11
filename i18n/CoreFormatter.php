@@ -4,15 +4,21 @@
  */
 
 namespace obbz\yii2\i18n;
+use obbz\yii2\models\CoreActiveRecord;
+use obbz\yii2\utils\ObbzYii;
 use yii\helpers\FormatConverter;
 use yii\i18n\Formatter;
 
 class CoreFormatter extends Formatter
 {
-    const DB_DATE_FORMAT = 'php:Y-m-d';
-    const DB_DATETIME_FORMAT = 'php:Y-m-d H:i:s';
-    const DB_TIME_FORMAT = 'php:H:i:s';
 
+    // db datetime support php format only
+    const DB_DATE_FORMAT = 'Y-m-d';
+    const DB_DATETIME_FORMAT = 'Y-m-d H:i:s';
+    const DB_TIME_FORMAT = 'H:i:s';
+
+//    public $timeZone = 'Asia/Bangkok'; // 'Asia/Bangkok' 'UTC'
+    public $defaultTimeZone = 'Asia/Bangkok'; // 'Asia/Bangkok' 'UTC'
 //    public $locale = 'th-TH';
     public $dateFormat = 'dd/MM/yyyy';
     public $datetimeFormat = 'dd/MM/yyyy HH:mm:ss';
@@ -37,6 +43,23 @@ class CoreFormatter extends Formatter
         return $result;
     }
 
+    /**
+     * @param $value
+     * @return int|string
+     */
+    public function asNumber($value){
+        if ($value === null) {
+            return 0;
+        }
+        return number_format($value);
+    }
+
+    /**
+     * @param CoreActiveRecord[] $models - collection of model
+     * @param string $attribute - attribute of model
+     * @param string $glue - for separate between text
+     * @return string
+     */
     public function asModelImplode($models, $attribute = 'title', $glue = ' ,'){
         if ($models === null) {
             return $this->nullDisplay;
@@ -79,6 +102,13 @@ class CoreFormatter extends Formatter
         return $result;
     }
 
+//    public function asDatetime($value, $format = null){
+//        if(!is_int($value)){ // convert when db value is date not timestamp
+//
+//        }
+//        return parent::asDatetime($value, $format);
+//    }
+
     /**
      * convert date from default format to db format
      * @param $value
@@ -88,8 +118,7 @@ class CoreFormatter extends Formatter
     public function asDbDate($value = null, $fromFormat = null){
         if(!isset($fromFormat))
             $fromFormat = $this->dateFormat;
-        $time =  $this->timeFromFormat($value, 'date', $fromFormat);
-        return $this->asDate($time, self::DB_DATE_FORMAT);
+        return $time =  $this->timeDbFromFormat($value, 'date', $fromFormat);
     }
 
     /**
@@ -101,8 +130,7 @@ class CoreFormatter extends Formatter
     public function asDbDatetime($value = null, $fromFormat = null){
         if(!isset($fromFormat))
             $fromFormat = $this->datetimeFormat;
-        $time =  $this->timeFromFormat($value, 'datetime', $fromFormat);
-        return $this->asDatetime($time, self::DB_DATETIME_FORMAT);
+        return $time =  $this->timeDbFromFormat($value, 'datetime', $fromFormat);
     }
 
     /**
@@ -114,8 +142,7 @@ class CoreFormatter extends Formatter
     public function asDbTime($value = null, $fromFormat = null){
         if(!isset($fromFormat))
             $fromFormat = $this->timeFormat;
-        $time =  $this->timeFromFormat($value, 'time', $fromFormat);
-        return $this->asTime($time, self::DB_TIME_FORMAT);
+        return $time =  $this->timeDbFromFormat($value, 'time', $fromFormat);
     }
 
     /**
@@ -124,7 +151,7 @@ class CoreFormatter extends Formatter
      * @param $format
      * @return \DateTime
      */
-    public function timeFromFormat($datetime, $type, $format){
+    public function timeDbFromFormat($datetime, $type, $format){
         if (strncmp($format, 'php:', 4) === 0) {
             $format = substr($format, 4);
         } else {
@@ -135,8 +162,20 @@ class CoreFormatter extends Formatter
             $datetime = date($format);
         }
 
+        $utcDatetime = \DateTime::createFromFormat($format, $datetime);
+//        ObbzYii::debug($utcDatetime);
+        if($type == "date"){
+            $dbFormat = self::DB_DATE_FORMAT;
+        }else if($type == "datetime"){
+            $dbFormat = self::DB_DATETIME_FORMAT;
+        }else{
+            $dbFormat = self::DB_TIME_FORMAT;
+        }
+
+//        ObbzYii::debug($dbFormat);
+        return $utcDatetime->format($dbFormat);
 //        echo $format . ' ' . $datetime;
-        return \DateTime::createFromFormat($format, $datetime);
+//        return \DateTime::createFromFormat($format, $datetime, new \DateTimeZone('UTC'));
     }
 
 

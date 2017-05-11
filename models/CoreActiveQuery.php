@@ -22,13 +22,16 @@ class CoreActiveQuery extends ActiveQuery
      * @return array|null|\yii\db\ActiveRecord
      */
     public function pk($id){
-        return $this->andWhere(['id'=>$id])->one();
+        $modelClass = $this->modelClass;
+        return $this->andWhere([$modelClass::tableName().'.id'=>$id])->one();
     }
     public function key($key){
-        return $this->andWhere(['key_name'=>$key])->one();
+        $modelClass = $this->modelClass;
+        return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->one();
     }
     public function keyAll($key){
-        return $this->andWhere(['key_name'=>$key])->all();
+        $modelClass = $this->modelClass;
+        return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->all();
     }
     #endregion
 
@@ -80,11 +83,17 @@ class CoreActiveQuery extends ActiveQuery
         $this->orderBy([$modelClass::tableName().'.sorting'=>SORT_ASC]);
         return $this;
     }
+
+    public function onlyMe(){
+        $modelClass = $this->modelClass;
+        $this->andWhere([$modelClass::tableName().'.create_user_id'=>ObbzYii::user()->id]);
+        return $this;
+    }
     #endregion
 
     #region
     public function publishedAll($cache = true){
-        $query = $this->published()->with('parent')->defaultOrder();
+        $query = $this->published()->defaultOrder();
         $modelClass = $this->modelClass;
         if($cache){
             $key = $modelClass::CACHE_PUBLISHED_ALL;

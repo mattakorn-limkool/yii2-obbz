@@ -200,17 +200,33 @@ class ObbzYii
      * get label from menu config
      * @param $menu
      * @param null $path - when not define this is current path
+     * @param  $matchParams
      * @return string
      */
-    public static function getTitleByMenu($menu, $path = null){
+    public static function getTitleByMenu($menu, $path = null, $matchParams = true){
+        $requestParams = [];
+
+        if($matchParams){
+            $requestParams = \Yii::$app->request->queryParams;
+
+        }
 
         if(!isset($path)){
             $path = '/'.\Yii::$app->request->pathInfo;
         }
         foreach($menu as $item){
-            if($item['url'][0] == $path){
-                return $item['label'];
+            if($matchParams){
+                $requestUrlWithParams = $requestParams;
+                $requestUrlWithParams[0] = $path;
+                if($item['url'] == $requestUrlWithParams){
+                    return $item['label'];
+                }
+            }else{
+                if($item['url'][0] == $path){
+                    return $item['label'];
+                }
             }
+
         }
         return '';
     }

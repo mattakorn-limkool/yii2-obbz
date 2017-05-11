@@ -8,9 +8,11 @@
 namespace obbz\yii2\widgets;
 
 use kartik\widgets\DatePicker;
+use kartik\widgets\TouchSpin;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\i18n\CoreFormatter;
 use obbz\yii2\utils\ObbzYii;
+use pudinglabs\tagsinput\TagsinputWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\captcha\Captcha;
@@ -415,6 +417,28 @@ class ActiveField extends \yii\widgets\ActiveField
                 'autoclose' => true,
                 'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),
             ]
+        ], $config));
+    }
+
+    /**
+     * @doc https://github.com/pudinglabs/yii2-bootstrap-tags-input
+     * @param array $config  -  'options' => [],
+                                'clientOptions' => [],
+                                'clientEvents' => []
+     *
+     * @return $this
+     */
+    public function tagsInput($config=[]){
+
+        return $this->widget(TagsinputWidget::className(), array_merge([
+
+        ], $config));
+    }
+
+    public function numberInput($config=[]){
+
+        return $this->widget(TouchSpin::className(), array_merge([
+
         ], $config));
     }
 
