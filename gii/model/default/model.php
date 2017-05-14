@@ -21,7 +21,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
     public function rules(){
         return array_merge(parent::rules(),[
-			['image', 'file', 'extensions' => 'jpg, png', 'on'=>array_merge($this->scenarioUpdate(), $this->scenarioCreate())],
+			['image', 'file', 'extensions' => 'jpg', 'on'=>array_merge($this->scenarioUpdate(), $this->scenarioCreate())],
         ]);
     }
 

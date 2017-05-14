@@ -91,7 +91,7 @@ class CoreActiveQuery extends ActiveQuery
     }
     #endregion
 
-    #region
+    #region find with cache
     public function publishedAll($cache = true){
         $query = $this->published()->defaultOrder();
         $modelClass = $this->modelClass;
@@ -135,8 +135,6 @@ class CoreActiveQuery extends ActiveQuery
         return !empty($data) ? $data[0] : null;
     }
     #endregion
-
-
 
     #region data list
     public function publishedList($showAttribute = 'title', $cache  = true){ // for fe
