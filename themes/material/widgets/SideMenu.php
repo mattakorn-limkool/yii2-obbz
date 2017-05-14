@@ -66,8 +66,24 @@ class SideMenu extends Menu
     {
 
         $iconLabel = "";
-        if(isset($item['icon']))
-            $iconLabel = '<i class="zmdi zmdi-'. $item['icon'] .'"></i> ';
+        if(isset($item['icon'])){
+            $iconClass = 'zmdi zmdi-';
+            $itemIcon = "";
+            if(is_array($item['icon'])){
+                if($item['icon'][0] == 'fa'){
+                    $iconClass = 'fa fa-';
+                    $itemIcon = $item['icon'][1];
+                }else{
+                    $iconClass = $item['icon'][0];
+                    $itemIcon = $item['icon'][1];
+                }
+            }else{
+                $itemIcon = $item['icon'];
+            }
+            $iconLabel = '<i class="'. $iconClass . $itemIcon .'"></i> ';
+
+        }
+
 
         if (isset($item['url'])) {
             $template = ArrayHelper::getValue($item, 'template', $this->linkTemplate);
