@@ -34,7 +34,7 @@ class MaterialAsset extends AssetBundle
     public $js = [
         //### theme ###
 //        'vendors/bower_components/jquery/dist/jquery.min.js',
-        'vendors/bower_components/bootstrap/dist/js/bootstrap.min.js',
+//        'vendors/bower_components/bootstrap/dist/js/bootstrap.min.js',
         'vendors/bower_components/flot/jquery.flot.js',
         'vendors/bower_components/flot/jquery.flot.resize.js',
         'vendors/bower_components/flot.curvedlines/curvedLines.js',
@@ -48,8 +48,8 @@ class MaterialAsset extends AssetBundle
         'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js',
         'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
         'vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-        'vendors/bower_components/lightgallery/light-gallery/js/lightGallery.js',
-//        'vendors/bower_components/lightGallery139/dist/js/lightgallery.js',
+//        'vendors/bower_components/lightgallery/light-gallery/js/lightGallery.js',
+        'vendors/bower_components/lightGallery139/dist/js/lightgallery.js',
         'vendors/fileinput/fileinput.min.js',
         'js/flot-charts/curved-line-chart.js',
         'js/flot-charts/line-chart.js',
@@ -69,7 +69,7 @@ class MaterialAsset extends AssetBundle
 
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
         'rmrevin\yii\fontawesome\AssetBundle',
     ];
 }
