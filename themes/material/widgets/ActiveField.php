@@ -7,6 +7,7 @@
 
 namespace obbz\yii2\themes\material\widgets;
 
+use kartik\date\DatePicker;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\utils\ObbzYii;
 use yii\helpers\ArrayHelper;
@@ -14,10 +15,10 @@ use yii\helpers\Html;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
 
-class ActiveField extends \yii\widgets\ActiveField
+class ActiveField extends \obbz\yii2\widgets\ActiveField
 {
     public $options = ['class' => 'form-group fg-float'];
-    public $template = "<div class=\"fg-line\">{label}\n{input}\n{hint}</div>\n{error}"; // for floating label
+    public $template = "{addonPrepend}\n<div class=\"fg-line\">{label}\n{input}\n{hint}</div>\n{addonAppend}\n{error}"; // for floating label
     public $labelOptions = ['class' => 'fg-label'];
     /**
      * @var boolean whether to render [[checkboxList()]] and [[radioList()]] inline.
@@ -79,6 +80,22 @@ class ActiveField extends \yii\widgets\ActiveField
     public $enableFloatLabel = true;
 
     /**
+     * @var array addon options for text and password inputs. The following settings can be configured:
+     * - `prepend`: _string_, the prepend addon content
+     * - `append`: _array_, the append addon configuration
+     * - `asButton`: _boolean_, whether the addon is a button or button group. Defaults to false.
+     * - `options`: _array_, the HTML attributes to be added to the container.
+     * - `append`: _array_, the append addon configuration
+     * - `content`: _string_|_array_, the append addon content
+     * - `asButton`: _boolean_, whether the addon is a button or button group. Defaults to false.
+     * - `options`: _array_, the HTML attributes to be added to the container.
+     * - `groupOptions`: _array_, HTML options for the input group
+     * - `contentBefore`: _string_, content placed before addon
+     * - `contentAfter`: _string_, content placed after addon
+     */
+    public $addon = [];
+
+    /**
      * @inheritdoc
      */
     public function __construct($config = [])
@@ -116,7 +133,11 @@ class ActiveField extends \yii\widgets\ActiveField
                     $this->parts['{input}'] : Html::activeTextInput($this->model, $this->attribute, $this->inputOptions);
                 $this->parts['{input}'] = strtr($this->inputTemplate, ['{input}' => $input]);
             }
+
+            $this->generateAddon();
+
         }
+
         return parent::render($content);
     }
 
@@ -307,8 +328,8 @@ class ActiveField extends \yii\widgets\ActiveField
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = '<div class="fileinput fileinput-new" data-provides="fileinput">
                     <span class="btn btn-primary btn-file m-r-10">
-                        <span class="fileinput-new">'. \Yii::t('app', 'Select {label}',['label'=>$labelName])  .'</span>
-                        <span class="fileinput-exists">'. \Yii::t('app', 'Change') .'</span>
+                        <span class="fileinput-new">'. \Yii::t('obbz', 'Select {label}',['label'=>$labelName])  .'</span>
+                        <span class="fileinput-exists">'. \Yii::t('obbz', 'Change') .'</span>
                         '. Html::activeFileInput($this->model, $this->attribute, $options) .'
                     </span>
                     <span class="fileinput-filename"></span>
@@ -365,7 +386,6 @@ class ActiveField extends \yii\widgets\ActiveField
         return $this;
     }
 
-
     public function disableFloatingLabel(){
         $this->label(false);
         $this->options = ['class' => 'form-group'];
@@ -420,6 +440,8 @@ class ActiveField extends \yii\widgets\ActiveField
             ]
         ], $config));
     }
+
+
 
     /**
      * @param array $instanceConfig the configuration passed to this instance's constructor
@@ -492,5 +514,42 @@ class ActiveField extends \yii\widgets\ActiveField
         if (!isset($this->parts['{labelTitle}'])) {
             $this->parts['{labelTitle}'] = $label;
         }
+    }
+
+    public static function getAddonContent($addon)
+    {
+        if (!is_array($addon)) {
+            return $addon;
+        }
+        if (!ArrayHelper::isIndexed($addon)) {
+            $addon = [$addon]; //pack existing array into indexed array
+        }
+        $html = "";
+        foreach ($addon as $addonItem) {
+            $content = ArrayHelper::getValue($addonItem, 'content', '');
+            $options = ArrayHelper::getValue($addonItem, 'options', []);
+            $suffix = ArrayHelper::getValue($addonItem, 'asButton', false) ? 'btn' : 'addon';
+            Html::addCssClass($options, 'input-group-' . $suffix);
+            $html .= Html::tag('span', $content, $options);
+        }
+        return $html;
+    }
+
+    protected function generateAddon()
+    {
+//        if(!empty($this->addon)){
+//            $this->options["class"] .= " input-group fg-float";
+//        }
+        if(!empty($this->addon['prepend']) || !empty($this->addon['append'])){
+            $htmlPrepend = '<div class="input-group fg-float">';
+            $htmlAppend = '</div>';
+        }else{
+            $htmlPrepend = '<div>';
+            $htmlAppend = '</div>';
+        }
+
+        $this->parts['{addonPrepend}'] = $htmlPrepend. static::getAddonContent(ArrayHelper::getValue($this->addon, 'prepend', '')) ;
+        $this->parts['{addonAppend}'] = static::getAddonContent(ArrayHelper::getValue($this->addon, 'append', '')) . $htmlAppend;
+
     }
 }

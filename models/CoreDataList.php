@@ -19,8 +19,8 @@ class CoreDataList
      */
     public static function statusPublish(){
         return [
-            0 => \Yii::t('app', 'Published'),
-            1 => \Yii::t('app', 'Unpublished'),
+            0 => \Yii::t('obbz', 'Published'),
+            1 => \Yii::t('obbz', 'Unpublished'),
         ];
     }
 
@@ -30,8 +30,8 @@ class CoreDataList
      */
     public static function statusDelete(){
         return [
-            0 => \Yii::t('app', 'Active'),
-            1 => \Yii::t('app', 'Deleted'),
+            0 => \Yii::t('obbz', 'Active'),
+            1 => \Yii::t('obbz', 'Deleted'),
         ];
     }
 }

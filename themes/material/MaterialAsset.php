@@ -27,8 +27,8 @@ class MaterialAsset extends AssetBundle
 //        'css/app.min.1.css',
 //        'css/app.min.2.css',
 
-        //### core ###
-        // add when prod
+        // external font by google
+        'https://fonts.googleapis.com/css?family=Kanit',
         'css/custom.css',
     ];
     public $js = [
@@ -40,8 +40,11 @@ class MaterialAsset extends AssetBundle
         'vendors/bower_components/flot.curvedlines/curvedLines.js',
         'vendors/sparklines/jquery.sparkline.min.js',
         'vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js',
-        'vendors/bower_components/moment/min/moment.min.js',
-        'vendors/bower_components/fullcalendar/dist/fullcalendar.min.js',
+
+//        'vendors/bower_components/moment/min/moment.min.js',
+//        'vendors/bower_components/fullcalendar/dist/fullcalendar.min.js',
+//        'vendors/bower_components/fullcalendar/dist/lang-all.js',
+
         'vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js',
         'vendors/bower_components/Waves/dist/waves.min.js',
         'vendors/bootstrap-growl/bootstrap-growl.min.js',
@@ -58,8 +61,6 @@ class MaterialAsset extends AssetBundle
         'js/functions.js',
 //        'js/demo.js',
 
-        //### core ###
-        // add when prod
         'js/common.js',
 
     ];

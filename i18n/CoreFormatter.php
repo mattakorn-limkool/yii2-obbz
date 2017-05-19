@@ -54,6 +54,19 @@ class CoreFormatter extends Formatter
         return number_format($value);
     }
 
+    public function asNumberPeriod($value){
+        if ($value === null || empty($value)) {
+            return '<span class="number-zero">0</span>';
+        }else{
+            $valueText = number_format($value);
+            if($value > 0){
+                return '<span class="number-more-zero">'. $valueText .'</span>';
+            }else{
+                return '<span class="number-less-zero">'. $valueText .'</span>';
+            }
+        }
+    }
+
     /**
      * @param CoreActiveRecord[] $models - collection of model
      * @param string $attribute - attribute of model

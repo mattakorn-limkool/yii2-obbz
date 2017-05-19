@@ -21,9 +21,9 @@ class CorePublish extends CoreBaseAction
         $model = $this->findModel($id);
 
         if($model->markPublish()){
-            ObbzYii::setFlashSuccess(\Yii::t('app', $this->successText));
+            ObbzYii::setFlashSuccess(\Yii::t('obbz', $this->successText));
         }else{
-            ObbzYii::setFlashError(\Yii::t('app', $this->errorText));
+            ObbzYii::setFlashError(\Yii::t('obbz', $this->errorText));
         }
 
         return $this->controller->redirect($this->redirectUrl);

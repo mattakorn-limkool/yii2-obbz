@@ -30,10 +30,10 @@ class CorePublishSelected extends CoreSelected
                     $model->markPublish();
                 }
                 $transaction->commit();
-                ObbzYii::setFlashSuccess(\Yii::t('app', $this->successText));
+                ObbzYii::setFlashSuccess(\Yii::t('obbz', $this->successText));
             } catch (\Exception $e) {
                 $transaction->rollBack();
-                ObbzYii::setFlashError(\Yii::t('app', $this->errorText));
+                ObbzYii::setFlashError(\Yii::t('obbz', $this->errorText));
             }
         }
 

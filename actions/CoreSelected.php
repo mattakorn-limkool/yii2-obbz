@@ -17,7 +17,7 @@ class CoreSelected extends CoreBaseAction
         $this->data = ObbzYii::post('selection');
 
         if(empty( $this->data )){
-            ObbzYii::setFlashError(\Yii::t('app', $this->errorPleaseSelectText));
+            ObbzYii::setFlashError(\Yii::t('obbz', $this->errorPleaseSelectText));
             return false;
         }
 

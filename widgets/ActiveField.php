@@ -308,8 +308,8 @@ class ActiveField extends \yii\widgets\ActiveField
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = '<div class="fileinput fileinput-new" data-provides="fileinput">
                     <span class="btn btn-primary btn-file m-r-10">
-                        <span class="fileinput-new">'. \Yii::t('app', 'Select {label}',['label'=>$labelName])  .'</span>
-                        <span class="fileinput-exists">'. \Yii::t('app', 'Change') .'</span>
+                        <span class="fileinput-new">'. \Yii::t('obbz', 'Select {label}',['label'=>$labelName])  .'</span>
+                        <span class="fileinput-exists">'. \Yii::t('obbz', 'Change') .'</span>
                         '. Html::activeFileInput($this->model, $this->attribute, $options) .'
                     </span>
                     <span class="fileinput-filename"></span>
@@ -413,6 +413,7 @@ class ActiveField extends \yii\widgets\ActiveField
     public function datePicker($config=[]){
         $dateFormat = ObbzYii::formatter()->dateFormat;
         return $this->widget(DatePicker::className(), array_merge([
+            'type' => DatePicker::TYPE_COMPONENT_APPEND,
             'pluginOptions' => [
                 'autoclose' => true,
                 'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),

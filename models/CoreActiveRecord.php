@@ -99,7 +99,7 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
     }
     public function attributeLabels(){
         return [
-            'statusPublish' => \Yii::t('app', 'Publish Status'),
+            'statusPublish' => \Yii::t('obbz', 'Publish Status'),
         ];
     }
 
@@ -249,7 +249,7 @@ class CoreActiveRecord extends \yii\db\ActiveRecord
     public function displayPublishStatus($showHtml = true){
         $list = CoreDataList::statusPublish();
         $label =  ArrayHelper::getValue($list, $this->disabled);
-        $status = $this->hasPublished() ? \Yii::t('app', 'Published') : \Yii::t('app', 'Unpublished');
+        $status = $this->hasPublished() ? \Yii::t('obbz', 'Published') : \Yii::t('obbz', 'Unpublished');
         return $showHtml ? Html::tag('span' , $label, ['class'=>'core-grid-status-' .  $status ]): $label;
     }
 

@@ -285,7 +285,7 @@ class Generator extends \yii\gii\generators\model\Generator
             $messageCategory = empty($this->messageCategory) ? 'model/' . $this->tableName2name($this->tableName) : $this->messageCategory;
             $str = "\\Yii::t('". $messageCategory ."', '" . $string . "'" . $ph . ")";
 //            if($this->messageCategory == "app" and empty($placeholders)){
-//                $str = "\Yii::t('app', '" . $string . "'" . $ph . ")";
+//                $str = "\Yii::t('obbz', '" . $string . "'" . $ph . ")";
 //            }else{
 //                $str = "\Yii::t('". $messageCategory ."', '" . $string . "'" . $ph . ")";
 //            }

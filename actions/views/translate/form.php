@@ -10,7 +10,7 @@ use obbz\yii2\actions\CoreTranslate;
  * @var $translationAttributes
  * @var $attributesOptions
  */
-$this->title =   \Yii::t('app', 'Translate to ') . $language;
+$this->title =   \Yii::t('obbz', 'Translate to ') . $language;
 ?>
 
 <div class="card branch-update">
@@ -48,7 +48,7 @@ $this->title =   \Yii::t('app', 'Translate to ') . $language;
             <div class="form-group col-md-12">
 
                 <?php echo \obbz\yii2\widgets\Button::widget([
-                    'text'=>\Yii::t('app', 'Save Translate'),
+                    'text'=>\Yii::t('obbz', 'Save Translate'),
                     'btnClass'=>'primary',
                     'prefixIcon'=>'save'
                 ]) ?>

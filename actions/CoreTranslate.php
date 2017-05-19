@@ -66,9 +66,9 @@ class CoreTranslate extends CoreBaseAction
             }
 
             if($model->save()){
-                $message = \Yii::t('app', $this->successText);
+                $message = \Yii::t('obbz', $this->successText);
             }else{
-                $message = \Yii::t('app', $this->errorText);
+                $message = \Yii::t('obbz', $this->errorText);
                 $hasError = true;
             }
         }

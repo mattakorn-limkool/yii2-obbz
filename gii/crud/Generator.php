@@ -286,13 +286,13 @@ class Generator extends \yii\gii\Generator
         if($attribute === "disabled"){
             return "\$form->field(\$model, 'disabled')->dropDownList(
                         \\obbz\\yii2\\models\\CoreDataList::statusPublish(),
-                        ['prompt'=>\Yii::t('app', 'Published/Unpublished')]
+                        ['prompt'=>\Yii::t('obbz', 'Published/Unpublished')]
                     )";
         }
         else if($attribute === "deleted"){
             return "\$form->field(\$model, 'deleted')->dropDownList(
                         \\obbz\\yii2\\models\\CoreDataList::statusDelete(),
-                        ['prompt'=>\Yii::t('app', 'Active/Deleted')]
+                        ['prompt'=>\Yii::t('obbz', 'Active/Deleted')]
                     )";
         }
         else{ // default column
@@ -613,9 +613,9 @@ class Generator extends \yii\gii\Generator
 
             $str = "\\Yii::t('". $this->messageCategory  ."', '" . $string . "'" . $ph . ")";
 //            if($this->messageCategory == "app" and empty($placeholders)){
-//                $str = "\Yii::t('app', '" . $string . "'" . $ph . ")";
+//                $str = "\Yii::t('obbz', '" . $string . "'" . $ph . ")";
 //            }else{
-//                $str = "\Yii::t('app', '" . $string . "'" . $ph . ", '" . $this->messageCategory . "')";
+//                $str = "\Yii::t('obbz', '" . $string . "'" . $ph . ", '" . $this->messageCategory . "')";
 //            }
 
         } else {

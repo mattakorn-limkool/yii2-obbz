@@ -39,6 +39,7 @@ class Alert extends \yii\bootstrap\Widget
                         'body' => $message,
                         'pluginOptions'=>[
                             'showProgressbar'=>true,
+                            'mouse_over' =>'pause',
 //                            'delay'=>500000000
                         ]
                     ], $this->pluginOptions));
