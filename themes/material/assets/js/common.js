@@ -1,4 +1,5 @@
 var Obbz = {
+    /** toast alert **/
     alert : {
         message : function(type, message, title){
             $.growl({
@@ -34,6 +35,14 @@ var Obbz = {
         warning : function(message, title){
             Obbz.alert.message('warning', message, title);
         }
+    },
+
+    /** loading indicator **/
+    beginLoading: function(){
+        $(".page-loader").show();
+    },
+    endLoading: function(){
+        $(".page-loader").hide();
     }
 };
 

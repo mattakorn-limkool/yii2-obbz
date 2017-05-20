@@ -311,5 +311,19 @@ class ObbzYii
             exit;
     }
 
+    /**
+     * @param $models ActiveRecord[]
+     * @param bool|true $end
+     */
+    public static function debugModels($models, $end = true){
+
+        echo "<pre>";
+        foreach($models as $model){
+            print_r($model->attributes);
+        }
+        echo "</pre>";
+        if($end)
+            exit;
+    }
 
 }
