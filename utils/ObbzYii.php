@@ -4,6 +4,7 @@
  */
 
 namespace obbz\yii2\utils;
+use alexandernst\devicedetect\DeviceDetect;
 use common\models\User;
 use obbz\yii2\i18n\CoreFormatter;
 use yii\base\Exception;
@@ -143,6 +144,31 @@ class ObbzYii
         header("Content-Type: {$mime}; charset={$encoding}");
         header("Content-Disposition: attachment; filename={$name}");
         header("Cache-Control: max-age=0");
+    }
+
+    /**
+     * @return \Mobile_Detect
+     */
+    public static function deviceDetect(){
+        if(isset(\Yii::$app->devicedetect)){
+            return \Yii::$app->devicedetect;
+        }else{
+            throw new Exception("Please Defind devicedetect to config at bootstrap and component)");
+        }
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public static function isOnlyMobile(){
+        $deviceDetect = self::deviceDetect();
+        if($deviceDetect->isMobile() && ! $deviceDetect->isTablet()){
+            // because tablet is mobile too.
+            return true;
+        }else{
+            return false;
+        }
     }
 
     #endregion
