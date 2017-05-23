@@ -67,6 +67,40 @@ class CoreFormatter extends Formatter
         }
     }
 
+
+    function asTimeAgo($date, $granularity=2) {
+        // just support in 2 language, other lange fallback to en
+        $language = in_array(\Yii::$app->language, ['th','th-TH','TH','TH-th']) ? 'th' : 'en';
+
+        $date = strtotime($date);
+        $difference = time() - $date;
+        $periods = TimeAgoLang::$periods[$language];
+        $words = TimeAgoLang::$words[$language];
+        $retval = '';
+        if ($difference < 5) { // less than 5 seconds ago, let's say "just now"
+            $retval = $words["Just now"];
+            return $retval;
+        } else {
+            foreach ($periods as $key => $value) {
+                if ($difference >= $value) {
+                    $time = floor($difference/$value);
+                    $difference %= $value;
+                    $retval .= ($retval ? ' ' : '').$time.' ';
+                    if($language == 'en'){
+                        $retval .= (($time > 1) ? $key.'s' : $key);
+                    }else{
+                        $retval .= (($time > 1) ? $key : $key);
+                    }
+
+                    $granularity--;
+                }
+                if ($granularity == '0') { break; }
+            }
+            return $words['When '] .$retval. $words[' ago'];
+        }
+
+    }
+
     /**
      * @param CoreActiveRecord[] $models - collection of model
      * @param string $attribute - attribute of model
@@ -190,6 +224,8 @@ class CoreFormatter extends Formatter
 //        echo $format . ' ' . $datetime;
 //        return \DateTime::createFromFormat($format, $datetime, new \DateTimeZone('UTC'));
     }
+
+
 
 
     /**
