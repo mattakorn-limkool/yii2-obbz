@@ -39,19 +39,19 @@ trait CoreCKEditorTrait
     {
         $options = [];
         switch ($this->preset) {
-            case 'custom':
-                $preset = null;
-                break;
+//            case 'custom':
+//                $preset = null;
+//                break;
             case 'basic':
             case 'full':
             case 'standard':
                 $preset = 'presets/' . $this->preset . '.php';
                 break;
             default:
-                $preset = 'presets/standard.php';
+                $preset = $this->preset;
         }
         if ($preset !== null) {
-            $options = require($preset);
+            $options = require(\Yii::getAlias($preset));
         }
         $this->clientOptions = ArrayHelper::merge($options, $this->clientOptions);
     }

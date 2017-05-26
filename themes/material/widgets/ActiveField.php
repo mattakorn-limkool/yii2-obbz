@@ -10,8 +10,8 @@ namespace obbz\yii2\themes\material\widgets;
 use kartik\date\DatePicker;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\utils\ObbzYii;
+use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
 
@@ -44,7 +44,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
     /**
      * @var string the template for checkboxes in default layout
      */
-    public $checkboxTemplate = "<div class=\"checkbox m-b-15\">\n{beginLabel}\n{input}<i class=\"input-helper\"></i>\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
+    public $checkboxTemplate = "<div class=\"checkbox m-b-15 {disabled}\">\n{beginLabel}\n{input}<i class=\"input-helper\"></i>\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
     /**
      * @var string the template for radios in default layout
      */
@@ -183,7 +183,19 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
             if ($this->form->layout === 'horizontal') {
                 Html::addCssClass($this->wrapperOptions, $this->horizontalCssClasses['offset']);
             }
-            $this->labelOptions['class'] = null;
+            if (isset($options['disabled'])) {
+                $this->parts['{disabled}'] = "disabled";
+                $this->labelOptions['class'] = "disabled";
+            }
+            else if (isset($options['readonly'])) {
+                $this->parts['{disabled}'] = "disabled";
+                $this->labelOptions['class'] = "disabled";
+            }
+            else{
+                $this->labelOptions['class'] = null;
+                $this->parts['{disabled}'] = "";
+            }
+
         }
 
         return parent::checkbox($options, false);
@@ -287,6 +299,18 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->parts['{input}'] = Html::activeStaticControl($this->model, $this->attribute, $options);
         return $this;
     }
+
+//    public function hiddenInput($options = [])
+//    {
+//
+////        $options = array_merge($this->inputOptions, $options);
+////        $this->adjustLabelFor($options);
+////        $this->template = "{input}";
+////        $this->labelOptions = [];
+////        $this->parts['{input}'] = Html::activeHiddenInput($this->model, $this->attribute, $options);
+//
+//        return $this->render(Html::activeHiddenInput($this->model, $this->attribute, $options));
+//    }
 
     /**
      * @inheritdoc

@@ -44,13 +44,14 @@ class MaterialAsset extends AssetBundle
 //        'vendors/bower_components/moment/min/moment.min.js',
 //        'vendors/bower_components/fullcalendar/dist/fullcalendar.min.js',
 //        'vendors/bower_components/fullcalendar/dist/lang-all.js',
+//        'vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 
         'vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js',
         'vendors/bower_components/Waves/dist/waves.min.js',
         'vendors/bootstrap-growl/bootstrap-growl.min.js',
         'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js',
         'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
-        'vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+
 //        'vendors/bower_components/lightgallery/light-gallery/js/lightGallery.js',
         'vendors/bower_components/lightGallery139/dist/js/lightgallery.js',
         'vendors/fileinput/fileinput.min.js',

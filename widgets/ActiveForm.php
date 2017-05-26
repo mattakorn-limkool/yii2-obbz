@@ -24,7 +24,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
      * @see \yii\bootstrap\ActiveField for details on Bootstrap 3 field configuration
      */
     public $layout = 'default';
-
+    public $successCssClass = '';
 
     /**
      * @inheritdoc

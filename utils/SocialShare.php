@@ -6,40 +6,55 @@
 
 namespace obbz\yii2\utils;
 
+use ijackua\sharelinks\ShareLinks;
 use yii\base\Component;
 use yii\base\ErrorException;
 
-class SocialShare extends Component
+class SocialShare extends ShareLinks
 {
-    public $link;
-    public $title;
-    public $facebookAppId;
+    const SOCIAL_LINE = 8;
+
 
     public function init(){
-        if(empty($this->link)){
-            $this->link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        }
-        if(empty($this->facebookAppId)){
-            if(\Yii::$app->params['facebook.appId']){
-                $this->facebookAppId = \Yii::$app->params['facebook.appId'];
-            }else{
-                throw new ErrorException('Please set facebook app id');
-            }
-
-        }
         parent::init();
+        $this->shareUrlMap[self::SOCIAL_LINE] = 'https://timeline.line.me/social-plugin/share?url={url}';
+    }
+
+    public function twitterLink($url = null){
+        return self::shareUrl(self::SOCIAL_TWITTER, $url);
+    }
+
+    public function facebookLink($url = null){
+        return self::shareUrl(self::SOCIAL_FACEBOOK, $url);
+    }
+
+    public function lineLink($url = null){
+        return self::shareUrl(self::SOCIAL_LINE, $url);
+    }
+
+    public function googlePlusLink($url = null){
+        return self::shareUrl(self::SOCIAL_GPLUS, $url);
+    }
+
+    public function vkontakteLink($url = null){
+        return self::shareUrl(self::SOCIAL_VKONTAKTE, $url);
     }
 
 
-    public function facebookLink(){
-        return 'https://www.facebook.com/sharer/sharer.php?u=' . $this->link;
+
+    public function linkedinLink($url = null){
+        return self::shareUrl(self::SOCIAL_LINKEDIN, $url);
     }
 
-    public function lineLink(){
-        return 'https://timeline.line.me/social-plugin/share?url='.$this->link;
+    public function kindleLink($url = null){
+        return self::shareUrl(self::SOCIAL_KINDLE, $url);
     }
 
-    public function twitterLink(){
-        return 'https://twitter.com/share';
+    public function kindleXing($url = null){
+        return self::shareUrl(self::SOCIAL_XING, $url);
     }
+
+
+
+
 }

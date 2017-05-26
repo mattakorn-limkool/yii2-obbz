@@ -13,8 +13,8 @@ use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\i18n\CoreFormatter;
 use obbz\yii2\utils\ObbzYii;
 use pudinglabs\tagsinput\TagsinputWidget;
+use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
 
@@ -129,10 +129,10 @@ class ActiveField extends \yii\widgets\ActiveField
     public function dropDownList($items, $options = [])
     {
 
-        if($this->form->layout === 'default'){
-            $this->label(true);
-            $this->options = ['class' => 'form-group'];
-        }
+//        if($this->form->layout === 'default'){
+//            $this->label(true);
+//            $this->options = ['class' => 'form-group'];
+//        }
 
         // parent dropDownList
 
@@ -140,8 +140,9 @@ class ActiveField extends \yii\widgets\ActiveField
 //        $this->addAriaAttributes($options);
 //        $this->adjustLabelFor($options);
 //        $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
+//        $this->parts['{input}'] = '<div class="select">'. . '</div>';
 
-        return '<div class="select">'.parent::dropDownList($items, $options) . '</div>';
+        return parent::dropDownList($items, $options);
     }
 
 
