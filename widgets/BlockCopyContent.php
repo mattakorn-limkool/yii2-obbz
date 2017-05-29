@@ -44,15 +44,7 @@ class BlockCopyContent extends \yii\bootstrap\Widget
             }
         ');
         $view->registerJs('
-            // Block f12
-            $(document).keydown(function(event){
-                if(event.keyCode==123){
-                return false;
-               }
-                else if(event.ctrlKey && event.shiftKey && event.keyCode==73){
-                  return false;  //Prevent from ctrl+shift+i
-               }
-            });
+
              ///  Block right click  ///
             var message="";function clickIE() {
                 if (document.all) {
@@ -73,7 +65,15 @@ class BlockCopyContent extends \yii\bootstrap\Widget
             document.oncontextmenu=new Function("return false");
         ', View::POS_HEAD);
         $view->registerJs('
-
+            // Block f12
+            $(document).keydown(function(event){
+                if(event.keyCode==123){
+                return false;
+               }
+                else if(event.ctrlKey && event.shiftKey && event.keyCode==73){
+                  return false;  //Prevent from ctrl+shift+i
+               }
+            });
             ///  Block right click  ///
             $(document).on("contextmenu",function(e){
                e.preventDefault();

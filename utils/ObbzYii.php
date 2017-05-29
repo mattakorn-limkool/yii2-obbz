@@ -27,6 +27,12 @@ class ObbzYii
     const APP_CONSOLE_ID = 'app-console';
     const APP_API_ID = 'app-api';
 
+    /**
+     * @return \yii\console\Application|\yii\web\Application
+     */
+    public static function app(){
+        return \Yii::$app;
+    }
 
     /**
      * @return string
@@ -113,6 +119,43 @@ class ObbzYii
         return \Yii::$app->formatter;
     }
 
+    #region cookies
+    /**
+     * @param $name
+     * @param null $defaultValue
+     * @return mixed
+     */
+    public static function getCookie($name, $defaultValue = null){
+        $cookies = ObbzYii::app()->request->cookies;
+        return $cookies->getValue($name, $defaultValue);
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public static function hasCookie($name){
+        $cookies = ObbzYii::app()->request->cookies;
+        return $cookies->has($name);
+    }
+
+    /**
+     * @param \yii\web\Cookie $cookie
+     */
+    public static function setCookie(\yii\web\Cookie $cookie){
+        $cookies = ObbzYii::app()->response->cookies;
+        $cookies->add($cookie);
+    }
+
+    /**
+     * @param $name
+     */
+    public static function removeCookie($name){
+        $cookies = ObbzYii::app()->response->cookies;
+        $cookies->remove($name);
+    }
+
+    #endregion
     public static function setHttpImage($file){
         $filename = basename($file);
         $file_extension = strtolower(substr(strrchr($filename,"."),1));
@@ -217,9 +260,9 @@ class ObbzYii
      * get current user and mapping to db
      * @return \common\models\User
      */
-    public static function userDb(){
-        return $userId = self::user()->identity;
-//        return User::findIdentity($userId);
+    public static function userDb($cache = true){
+//        return $userId = self::user()->identity;
+        return User::findIdentity(self::user()->id, $cache);
     }
 
     /**
