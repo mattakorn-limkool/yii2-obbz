@@ -10,10 +10,14 @@ namespace obbz\yii2\themes\material\widgets;
 use kartik\date\DatePicker;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\utils\ObbzYii;
+use obbz\yii2\widgets\AutoCompleteAjax;
+use obbz\yii2\widgets\AutoCompleteWithId;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
+use yii\jui\AutoComplete;
+use yii\web\JsExpression;
 
 class ActiveField extends \obbz\yii2\widgets\ActiveField
 {
@@ -432,10 +436,12 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         return $this;
     }
 
-    public function widget($class, $config = []){
-        $this->disableFloatingLabel();
-        $this->label(true);
-        $this->options = ['class' => 'form-group fg-padding'];
+    public function widget($class, $config = [], $mdClear = true){
+        if($mdClear){
+            $this->disableFloatingLabel();
+            $this->label(true);
+            $this->options = ['class' => 'form-group fg-padding'];
+        }
 
         $this->template = $this->widgetTemplate;
         return parent::widget($class, $config);
@@ -463,6 +469,45 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                 'filebrowserUploadUrl' => Url::to(['/site/ckeditor-upload-img'])
             ]
         ], $config));
+    }
+
+
+    public function autoCompleteWithId($idAttribute, $data, $config = []){
+
+        return \yii\widgets\ActiveField::widget(
+            AutoCompleteWithId::className(),
+            array_merge([
+                'model'=> $this->model,
+                'name' => $this->attribute,
+                'idAttribute' => $idAttribute,
+                'options' => $this->inputOptions,
+                'clientOptions' => [
+                    'source' => $data,
+                    'autoFill'=>true,
+                    'appendTo'=>'#'.$this->form->id
+                    ],
+            ], $config)
+        );
+    }
+
+    /**
+     * @param $idAttribute
+     * @param array $url
+     * @param array $config
+     * @return $this
+     */
+    public function ajaxAutoComplete($idAttribute, $url, $config=[]){
+//        $this->options = ['class' => 'form-group fg-float'];
+//        $this->template = $this->widgetTemplate;
+        return \yii\widgets\ActiveField::widget(
+            AutoCompleteAjax::className(),
+            array_merge([
+                'idAttribute' => $idAttribute,
+                'url' => $url,
+                'multiple' => false,
+            ], $config)
+
+        );
     }
 
 

@@ -7,6 +7,7 @@
 
 namespace obbz\yii2\widgets;
 
+use kartik\time\TimePicker;
 use kartik\widgets\DatePicker;
 use kartik\widgets\TouchSpin;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
@@ -17,6 +18,7 @@ use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
+use yii\web\JsExpression;
 
 class ActiveField extends \yii\widgets\ActiveField
 {
@@ -383,8 +385,8 @@ class ActiveField extends \yii\widgets\ActiveField
     }
 
     public function widget($class, $config = []){
-        $this->label(true);
-        $this->options = ['class' => 'form-group fg-padding'];
+//        $this->label(true);
+//        $this->options = ['class' => 'form-group fg-padding'];
 
         $this->template = $this->widgetTemplate;
         return parent::widget($class, $config);
@@ -422,6 +424,18 @@ class ActiveField extends \yii\widgets\ActiveField
         ], $config));
     }
 
+    public function timePicker($config=[]){
+        $dateFormat = ObbzYii::formatter()->timeFormat;
+        return parent::widget(TimePicker::className(), array_merge([
+            'name' => $this->attribute,
+            'pluginOptions' => [
+                'showMeridian' => false,
+//                'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),
+            ]
+
+        ], $config));
+    }
+
     /**
      * @doc https://github.com/pudinglabs/yii2-bootstrap-tags-input
      * @param array $config  -  'options' => [],
@@ -437,7 +451,43 @@ class ActiveField extends \yii\widgets\ActiveField
         ], $config));
     }
 
-    public function numberInput($config=[]){
+    public function autoCompleteWithId($idAttribute, $data, $config = []){
+        return $this->widget(
+            AutoCompleteWithId::className(),
+            array_merge([
+                'model'=> $this->model,
+                'name' => $this->attribute,
+                'idAttribute' => $idAttribute,
+                'options' => $this->inputOptions,
+                'clientOptions' => [
+                    'source' => $data,
+                    'autoFill'=>true,
+                    'appendTo'=>'#'.$this->form->id
+                    ],
+            ], $config)
+        );
+    }
+
+    /**
+     * @param $idAttribute
+     * @param array $url
+     * @param array $config
+     * @return $this
+     */
+    public function ajaxAutoComplete($idAttribute, $url, $config=[]){
+
+        return $this->widget(
+            AutoCompleteAjax::className(),
+            array_merge([
+                'idAttribute' => $idAttribute,
+                'url' => $url,
+                'multiple' => false,
+            ], $config)
+        );
+    }
+
+
+    public function touchSpin($config=[]){
 
         return $this->widget(TouchSpin::className(), array_merge([
 

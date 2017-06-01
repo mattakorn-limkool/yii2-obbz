@@ -25,16 +25,23 @@ class CoreActionColumn extends ActionColumn
     public $headerActionTemplate = '<div class="core-grid-action-selected">{publish-selected} {unpublish-selected} {delete-selected}</div>';
     public $headerButtonOptions = [];
 
+    public $defaultButtonsIcons = [
+        'view' => 'search',
+        'publish' => 'check',
+        'unpublish' => 'close',
+        'update' => 'pencil',
+        'delete' => 'trash',
+    ];
 
 
     protected function initDefaultButtons()
     {
 
-        $this->initDefaultButton('view', 'search');
-        $this->initDefaultButton('publish', 'check');
-        $this->initDefaultButton('unpublish', 'close');
-        $this->initDefaultButton('update', 'pencil');
-        $this->initDefaultButton('delete', 'trash', [
+        $this->initDefaultButton('view', isset($this->defaultButtonsIcons['view']) ? $this->defaultButtonsIcons['view']  : 'search' );
+        $this->initDefaultButton('publish', isset($this->defaultButtonsIcons['publish']) ? $this->defaultButtonsIcons['publish']  : 'check');
+        $this->initDefaultButton('unpublish', isset($this->defaultButtonsIcons['unpublish']) ? $this->defaultButtonsIcons['unpublish']  : 'close');
+        $this->initDefaultButton('update', isset($this->defaultButtonsIcons['update']) ? $this->defaultButtonsIcons['update']  : 'pencil');
+        $this->initDefaultButton('delete', isset($this->defaultButtonsIcons['delete']) ? $this->defaultButtonsIcons['delete']  : 'trash', [
             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
             'data-method' => 'post',
         ]);

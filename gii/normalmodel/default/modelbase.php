@@ -49,8 +49,11 @@ foreach ($relations as $name => $relation) {
 */
 class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
+
     const CACHE_ACTIVE_ALL = '<?= $generator->generateTableName($tableName) ?>_active_all';
-    /**
+
+
+/**
     * @inheritdoc
     */
     public static function tableName()

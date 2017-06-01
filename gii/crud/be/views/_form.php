@@ -68,7 +68,7 @@ use obbz\yii2\utils\ObbzYii;
 		<?= "<?php echo " ?>\obbz\yii2\widgets\ButtonLink::widget([
 				'url'=>ObbzYii::referrerUrl(['index']),
 				'text'=>\Yii::t('app', 'Back'),
-				'prefixIcon'=>'chevron-left'
+				'prefixIcon'=>'chevron-circle-left'
 			]); ?>
 			<?= "<?php echo " ?>\obbz\yii2\widgets\Button::widget([
 				'text'=><?= $generator->generateString('Save') ?>,

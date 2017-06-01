@@ -8,7 +8,7 @@
     "authors": [
         {
             "name": "Mattakorn Limkool",
-            "email": "obbz.dev@gmail.com"
+            "email": "mattakron@gmail.com"
         }
     ],
     "require": {
@@ -34,7 +34,7 @@
         "alexandernst/yii2-device-detect": "0.0.11",
 		"kop/yii2-scroll-pager": "dev-master",
 		"ijackua/yii2-sharelinks-widget": "dev-master",
-		"keygenqt/yii2-autocomplete-ajax": "*",
+		"karnbrockgmbh/yii2-modal-ajax": "@dev",
         "php": ">=5.3.0"
     },
 	"require-dev": {

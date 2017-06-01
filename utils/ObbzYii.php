@@ -10,6 +10,7 @@ use obbz\yii2\i18n\CoreFormatter;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
 use yii\helpers\Url;
@@ -391,6 +392,15 @@ class ObbzYii
             print_r($model->attributes);
         }
         echo "</pre>";
+        if($end)
+            exit;
+    }
+
+    /**
+     * @param $query Query
+     */
+    public static function debugQuery($query, $db = null , $end = true){
+        echo "<pre>" . $query->createCommand($db)->rawSql . "</pre>";
         if($end)
             exit;
     }

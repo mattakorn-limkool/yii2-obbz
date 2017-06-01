@@ -48,8 +48,8 @@ class CoreFormatter extends Formatter
      * @return int|string
      */
     public function asNumber($value){
-        if ($value === null) {
-            return 0;
+        if (empty($value)) {
+            return '0';
         }
         return number_format($value);
     }

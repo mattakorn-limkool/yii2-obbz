@@ -2,6 +2,10 @@ h1, h2, h3, h4 {
     font-family: 'Kanit','Raleway', sans-serif !important;
 }
 
+.mainmenu{
+    font-family: 'Kanit','Raleway', sans-serif !important;
+}
+
 .checkbox .input-helper:after {
     border-bottom: 2px solid #2196f3;
     border-left: 2px solid #2196f3;
@@ -319,9 +323,7 @@ body.login-content::before {
     height: 42px;
     line-height: 42px;
 }
-.datepicker table tr td span.active:active, .datepicker table tr td span.active:hover:active, .datepicker table tr td span.active.disabled:active, .datepicker table tr td span.active.disabled:hover:active, .datepicker table tr td span.active.active, .datepicker table tr td span.active:hover.active, .datepicker table tr td span.active.disabled.active, .datepicker table tr td span.active.disabled:hover.active {
-    background-color: #009688;
-}
+
 .datepicker table tr td span.active:active:hover,
 .datepicker table tr td span.active:hover:active:hover,
 .datepicker table tr td span.active.disabled:active:hover,
@@ -346,7 +348,26 @@ body.login-content::before {
 .datepicker table tr td span.active:hover.active.focus,
 .datepicker table tr td span.active.disabled.active.focus,
 .datepicker table tr td span.active.disabled:hover.active.focus {
-    background-color: transparent;
+    /*background-color: transparent;*/
 }
 
+.datepicker table td.active:before {
+    background-color: #2196f3;
+}
+.datepicker table thead tr:last-child:not(:only-child) {
+    background-color: #2196f3;
+}
+.datepicker table thead tr:first-child th {
+    background-color: #2196f3;
+}
+.datepicker table tr td span.active:active, .datepicker table tr td span.active:hover:active, .datepicker table tr td span.active.disabled:active, .datepicker table tr td span.active.disabled:hover:active, .datepicker table tr td span.active.active, .datepicker table tr td span.active:hover.active, .datepicker table tr td span.active.disabled.active, .datepicker table tr td span.active.disabled:hover.active{
+    background-color: #2196f3;
+}
 /** end */
+
+/** modal **/
+.modal-header h2{
+    font-size: 18px;
+    margin-top: 0;
+}
+/** end modal **/
