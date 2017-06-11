@@ -15,6 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
 use yii\helpers\Url;
 use yii\web\Response;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 
 /**
@@ -45,6 +46,13 @@ class ObbzYii
         return \Yii::$app->request->getBaseUrl() . $path;
     }
 
+    /**
+     *  return base asset url for default asset
+     * @param null $path
+     * @param null $assetName
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
     public static function assetBaseUrl($path = null, $assetName = null){
         if(!isset($assetName)){
             if(\Yii::$app->id == self::APP_FRONTEND_ID){
@@ -118,6 +126,11 @@ class ObbzYii
      */
     public static function formatter(){
         return \Yii::$app->formatter;
+    }
+
+
+    public static function getSession(){
+        return \Yii::$app->session;
     }
 
     #region cookies
@@ -247,6 +260,15 @@ class ObbzYii
      */
     public static function user(){
         return \Yii::$app->user;
+    }
+
+
+    public static function beginTransaction($connection = null, $islationLevel = null){
+        if(!isset($connection)){
+            $connection = self::app()->db;
+        }
+
+        return $connection->beginTransaction($islationLevel);
     }
 
     /**
@@ -405,4 +427,12 @@ class ObbzYii
             exit;
     }
 
+    /**
+     * @param $view View
+     */
+    public static function hideDebugToolsBar($view){
+        if (class_exists('yii\debug\Module')) {
+            $view->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
+    }
 }

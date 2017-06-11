@@ -7,6 +7,7 @@
 
 namespace obbz\yii2\widgets;
 
+use kartik\datetime\DateTimePicker;
 use kartik\time\TimePicker;
 use kartik\widgets\DatePicker;
 use kartik\widgets\TouchSpin;
@@ -361,8 +362,8 @@ class ActiveField extends \yii\widgets\ActiveField
                                 <div class="fileinput-preview fileinput-exists thumbnail" data-trigger="fileinput"></div>
                                 <div>
                                     <span class="btn btn-primary btn-file">
-                                        <span class="fileinput-new">Select '. $labelName .'</span>
-                                        <span class="fileinput-exists">Change</span>
+                                       <span class="fileinput-new">'. \Yii::t('obbz', 'Select {label}',['label'=>$labelName])  .'</span>
+                                        <span class="fileinput-exists">' . \Yii::t('obbz', 'Change') . '</span>
                                         '. Html::activeFileInput($this->model, $this->attribute, $options) .'
                                     </span>
                                     <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
@@ -433,6 +434,17 @@ class ActiveField extends \yii\widgets\ActiveField
 //                'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),
             ]
 
+        ], $config));
+    }
+
+    public function dateTimePicker($config=[]){
+        $datetimeFormat = ObbzYii::formatter()->datetimeFormat;
+        return $this->widget(DateTimePicker::className(), array_merge([
+            'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($datetimeFormat),
+            ]
         ], $config));
     }
 

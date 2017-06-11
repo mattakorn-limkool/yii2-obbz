@@ -23,7 +23,7 @@ return [
     'Publish Status' => 'สถานะการเผยแพร่',
     'Published' => 'เผยแพร่',
     'Save Translate' => 'บันทึกการแปล',
-    'Select {label}' => 'เลือก{label}',
+    'Select {label}' => 'แนบ{label}',
     'Sorry for the inconvenience!' => 'ขออภัยในความไม่สะดวก',
     'Translate to ' => 'แปลภาษา',
     'Unpublished' => 'ไม่เผยแพร่',

@@ -50,6 +50,14 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         parent::init();
     }
 
+//    public function rules()
+//    {
+//        return [
+////            [['disabled', 'deleted'], 'default', 'value' => 0],
+////            [['sorting'], 'default', 'value' => 99999],
+//        ];
+//    }
+
     /**
      * @param $attribute
      * @param array $thumbs

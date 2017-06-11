@@ -20,8 +20,8 @@ use yii\helpers\Html;
  * @property string $detail
  * @property string $img
  * @property integer $sorting
- * @property integer $disabled
- * @property integer $deleted
+ * @property boolean $disabled
+ * @property boolean $deleted
  * @property string $created_time
  * @property string $modify_time
  * @property string $deleted_time
@@ -40,13 +40,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      * default rules for core model
      * @return array
      */
-    public function rules()
-    {
-        return [
-//            [['disabled', 'deleted'], 'default', 'value' => 0],
-//            [['sorting'], 'default', 'value' => 99999],
-        ];
-    }
+
 
     public function behaviors()
     {
@@ -70,15 +64,12 @@ class CoreActiveRecord extends CoreBaseActiveRecord
     public function beforeValidate() {
         if(parent::beforeValidate()) {
             #region core
+//            ObbzYii::debug( $this->scenarioCreate() + $this->scenarioUpdate());
+            $checkScenario = $this->scenarioCreate() + $this->scenarioUpdate();
+            if($this->isScenario($checkScenario)){
 
-            if($this->isScenario(
-                array_merge(
-                    $this->scenarioCreate(),
-                    $this->scenarioUpdate()
-                ))){
-
-                $this->deleted = ObbzYii::getValue($this, 'deleted', 0);
-                $this->disabled = ObbzYii::getValue($this, 'disabled', 0);
+                $this->deleted = ObbzYii::getValue($this, 'deleted', false);
+                $this->disabled = ObbzYii::getValue($this, 'disabled', false);
 //                $this->sorting = ObbzYii::getValue($this, 'sorting', 99999);
 
                 $userId = ObbzYii::user()->getId();
@@ -134,7 +125,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      * @return bool
      */
     public function markPublish(){
-        $this->disabled = 0;
+        $this->disabled = false;
         return $this->save(false, ['disabled']);
     }
 
@@ -143,7 +134,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      * @return bool
      */
     public function markUnpublish(){
-        $this->disabled = 1;
+        $this->disabled = true;
         return $this->save(false, ['disabled']);
     }
 
@@ -154,7 +145,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
     public function markDelete(){
         $userId = ObbzYii::user()->getId();
 
-        $this->deleted = 1;
+        $this->deleted = true;
         $this->deleted_time = ObbzYii::formatter()->asDbDatetime();
         if(!empty($userId))
             $this->deleted_user_id = $userId;

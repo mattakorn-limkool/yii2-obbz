@@ -1,10 +1,33 @@
-h1, h2, h3, h4 {
+[data-current-skin="lavender"] {
+    background-color: #79b5ff
+}
+[data-current-skin="coral"] {
+    background-color: #CC4E46
+}
+/*[data-current-skin="lavender"] .logo a {  }*/
+/*[data-current-skin="lavender"] .ha-menu > ul > li:not(.active) > *:not(ul) {}*/
+.ha-menu > ul > li.active > *:not(ul) {
+    box-shadow: inset 0px -3px 0 0px #fff;
+}
+[data-current-skin="lavender"] .ha-menu > ul > li.active > *:not(ul) {
+    box-shadow: inset 0px -3px 0 0px #0274ea;
+}
+
+
+h1, h2, h3, h4, legend {
     font-family: 'Kanit','Raleway', sans-serif !important;
 }
+
+
 
 .mainmenu{
     font-family: 'Kanit','Raleway', sans-serif !important;
 }
+
+/*#header-2 .header-inner {*/
+    /*padding: 0px 0 15px;*/
+/*}*/
+
 
 .checkbox .input-helper:after {
     border-bottom: 2px solid #2196f3;
@@ -14,6 +37,10 @@ h1, h2, h3, h4 {
 .input-group.fg-float{
     margin-bottom: 0;
     margin-top: 0;
+}
+
+.alert button.close {
+    color: #fff;
 }
 
 /** global */
@@ -96,6 +123,25 @@ body.login-content::before {
     background: #119ed4;
 }
 /** end login **/
+
+/** layout **/
+
+body.blank{
+    background: transparent;
+    height: auto !important;
+    min-height: 0;
+}
+
+body.no-container{
+    background: transparent;
+}
+body.no-container #main{
+    background: transparent;
+    padding-top:70px;
+}
+/** end layout **/
+
+
 
 /** ui grid */
 .core-grid{}
@@ -371,3 +417,5 @@ body.login-content::before {
     margin-top: 0;
 }
 /** end modal **/
+
+

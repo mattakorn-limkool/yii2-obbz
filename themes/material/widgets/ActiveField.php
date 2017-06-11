@@ -24,6 +24,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
     public $options = ['class' => 'form-group fg-float'];
     public $template = "{addonPrepend}\n<div class=\"fg-line\">{label}\n{input}\n{hint}</div>\n{addonAppend}\n{error}"; // for floating label
     public $labelOptions = ['class' => 'fg-label'];
+
     /**
      * @var boolean whether to render [[checkboxList()]] and [[radioList()]] inline.
      */
@@ -45,6 +46,8 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
      *  - 'hint' the hint grid class
      */
     public $horizontalCssClasses;
+
+
     /**
      * @var string the template for checkboxes in default layout
      */
@@ -80,6 +83,11 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 
     public $widgetTemplate = "{label}\n{input}\n{hint}\n{error}";
     public $captchaTemplate = "{label}\n<div class=\"row\">{input}</div>\n{hint}\n{error}";
+    public $staticControlTemplate = "
+                    <dl class=\"dl-horizontal\">
+                        <dt>{label}</dt>
+                        <dd>{value}</dd>
+                    </dl>";
 
     public $enableFloatLabel = true;
 
@@ -136,6 +144,9 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                 $input = isset($this->parts['{input}']) ?
                     $this->parts['{input}'] : Html::activeTextInput($this->model, $this->attribute, $this->inputOptions);
                 $this->parts['{input}'] = strtr($this->inputTemplate, ['{input}' => $input]);
+            }
+            if (isset($this->parts['{value}'])) {
+                $this->parts['{value}'] = (isset($this->options['value'])) ? $this->options['value']: $this->model[$this->attribute];
             }
 
             $this->generateAddon();
@@ -299,8 +310,11 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
      */
     public function staticControl($options = [])
     {
-        $this->adjustLabelFor($options);
-        $this->parts['{input}'] = Html::activeStaticControl($this->model, $this->attribute, $options);
+
+        $this->template = $this->staticControlTemplate;
+//        $this->adjustLabelFor($options);
+        $this->parts['{label}'] = $this->model->getAttributeLabel($this->attribute);
+        $this->parts['{value}'] = $this->model[$this->attribute];
         return $this;
     }
 
@@ -403,8 +417,8 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                                 <div class="fileinput-preview thumbnail" data-trigger="fileinput">'. Html::img($imgPath) .'</div>
                                 <div>
                                     <span class="btn btn-primary btn-file">
-                                        <span class="fileinput-new">Select '. $labelName .'</span>
-                                        <span class="fileinput-exists">Change</span>
+                                        <span class="fileinput-new">'. \Yii::t('obbz', 'Select {label}',['label'=>$labelName])  .'</span>
+                                        <span class="fileinput-exists">' . \Yii::t('obbz', 'Change') . '</span>
                                         '. Html::activeFileInput($this->model, $this->attribute, $options) .'
                                     </span>
                                     <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
@@ -449,10 +463,10 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 
     public function captcha($config = []){
         $this->template = $this->captchaTemplate;
-//        $this->enableLabel = false;
+        $this->enableLabel = false;
         $config['template'] = isset($config['template']) ?
             $config['template'] :
-            '<div class="col-sm-3">{image}</div><div class="col-sm-9"><div class="fg-line">{input}</div></div>';
+            '<div class="row"><div class="col-sm-3">{image}</div><div class="col-sm-9"><div class="fg-line">{input}</div></div></div>';
 
         return parent::widget(Captcha::className(), $config);
     }

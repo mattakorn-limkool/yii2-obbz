@@ -30,11 +30,11 @@ class Alert extends \yii\bootstrap\Widget
             if (isset($this->alertTypes[$type])) {
                 $data = (array) $data;
                 foreach ($data as $i => $message) {
-                    $title = ucfirst($type);
+//                    $title = ucfirst($type);
                     echo \kartik\widgets\Growl::widget(array_merge([
                         'type' => $this->alertTypes[$type],
 //                        'icon' => 'glyphicon glyphicon-ok-sign',
-                        'title' => $title,
+//                        'title' => $title,
                         'showSeparator' => true,
                         'body' => $message,
                         'pluginOptions'=>[

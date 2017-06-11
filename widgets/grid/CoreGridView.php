@@ -3,6 +3,7 @@
 namespace obbz\yii2\widgets\grid;
 
 use obbz\yii2\themes\material\widgets\ActiveForm;
+use obbz\yii2\utils\ObbzYii;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -66,7 +67,7 @@ class CoreGridView extends GridView
     public function rowOptionsInit($model, $key, $index, $grid){
         // todo - check has declare by widget before
         $rowOptionsArray = [];
-        if(isset($model->disabled) && $model->disabled){
+        if(isset($model->disabled) && $model->disabled === true){
             $rowOptionsArray['class'] = 'danger';
         }
         return $rowOptionsArray;
