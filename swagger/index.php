@@ -25,6 +25,8 @@ CustomAsset::register($this);
         window.SwaggerTranslator.translate();
       }
       window.swaggerUi = new SwaggerUi({
+            host: 'api.hongsamut.local',
+            basePath: '/v1',
         url: url,
         validatorUrl: null,
         dom_id: "swagger-ui-container",
@@ -45,7 +47,7 @@ CustomAsset::register($this);
           $('pre code').each(function(i, e) {
             hljs.highlightBlock(e)
           });
-          addApiKeyAuthorization();
+//          addApiKeyAuthorization();
         },
         onFailure: function(data) {
           log("Unable to Load SwaggerUI");
@@ -63,7 +65,7 @@ CustomAsset::register($this);
             log("added key " + key);
         }
       }
-      $('#input_apiKey').change(addApiKeyAuthorization);
+//      $('#input_apiKey').change(addApiKeyAuthorization);
       // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
       /*
         var apiKey = "myApiKeyXXXX123456789";

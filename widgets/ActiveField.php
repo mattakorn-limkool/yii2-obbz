@@ -84,6 +84,7 @@ class ActiveField extends \yii\widgets\ActiveField
     public $captchaTemplate = "{label}\n<div class=\"row\">{input}</div>\n{hint}\n{error}";
 
 
+
     /**
      * @inheritdoc
      */

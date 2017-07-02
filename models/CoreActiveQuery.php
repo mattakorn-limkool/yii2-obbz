@@ -15,6 +15,14 @@ use yii\helpers\ArrayHelper;
 
 class CoreActiveQuery extends ActiveQuery
 {
+    #region util todo - reslove this way issues https://github.com/yiisoft/yii2/issues/7263
+    public function baseField($field){
+        $modelClass = $this->modelClass;
+        $t = $modelClass::tableName() . '.';
+        return $t.$field;
+    }
+    #endregion
+
     #region util find
     /**
      * need to find by pk
@@ -22,8 +30,7 @@ class CoreActiveQuery extends ActiveQuery
      * @return array|null|\yii\db\ActiveRecord
      */
     public function pk($id){
-        $modelClass = $this->modelClass;
-        return $this->andWhere([$modelClass::tableName().'.id'=>$id])->one();
+        return $this->andWhere([$this->baseField('id') =>$id])->one();
     }
     public function key($key){
         $modelClass = $this->modelClass;

@@ -96,6 +96,7 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
      * @param $query \yii\db\ActiveQuery
      */
     public function defaultQueryFilter(&$query){
+        $t = self::tableName();
 		// grid filtering conditions
         $this->prepareCoreAttributesFilter();
 

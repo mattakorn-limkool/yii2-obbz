@@ -418,4 +418,28 @@ body.no-container #main{
 }
 /** end modal **/
 
+.summary{
+    border: 1px solid #EEE;
+    display: inline-block;
+    float: right;
+    padding: 7px 30px;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.datetimepicker-widget{
+    /*margin-top: -21px;*/
+}
+.form-inline .datetimepicker-widget{
+    margin-top: 0;
+}
+@media(min-width:768px){
+    .form-inline select.form-group {
+        display: block;
+    }
+    .form-inline select.form-control {
+        display: block;
+        width: 100%;
+    }
+}
 

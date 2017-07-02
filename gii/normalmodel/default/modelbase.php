@@ -98,7 +98,7 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
      * @param $query \yii\db\ActiveQuery
      */
     public function defaultQueryFilter(&$query){
-
+        $t = self::tableName();
         <?= implode("\n        ", $searchConditions) ?>
 	}
 

@@ -8,6 +8,8 @@
 namespace obbz\yii2\themes\material\widgets;
 
 use kartik\date\DatePicker;
+use kartik\datetime\DateTimePicker;
+use kartik\widgets\TimePicker;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\utils\ObbzYii;
 use obbz\yii2\widgets\AutoCompleteAjax;
@@ -82,6 +84,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
     public $enableLabel = true;
 
     public $widgetTemplate = "{label}\n{input}\n{hint}\n{error}";
+    public $dateTimePickerTemplate = "<div class=\"datetimepicker-widget\">{label}\n{input}\n{hint}\n{error}</div>";
     public $captchaTemplate = "{label}\n<div class=\"row\">{input}</div>\n{hint}\n{error}";
     public $staticControlTemplate = "
                     <dl class=\"dl-horizontal\">
@@ -461,6 +464,45 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         return parent::widget($class, $config);
     }
 
+    public function datePicker($config=[]){
+        $this->template = $this->dateTimePickerTemplate;
+        $this->options = ['class' => 'form-group fg-padding'];
+        $dateFormat = ObbzYii::formatter()->dateFormat;
+        return \yii\bootstrap\ActiveField::widget(DatePicker::className(), array_merge([
+            'type' => DatePicker::TYPE_COMPONENT_APPEND,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),
+            ]
+        ], $config));
+    }
+
+    public function timePicker($config=[]){
+        $this->template = $this->dateTimePickerTemplate;
+        $this->options = ['class' => 'form-group fg-padding'];
+        $dateFormat = ObbzYii::formatter()->timeFormat;
+        return \yii\bootstrap\ActiveField::widget(TimePicker::className(), array_merge([
+            'name' => $this->attribute,
+            'pluginOptions' => [
+                'showMeridian' => false,
+//                'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),
+            ]
+
+        ], $config));
+    }
+
+    public function dateTimePicker($config=[]){
+        $this->template = $this->dateTimePickerTemplate;
+        $this->options = ['class' => 'form-group fg-padding'];
+        $datetimeFormat = ObbzYii::formatter()->datetimeFormat;
+        return \yii\bootstrap\ActiveField::widget(DateTimePicker::className(), array_merge([
+            'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($datetimeFormat),
+            ]
+        ], $config));
+    }
     public function captcha($config = []){
         $this->template = $this->captchaTemplate;
         $this->enableLabel = false;
