@@ -449,6 +449,10 @@ class ActiveField extends \yii\widgets\ActiveField
         ], $config));
     }
 
+    public function dateRangePicker(){
+
+    }
+
     /**
      * @doc https://github.com/pudinglabs/yii2-bootstrap-tags-input
      * @param array $config  -  'options' => [],

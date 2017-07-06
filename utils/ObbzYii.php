@@ -75,11 +75,21 @@ class ObbzYii
 
     }
 
+    /**
+     * default upload url for app
+     * @param string $path
+     * @return string
+     */
     public static function uploadUrl($path = ''){
         $uploadUrl = \Yii::getAlias('@uploadUrl');
         return $uploadUrl . '/' . $path;
     }
 
+    /**
+     * referrerUrl with default url
+     * @param null $defaultUrl
+     * @return mixed|null|string
+     */
     public static function referrerUrl($defaultUrl = null){
         if(!isset(\Yii::$app->request->referrer)){
             if(self::isExternalUrl($defaultUrl)){
@@ -93,12 +103,38 @@ class ObbzYii
     }
 
     /**
+     * generate url by form params
+     * @param $url - default url array of yii
+     * @param Model $form
+     * @param array $params
+     * @return string
+     */
+    public static function formParamsUrl($url, $form, $params = []){
+        $urlString = Url::to($url);
+        $className = \yii\helpers\StringHelper::basename(get_class($form));
+        $tail = '?';
+        if (strpos($urlString, '?') !== false) {
+            $tail = '&';
+        }
+        foreach($params as $key => $value){
+            $tail .= $className . '[' . $key . ']=' . $value . '&';
+        }
+        $tail= rtrim($tail,"&");
+
+
+        return $urlString.$tail;
+    }
+
+
+    #region REQUEST
+
+    /**
      * @return \yii\console\Request|\yii\web\Request
      */
     public static function request(){
         return \Yii::$app->request;
     }
-    #region REQUEST
+
     /**
      * @param null $name
      * @param null $defaultValue
@@ -120,6 +156,8 @@ class ObbzYii
     public static function queryParams(){
         return \Yii::$app->request->queryParams;
     }
+
+    #endregion
 
     /**
      * @return CoreFormatter
