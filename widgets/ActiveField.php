@@ -7,6 +7,7 @@
 
 namespace obbz\yii2\widgets;
 
+use kartik\daterange\DateRangePicker;
 use kartik\datetime\DateTimePicker;
 use kartik\time\TimePicker;
 use kartik\widgets\DatePicker;
@@ -18,6 +19,7 @@ use pudinglabs\tagsinput\TagsinputWidget;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\captcha\Captcha;
+use yii\helpers\FormatConverter;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -449,8 +451,19 @@ class ActiveField extends \yii\widgets\ActiveField
         ], $config));
     }
 
-    public function dateRangePicker(){
-
+    public function dateRangePicker($config = []){
+        $dateFormat = ObbzYii::formatter()->dateFormat;
+        return $this->widget(DateRangePicker::className(), array_merge([
+            'model'=>$this->model,
+            'attribute' => $this->attribute,
+            'convertFormat'=>true,
+            'pluginOptions' => [
+                'timePicker' => false,
+                'locale'=>[
+                    'format'=>FormatConverter::convertDateIcuToPhp($dateFormat)
+                ],
+            ]
+        ], $config));
     }
 
     /**

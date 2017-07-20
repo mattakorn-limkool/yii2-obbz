@@ -36,6 +36,10 @@ class ObbzYii
         return \Yii::$app;
     }
 
+    public static function appId(){
+        return \Yii::$app->id;
+    }
+
     /**
      * @return string
      */
@@ -73,6 +77,23 @@ class ObbzYii
             return '';
         }
 
+    }
+
+    public static function isFrontend(){
+        return \Yii::$app->id == self::APP_FRONTEND_ID ? true : false;
+    }
+    public static function isBackend(){
+        return \Yii::$app->id == self::APP_BACKEND_ID ? true : false;
+    }
+    public static function isApi(){
+        return \Yii::$app->id == self::APP_API_ID ? true : false;
+    }
+    public static function isConsole(){
+        return \Yii::$app->id == self::APP_CONSOLE_ID ? true : false;
+    }
+
+    public static function cacheKey($key){
+        return self::appId() . '_' . $key;
     }
 
     /**

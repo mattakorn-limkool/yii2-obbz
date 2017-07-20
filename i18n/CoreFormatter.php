@@ -192,6 +192,11 @@ class CoreFormatter extends Formatter
         return $time =  $this->timeDbFromFormat($value, 'time', $fromFormat);
     }
 
+    public function asDefaultDateFormatToTimestamp($value){
+        $format = FormatConverter::convertDateIcuToPhp($this->dateFormat);
+        return \DateTime::createFromFormat($format, $value)->getTimestamp();
+    }
+
     /**
      * @param $datetime
      * @param $type
@@ -224,6 +229,9 @@ class CoreFormatter extends Formatter
 //        echo $format . ' ' . $datetime;
 //        return \DateTime::createFromFormat($format, $datetime, new \DateTimeZone('UTC'));
     }
+
+
+
 
 
 

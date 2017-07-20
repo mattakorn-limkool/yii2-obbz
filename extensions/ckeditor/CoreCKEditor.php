@@ -7,7 +7,7 @@
 namespace obbz\yii2\extensions\ckeditor;
 
 use dosamigos\ckeditor\CKEditor;
-use dosamigos\ckeditor\CKEditorWidgetAsset;
+use obbz\yii2\extensions\ckeditor\CKEditorWidgetAsset;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\InputWidget;

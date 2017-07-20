@@ -321,17 +321,17 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         return $this;
     }
 
-//    public function hiddenInput($options = [])
-//    {
-//
-////        $options = array_merge($this->inputOptions, $options);
-////        $this->adjustLabelFor($options);
-////        $this->template = "{input}";
-////        $this->labelOptions = [];
-////        $this->parts['{input}'] = Html::activeHiddenInput($this->model, $this->attribute, $options);
-//
-//        return $this->render(Html::activeHiddenInput($this->model, $this->attribute, $options));
-//    }
+    public function hiddenInput($options = [])
+    {
+
+        $options = array_merge($this->inputOptions, $options);
+        $this->template = "{input}";
+        $this->options = [];
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::activeHiddenInput($this->model, $this->attribute, $options);
+
+        return $this;
+    }
 
     /**
      * @inheritdoc

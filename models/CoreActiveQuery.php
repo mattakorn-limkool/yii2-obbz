@@ -10,6 +10,7 @@ namespace obbz\yii2\models;
 
 use Codeception\Lib\Interfaces\ActiveRecord;
 use obbz\yii2\utils\ObbzYii;
+use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -103,7 +104,7 @@ class CoreActiveQuery extends ActiveQuery
         $query = $this->published()->defaultOrder();
         $modelClass = $this->modelClass;
         if($cache){
-            $key = $modelClass::CACHE_PUBLISHED_ALL;
+            $key = ObbzYii::cacheKey($modelClass::CACHE_PUBLISHED_ALL);
             $data = ObbzYii::cache()->get($key);
             if($data === false){
                 // flush cache when admin edit
@@ -124,7 +125,7 @@ class CoreActiveQuery extends ActiveQuery
     public function activeAll($cache = true){
         $modelClass = $this->modelClass;
         if($cache){
-            $key = $modelClass::CACHE_ACTIVE_ALL;
+            $key = ObbzYii::cacheKey($modelClass::CACHE_ACTIVE_ALL);
             $data = ObbzYii::cache()->get($key);
             if($data === false){
                 // flush cache when admin edit
@@ -141,6 +142,16 @@ class CoreActiveQuery extends ActiveQuery
         $data = $this->activeAll($cache);
         return !empty($data) ? $data[0] : null;
     }
+
+    public function byCache($query, $key, $duration = null, $dependency = null){
+        $data = ObbzYii::cache()->get($key);
+        if($data === false){
+            $data =  $query->all();
+            ObbzYii::cache()->set($key, $data, $duration, $dependency);
+            return $data;
+        }
+        return $data;
+    }
     #endregion
 
     #region data list
@@ -152,5 +163,7 @@ class CoreActiveQuery extends ActiveQuery
         return ArrayHelper::map($this->activeAll($cache), 'id', $showAttribute);
     }
     #endregion
+
+
 
 }
