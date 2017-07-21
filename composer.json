@@ -34,7 +34,6 @@
         "philippfrenzel/yii2fullcalendar":"*",
         "alexandernst/yii2-device-detect": "0.0.11",
 		"kop/yii2-scroll-pager": "dev-master",
-		"darkcs/yii2-infinite-scroll": "*",
 		"ijackua/yii2-sharelinks-widget": "dev-master",
 		"newerton/yii2-fancybox": "dev-master",
         "bupy7/yii2-flexslider": "dev-master",
