@@ -27,11 +27,17 @@ h1, h2, h3, h4, legend {
 /*#header-2 .header-inner {*/
     /*padding: 0px 0 15px;*/
 /*}*/
-
+.card.less-bottom{
+    margin-bottom: 10px;
+}
 
 .checkbox .input-helper:after {
     border-bottom: 2px solid #2196f3;
     border-left: 2px solid #2196f3;
+}
+
+.radio .input-helper:after {
+    background: #2196f3;
 }
 
 .input-group.fg-float{
