@@ -21,6 +21,7 @@
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-detail-view": "*",
         "kartik-v/yii2-widget-datepicker": "*",
+        "kartik-v/yii2-field-range": "dev-master",
         "zircote/swagger-php": "^2.0",
         "bower-asset/swagger-ui": "2.1.4",
         "mongosoft/yii2-upload-behavior": "*",

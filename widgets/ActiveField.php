@@ -7,8 +7,9 @@
 
 namespace obbz\yii2\widgets;
 
-use kartik\daterange\DateRangePicker;
+
 use kartik\datetime\DateTimePicker;
+use kartik\field\FieldRange;
 use kartik\time\TimePicker;
 use kartik\widgets\DatePicker;
 use kartik\widgets\TouchSpin;
@@ -451,20 +452,27 @@ class ActiveField extends \yii\widgets\ActiveField
         ], $config));
     }
 
-    public function dateRangePicker($config = []){
-        $dateFormat = ObbzYii::formatter()->dateFormat;
-        return $this->widget(DateRangePicker::className(), array_merge([
-            'model'=>$this->model,
-            'attribute' => $this->attribute,
-            'convertFormat'=>true,
-            'pluginOptions' => [
-                'timePicker' => false,
-                'locale'=>[
-                    'format'=>FormatConverter::convertDateIcuToPhp($dateFormat)
-                ],
-            ]
-        ], $config));
-    }
+//    public function dateRangePicker($attributeTo, $config = []){
+//        $dateFormat = ObbzYii::formatter()->dateFormat;
+//
+//        $this->parts['{input}'] = FieldRange::widget(array_merge([
+//            'form'=>$this->form,
+//            'model'=>$this->model,
+//            'attribute1' => $this->attribute,
+//            'attribute2' => $attributeTo,
+//            'type' => FieldRange::INPUT_DATE,
+//            'separator' => '-',
+////            'attribute' => $this->attribute,
+////            'convertFormat'=>true,
+////            'pluginOptions' => [
+////                'timePicker' => false,
+////                'locale'=>[
+////                    'format'=>FormatConverter::convertDateIcuToPhp($dateFormat)
+////                ],
+////            ]
+//        ], $config));
+//        return $this;
+//    }
 
     /**
      * @doc https://github.com/pudinglabs/yii2-bootstrap-tags-input

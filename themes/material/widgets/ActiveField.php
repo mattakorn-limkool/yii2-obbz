@@ -283,7 +283,8 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                 $options['item'] = function($index, $label, $name, $checked, $value) {
 
                     $return = '<label class="radio radio-inline m-r-20">';
-                    $return .= '<input type="radio" name="' . $name . '" value="' . $value . '">';
+                    $return .= Html::radio($name, $checked, ['value'=>$value]);
+
                     $return .= '<i class="input-helper"></i>';
                     $return .= '<span>' . ucwords($label) . '</span>';
                     $return .= '</label>';
@@ -296,7 +297,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
             $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
             $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions) {
                 $return = '<div class="radio m-b-15"><label >';
-                $return .= '<input type="radio" name="' . $name . '" value="' . $value . '">';
+                $return .= Html::radio($name, $checked, ['value'=>$value]);
                 $return .= '<i class="input-helper"></i>';
                 $return .= '<span>' . ucwords($label) . '</span>';
                 $return .= '</label></div>';
@@ -478,7 +479,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->template = $this->dateTimePickerTemplate;
         $this->options = ['class' => 'form-group fg-padding'];
         $dateFormat = ObbzYii::formatter()->dateFormat;
-        return \yii\bootstrap\ActiveField::widget(DatePicker::className(), array_merge([
+        return parent::widget(DatePicker::className(), array_merge([
             'type' => DatePicker::TYPE_COMPONENT_APPEND,
             'pluginOptions' => [
                 'autoclose' => true,
@@ -491,7 +492,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->template = $this->dateTimePickerTemplate;
         $this->options = ['class' => 'form-group fg-padding'];
         $dateFormat = ObbzYii::formatter()->timeFormat;
-        return \yii\bootstrap\ActiveField::widget(TimePicker::className(), array_merge([
+        return parent::widget(TimePicker::className(), array_merge([
             'name' => $this->attribute,
             'pluginOptions' => [
                 'showMeridian' => false,
@@ -505,7 +506,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->template = $this->dateTimePickerTemplate;
         $this->options = ['class' => 'form-group fg-padding'];
         $datetimeFormat = ObbzYii::formatter()->datetimeFormat;
-        return \yii\bootstrap\ActiveField::widget(DateTimePicker::className(), array_merge([
+        return parent::widget(DateTimePicker::className(), array_merge([
             'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
             'pluginOptions' => [
                 'autoclose' => true,
