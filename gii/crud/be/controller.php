@@ -42,7 +42,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use obbz\yii2\utils\ObbzYii;
 use backend\components;
-use backend\components\Roles;
+use common\components\Roles;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.

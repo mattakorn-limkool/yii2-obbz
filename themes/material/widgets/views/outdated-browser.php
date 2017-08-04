@@ -7,7 +7,7 @@ use obbz\yii2\utils\ObbzYii;
 
 ?>
 
-<!--[if lt IE 9]>
+<!--[if lt IE 10]>
 
 <div class="ie-warning">
     <h1 class="c-white"><?php echo \Yii::t('obbz', 'Warning!!'); ?></h1>

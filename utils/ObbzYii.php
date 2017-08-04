@@ -92,9 +92,7 @@ class ObbzYii
         return \Yii::$app->id == self::APP_CONSOLE_ID ? true : false;
     }
 
-    public static function cacheKey($key){
-        return self::appId() . '_' . $key;
-    }
+
 
     /**
      * default upload url for app
@@ -338,6 +336,10 @@ class ObbzYii
         return \Yii::$app->cache;
     }
 
+    public static function cacheKey($key){
+        return self::appId() . '_' . $key;
+    }
+
     /**
      * get current user and mapping to db
      * @return \common\models\User
@@ -380,6 +382,10 @@ class ObbzYii
 
         }
         return '';
+    }
+
+    public static function rgb2hex($red, $green, $blue){
+        return sprintf("#%02x%02x%02x", $red, $green, $blue);
     }
 
 
@@ -494,4 +500,5 @@ class ObbzYii
             $view->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
         }
     }
+
 }

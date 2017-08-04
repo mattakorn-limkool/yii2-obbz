@@ -24,7 +24,7 @@ use yii\web\JsExpression;
 class ActiveField extends \obbz\yii2\widgets\ActiveField
 {
     public $options = ['class' => 'form-group fg-float'];
-    public $template = "{addonPrepend}\n<div class=\"fg-line\">{label}\n{input}\n{hint}</div>\n{addonAppend}\n{error}"; // for floating label
+    public $template = "{addonPrepend}\n<div class=\"fg-line\">{label}\n{input}</div>\n{addonAppend}\n{hint}\n{error}"; // for floating label
     public $labelOptions = ['class' => 'fg-label'];
 
     /**
@@ -369,6 +369,18 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
      */
     public function fileInput($options = [])
     {
+        $filePath = $this->model->getUploadUrl($this->attribute);
+        $downloadLink = '';
+        if(!empty($filePath)){
+            $downloadLink = \yii\helpers\Html::a(
+                '<i class="fa fa-download"></i> ' . \Yii::t('obbz', 'Download File'),
+                $filePath,
+                [
+                    'target'=>'_blank'
+                ]
+            );
+        }
+
         $this->disableFloatingLabel();
         $this->template = "{label}\n{input}\n{hint}\n{error}";
         $labelName = $this->model->getAttributeLabel($this->attribute);
@@ -388,7 +400,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                         <span class="fileinput-exists">'. \Yii::t('obbz', 'Change') .'</span>
                         '. Html::activeFileInput($this->model, $this->attribute, $options) .'
                     </span>
-                    <span class="fileinput-filename"></span>
+                    <span class="fileinput-filename">'. $downloadLink .'</span>
                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
                 </div>';
 
