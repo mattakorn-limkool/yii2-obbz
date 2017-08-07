@@ -40,12 +40,7 @@ foreach ($relations as $name => $relation) {
 <?php foreach ($tableSchema->columns as $column): ?>
     * @property <?= "{$column->phpType} \${$column->name}\n" ?>
 <?php endforeach; ?>
-<?php if (!empty($relations)): ?>
-    *
-    <?php foreach ($relations as $name => $relation): ?>
-        * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
-    <?php endforeach; ?>
-<?php endif; ?>
+
 */
 class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
@@ -101,6 +96,14 @@ class <?= $className ?>Base extends <?= '\\' . ltrim($generator->baseClass, '\\'
         $t = self::tableName();
         <?= implode("\n        ", $searchConditions) ?>
 	}
+
+    public function attributeLabels(){
+        return array_merge(parent::attributeLabels(),[
+        <?php foreach ($labels as $name => $label): ?>
+        <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
+        <?php endforeach; ?>
+]);
+    }
 
     public function afterSave($insert, $changedAttributes)
     {

@@ -104,8 +104,7 @@ class CoreActiveQuery extends ActiveQuery
         $query = $this->published()->defaultOrder();
         $modelClass = $this->modelClass;
         if($cache){
-//            $key = ObbzYii::cacheKey($modelClass::CACHE_PUBLISHED_ALL);
-            $key = $modelClass::CACHE_PUBLISHED_ALL;
+            $key = $this->getCacheKey($modelClass::CACHE_PUBLISHED_ALL);
             $data = ObbzYii::cache()->get($key);
             if($data === false){
                 // flush cache when admin edit
@@ -126,8 +125,8 @@ class CoreActiveQuery extends ActiveQuery
     public function activeAll($cache = true){
         $modelClass = $this->modelClass;
         if($cache){
-//            $key = ObbzYii::cacheKey($modelClass::CACHE_ACTIVE_ALL);
-            $key = $modelClass::CACHE_ACTIVE_ALL;
+
+            $key = $this->getCacheKey($modelClass::CACHE_ACTIVE_ALL);
             $data = ObbzYii::cache()->get($key);
             if($data === false){
                 // flush cache when admin edit
@@ -154,6 +153,10 @@ class CoreActiveQuery extends ActiveQuery
         }
         return $data;
     }
+    public function getCacheKey($key){
+        $modelClass = $this->modelClass;
+        return $modelClass::CACHE_PREFIX . $key;
+    }
     #endregion
 
     #region data list
@@ -165,6 +168,8 @@ class CoreActiveQuery extends ActiveQuery
         return ArrayHelper::map($this->activeAll($cache), 'id', $showAttribute);
     }
     #endregion
+
+
 
 
 

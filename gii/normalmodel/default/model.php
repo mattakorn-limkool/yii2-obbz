@@ -15,6 +15,11 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use obbz\yii2\utils\ObbzYii;
+/**
+<?php if (!empty($relations)): ?>
+
+    <?php foreach ($relations as $name => $relation): ?>* @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?><?php endforeach; ?><?php endif; ?>*/
+
 
 class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'Base' . "\n" ?>
 {
@@ -32,11 +37,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
     }
 
     public function attributeLabels(){
-        return array_merge(parent::attributeLabels(),[
-        <?php foreach ($labels as $name => $label): ?>
-        <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
-        <?php endforeach; ?>
-]);
+        return array_merge(parent::attributeLabels(),[]);
     }
 	
 <?php foreach ($relations as $name => $relation): ?>

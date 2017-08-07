@@ -2,3 +2,11 @@
     background-color: #1dabff;
     padding: 14px;
 }
+.swagger-section #header #logo {
+     background: none;
+     padding: 0;
+}
+
+.swagger-section #explore {
+    background-color: #29769a;
+}

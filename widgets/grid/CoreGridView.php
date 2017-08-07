@@ -42,12 +42,7 @@ class CoreGridView extends GridView
             $pagination = $this->dataProvider->pagination = false;
 
 
-            if($this->enableSelectedAction){
-                array_unshift($this->columns, [
-                    'class' => \obbz\yii2\widgets\grid\CoreCheckboxColumn::className(),
-                    'options'=>['style'=>'width: 50px'],
-                ]);
-            }
+
             if($this->sortableFirstColumn){
                 array_unshift($this->columns, ['class' => \kotchuprik\sortable\grid\Column::className()]);
             }
@@ -60,6 +55,13 @@ class CoreGridView extends GridView
                     return $rowOptionsArray;
                 };
             }
+        }
+
+        if($this->enableSelectedAction){
+            array_unshift($this->columns, [
+                'class' => \obbz\yii2\widgets\grid\CoreCheckboxColumn::className(),
+                'options'=>['style'=>'width: 50px'],
+            ]);
         }
         parent::init();
     }

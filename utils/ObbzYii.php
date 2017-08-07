@@ -336,9 +336,6 @@ class ObbzYii
         return \Yii::$app->cache;
     }
 
-    public static function cacheKey($key){
-        return self::appId() . '_' . $key;
-    }
 
     /**
      * get current user and mapping to db

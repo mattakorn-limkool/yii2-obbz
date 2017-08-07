@@ -35,7 +35,6 @@ class CoreActiveRecord extends CoreBaseActiveRecord
     public $statusPublish;
 
 
-
     /**
      * default rules for core model
      * @return array

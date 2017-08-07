@@ -24,4 +24,17 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
         }
         return $result;
     }
+
+    /**
+     * @param Model[] $data - array of Model
+     * @param string $field - attribute name for search
+     * @return array of field value
+     */
+    public static function prepareInQueryArray($data, $field){
+        $result = [];
+        foreach($data as $model){
+            $result[] = $model->$field;
+        }
+        return $result;
+    }
 }

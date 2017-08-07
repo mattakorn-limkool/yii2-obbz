@@ -33,7 +33,11 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     const AUTODATE_DBTYPE_DATE = 'date';
     const AUTODATE_DBTYPE_DATETIME = 'datetime';
 
+    const CACHE_PREFIX = '';
+
     public $uploadFolder;
+
+
     /**
      * Example.  [
      *              [
@@ -65,18 +69,18 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         return in_array($this->scenario, $arrayScenario);
     }
 
-//    public function scenarios(){
-//        $scenarios = parent::scenarios();
-//        $scenarios[self::SCENARIO_SEARCH] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_CREATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_UPDATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_DELETE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_SEARCH] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_CREATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_UPDATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_DELETE] = $scenarios['default'];
-//        return $scenarios;
-//    }
+    public function scenarios(){
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_SEARCH] = $scenarios['default'];
+        $scenarios[self::SCENARIO_CREATE] = $scenarios['default'];
+        $scenarios[self::SCENARIO_UPDATE] = $scenarios['default'];
+        $scenarios[self::SCENARIO_DELETE] = $scenarios['default'];
+        $scenarios[self::SCENARIO_BE_SEARCH] = $scenarios['default'];
+        $scenarios[self::SCENARIO_BE_CREATE] = $scenarios['default'];
+        $scenarios[self::SCENARIO_BE_UPDATE] = $scenarios['default'];
+        $scenarios[self::SCENARIO_BE_DELETE] = $scenarios['default'];
+        return $scenarios;
+    }
 
     public function init(){
 
@@ -84,6 +88,11 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             $this->uploadFolder = $this->tableName();
         }
         parent::init();
+    }
+
+    public static function getCacheKey($key){
+        $className = self::className();
+        return $className::CACHE_PREFIX . $key;
     }
 
 //    public function rules()

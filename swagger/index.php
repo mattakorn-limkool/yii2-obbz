@@ -86,13 +86,21 @@ CustomAsset::register($this);
 <div id='header'>
   <?php if($showToolBar): ?>
     <div class="swagger-ui-wrap">
-      <a id="logo" href="http://swagger.io">swagger</a>
+      <a id="logo" ><?php echo \Yii::$app->name ?></a>
       <form id='api_selector'>
         <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
         <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="password"/></div>
         <div class='input'><a id="explore" href="#" data-sw-translate>Explore</a></div>
       </form>
     </div>
+  <?php else: ?>
+  <div class="swagger-ui-wrap">
+    <a id="logo" ><?php echo \Yii::$app->name ?></a>
+<!--    <form id='api_selector'>-->
+<!--      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="password"/></div>-->
+<!--      <div class='input'><a id="explore" href="#" data-sw-translate>Explore</a></div>-->
+<!--    </form>-->
+  </div>
   <?php endif; ?>
 </div>
 

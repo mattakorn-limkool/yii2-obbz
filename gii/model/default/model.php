@@ -15,13 +15,17 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use obbz\yii2\utils\ObbzYii;
+/**
+<?php if (!empty($relations)): ?>
+
+<?php foreach ($relations as $name => $relation): ?>* @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?><?php endforeach; ?><?php endif; ?>*/
 
 class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'Base' . "\n" ?>
 {
 
     public function rules(){
         return array_merge(parent::rules(),[
-			['image', 'file', 'extensions' => 'jpg', 'on'=>array_merge($this->scenarioUpdate(), $this->scenarioCreate())],
+			['image', 'file', 'extensions' => 'jpg', 'on'=>$this->scenarioCU()],
         ]);
     }
 
@@ -29,17 +33,13 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
         return array_merge(parent::behaviors(),[
 			$this->defaultImgBehavior('image', [
                     'thumb'=> ['width'=>300, 'quality' => 100]
-                ], ['scenarios' => array_merge($this->scenarioUpdate(), $this->scenarioCreate())]) ,
+                ], ['scenarios' => $this->scenarioCU()]) ,
 			// other behavior
         ]);
     }
 
     public function attributeLabels(){
-        return array_merge(parent::attributeLabels(),[
-        <?php foreach ($labels as $name => $label): ?>
-        <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
-        <?php endforeach; ?>
-]);
+        return array_merge(parent::attributeLabels(),[]);
     }
 	
 <?php foreach ($relations as $name => $relation): ?>
