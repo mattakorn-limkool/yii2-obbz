@@ -38,7 +38,7 @@
 		"newerton/yii2-fancybox": "dev-master",
         "bupy7/yii2-flexslider": "dev-master",
 		"cybercog/yii2-google-analytics": "*",
-        "phpoffice/phpexcel": "~1.8",
+        "moonlandsoft/yii2-phpexcel": "*",
         "php": ">=5.3.0"
     },
 	"require-dev": {
