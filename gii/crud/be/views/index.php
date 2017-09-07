@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= "		<?= " ?>\obbz\yii2\widgets\grid\CoreGridView::widget([
 				'dataProvider' => $dataProvider,
                 //'sortableEnable'=>false,
-				//'enableSelectedAction'=>false,
+				'enableSelectedAction'=>false,
 				<?= !empty($generator->searchModelClass) ? "//'filterModel' => \$searchModel,\n        		'columns' => [\n" : "'columns' => [\n"; ?>
 					// ['class' => 'yii\grid\SerialColumn'],
 
@@ -96,7 +96,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 					],*/
 					[
 						'class' => obbz\yii2\widgets\grid\CoreActionColumn::className(),
-						// 'enableHeaderAction'  => false,
+						'enableHeaderAction'  => false,
 					],
                 ],
             ]); ?>

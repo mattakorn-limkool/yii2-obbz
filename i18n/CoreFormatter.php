@@ -157,7 +157,7 @@ class CoreFormatter extends Formatter
 //    }
 
     /**
-     * convert date from default format to db format
+     * convert date input format from default format to db stored
      * @param $value
      * @param null $fromFormat
      * @return string
@@ -169,7 +169,7 @@ class CoreFormatter extends Formatter
     }
 
     /**
-     * convert datetime from default format to db format
+     * convert datetime input format from default format to db stored
      * @param $value
      * @param null $fromFormat
      * @return string
@@ -181,7 +181,7 @@ class CoreFormatter extends Formatter
     }
 
     /**
-     * convert time from default format to db format
+     *convert time input format from default format to db stored
      * @param $value
      * @param null $fromFormat
      * @return string
@@ -191,6 +191,7 @@ class CoreFormatter extends Formatter
             $fromFormat = $this->timeFormat;
         return $time =  $this->timeDbFromFormat($value, 'time', $fromFormat);
     }
+
 
     public function asDefaultDateFormatToTimestamp($value){
         $format = FormatConverter::convertDateIcuToPhp($this->dateFormat);
@@ -223,8 +224,8 @@ class CoreFormatter extends Formatter
         }else{
             $dbFormat = self::DB_TIME_FORMAT;
         }
-
-//        ObbzYii::debug($dbFormat);
+//        $dbFormat = self::DB_DATETIME_FORMAT;
+//        ObbzYii::debug($utcDatetime);
         return $utcDatetime->format($dbFormat);
 //        echo $format . ' ' . $datetime;
 //        return \DateTime::createFromFormat($format, $datetime, new \DateTimeZone('UTC'));

@@ -171,6 +171,13 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
             $this->options = ['class' => 'form-group fg-padding'];
         }
 
+        if($this->form->layout === 'horizontal'){
+            $this->label(true);
+            $this->options = ['class' => 'form-group fg-padding'];
+            $this->horizontalCssClasses['offset'] = "";
+            return parent::dropDownList($items, $options) ;
+        }
+
         // parent dropDownList
 
 //        $options = array_merge($this->inputOptions, $options);
@@ -332,17 +339,6 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         return $this;
     }
 
-    public function hiddenInput($options = [])
-    {
-
-        $options = array_merge($this->inputOptions, $options);
-        $this->template = "{input}";
-        $this->options = [];
-        $this->adjustLabelFor($options);
-        $this->parts['{input}'] = Html::activeHiddenInput($this->model, $this->attribute, $options);
-
-        return $this;
-    }
 
     /**
      * @inheritdoc
@@ -616,12 +612,16 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         if ($layout === 'horizontal') {
             $config['template'] = "{label}\n{beginWrapper}\n{input}\n{error}\n{endWrapper}\n{hint}";
             $cssClasses = [
-                'offset' => 'col-sm-offset-3',
+//                'offset' => 'col-sm-offset-3',
+                'offset' => '',
                 'label' => 'col-sm-3',
                 'wrapper' => 'col-sm-6',
                 'error' => '',
                 'hint' => 'col-sm-3',
             ];
+//            if ($this->label === false) {
+//                $cssClasses['offset'] = 'col-sm-offset-3';
+//            }
             if (isset($instanceConfig['horizontalCssClasses'])) {
                 $cssClasses = ArrayHelper::merge($cssClasses, $instanceConfig['horizontalCssClasses']);
             }

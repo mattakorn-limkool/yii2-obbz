@@ -7,8 +7,13 @@
 namespace obbz\yii2\behaviors;
 
 
+use obbz\yii2\utils\UploadedFile;
+
 class UploadBehavior extends \mongosoft\file\UploadBehavior
 {
+//    public $isBase64Upload = false;
+
+
     /**
      * Deletes old file.
      * @param string $attribute
@@ -22,4 +27,14 @@ class UploadBehavior extends \mongosoft\file\UploadBehavior
             unlink($path);
         }
     }
+
+//    /**
+//     * @param UploadedFile $file
+//     * @param string $path
+//     * @return bool
+//     */
+//    protected function save($file, $path)
+//    {
+//        return $file->saveAs($path, $this->deleteTempFile, $isBase64Upload);
+//    }
 }

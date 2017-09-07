@@ -161,13 +161,13 @@ class UploadImageBehavior extends UploadBehavior
         $filename = basename($path);
         $thumb = $this->getThumbFileName($filename, $profile);
         $thumbPath = dirname($path) . DIRECTORY_SEPARATOR . $thumb;
-        $thumbUrl = dirname($url) . '/' . $thumb;
+        $thumbUrl =  dirname($url) . '/' . $thumb;
 
         if (!is_file($thumbPath)) {
             $this->generateImageThumb($this->thumbs[$profile], $path, $thumbPath);
         }
 
-        return $thumbUrl;
+        return Yii::getAlias($thumbUrl);
     }
 
     /**

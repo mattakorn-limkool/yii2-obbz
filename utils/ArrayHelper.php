@@ -7,6 +7,8 @@
 namespace obbz\yii2\utils;
 
 
+use yii\base\Model;
+
 class ArrayHelper extends \yii\helpers\ArrayHelper
 {
     /**

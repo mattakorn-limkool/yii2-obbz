@@ -42,7 +42,7 @@ class HttpHandler
      * @param string $title
      * @return null
      */
-    public static function badRequest($message = null, $title = "Bad request"){
+    public static function badRequest($message = "Bad request", $title = "Bad request"){
         \Yii::$app->response->statusCode = 400;
         return self::abstractResult($message, $title);
     }

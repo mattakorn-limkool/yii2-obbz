@@ -1,7 +1,7 @@
 <?php
 namespace obbz\yii2\widgets;
 
-use backend\components\Roles;
+use common\components\Roles;
 use \Yii;
 use yii\web\View;
 

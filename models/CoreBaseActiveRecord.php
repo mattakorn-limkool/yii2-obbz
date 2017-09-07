@@ -29,6 +29,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 
     const AUTODATE_TYPE_DATE = 'date';
     const AUTODATE_TYPE_DATETIME = 'datetime';
+    const AUTODATE_TYPE_TIME = 'time';
 
     const AUTODATE_DBTYPE_DATE = 'date';
     const AUTODATE_DBTYPE_DATETIME = 'datetime';
@@ -208,6 +209,8 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
                         $this->$field =  ObbzYii::formatter()->asDate($this->$field);
                     }else if($type == self::AUTODATE_TYPE_DATETIME){
                         $this->$field =  ObbzYii::formatter()->asDatetime($this->$field);
+                    }else if($type == self::AUTODATE_TYPE_TIME){
+                        $this->$field =  ObbzYii::formatter()->asTime($this->$field);
                     }
                 }
             }
@@ -218,10 +221,10 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     public function autoDate2db(){
         foreach($this->autoDateFields as $fieldsConf){
             #region validate
-            $dbType = ArrayHelper::getValue($fieldsConf, 'dbType', self::AUTODATE_TYPE_DATE);
-            if(!isset($dbType)){
-                throw new ErrorException('Must be set dbType of AutoDateFields items');
-            }
+//            $dbType = ArrayHelper::getValue($fieldsConf, 'dbType', self::AUTODATE_TYPE_DATE);
+//            if(!isset($dbType)){
+//                throw new ErrorException('Must be set dbType of AutoDateFields items');
+//            }
             $field = ArrayHelper::getValue($fieldsConf, 'field');
             if(!isset($field)){
                 throw new ErrorException('Must be set field of AutoDateFields items');
@@ -232,11 +235,19 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             if(!empty($this->$field)){
                 $scenarios = ArrayHelper::getValue($fieldsConf, 'scenarios', $this->scenarioCU());
                 if($this->isScenario($scenarios)){
-                    if($dbType == self::AUTODATE_DBTYPE_DATETIME && $type == self::AUTODATE_TYPE_DATETIME){
-                        $this->$field =  ObbzYii::formatter()->asDbDatetime($this->$field);
-                    }else{
+                    if($type == self::AUTODATE_TYPE_DATE){
                         $this->$field =  ObbzYii::formatter()->asDbDate($this->$field);
+                    }else if($type == self::AUTODATE_TYPE_DATETIME){
+                        $this->$field =  ObbzYii::formatter()->asDbDatetime($this->$field);
+                    }else if($type == self::AUTODATE_TYPE_TIME){
+                        $this->$field =  ObbzYii::formatter()->asDbTime($this->$field);
                     }
+//                    $this->$field =  ObbzYii::formatter()->asDbDatetime($this->$field);
+//                    if($dbType == self::AUTODATE_DBTYPE_DATETIME && $type == self::AUTODATE_TYPE_DATETIME){
+//                        $this->$field =  ObbzYii::formatter()->asDbDatetime($this->$field);
+//                    }else{
+//                        $this->$field =  ObbzYii::formatter()->asDbDate($this->$field);
+//                    }
                 }
             }
 
