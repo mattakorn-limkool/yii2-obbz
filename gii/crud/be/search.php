@@ -72,7 +72,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=>false,
-            'pagination'=>['pageSize'=>Yii::$app->params['default.pageSize']]
+            'pagination'=>['defaultPageSize'=>Yii::$app->params['default.pageSize']]
         ]);
 
 
@@ -106,7 +106,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=>false,
-            'pagination'=>['pageSize'=>Yii::$app->params['default.pageSize']]
+            'pagination'=>['defaultPageSize'=>Yii::$app->params['default.pageSize']]
         ]);
 
 
