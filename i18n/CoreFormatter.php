@@ -47,11 +47,28 @@ class CoreFormatter extends Formatter
      * @param $value
      * @return int|string
      */
-    public function asNumber($value){
+    public function asNumber($value, $shorten = false){
         if (empty($value)) {
             return '0';
         }
-        return number_format($value);
+        if($shorten){
+            if($value < 10000){
+                return number_format($value);
+            }
+            else if($value < 1000000){
+                return number_format($value / 1000) . 'K';
+            }
+            else if($value < 1000000000){
+                return number_format($value / 1000000) . 'M';
+            }
+            else {
+                // At least a billion
+                $n_format = number_format($value / 1000000000) . 'B';
+            }
+        }else{
+            return number_format($value);
+        }
+
     }
 
     public function asNumberPeriod($value){

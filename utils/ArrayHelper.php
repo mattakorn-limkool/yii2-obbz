@@ -8,6 +8,7 @@ namespace obbz\yii2\utils;
 
 
 use yii\base\Model;
+use yii\widgets\ListView;
 
 class ArrayHelper extends \yii\helpers\ArrayHelper
 {
@@ -38,5 +39,15 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
             $result[] = $model->$field;
         }
         return $result;
+    }
+
+    /**
+     * @param $widget ListView
+     * @param $currentIndex
+     * @return mixed
+     */
+    public static function getItemNumberViaWidget($widget, $currentIndex){
+        $totalCount = $widget->dataProvider->getPagination()->totalCount - $widget->dataProvider->getPagination()->getOffset();
+        return $totalCount - $currentIndex;
     }
 }
