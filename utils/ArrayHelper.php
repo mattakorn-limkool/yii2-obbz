@@ -50,4 +50,15 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
         $totalCount = $widget->dataProvider->getPagination()->totalCount - $widget->dataProvider->getPagination()->getOffset();
         return $totalCount - $currentIndex;
     }
+
+    /**
+     * @param $glue
+     * @param $array of model for implode
+     * @return string
+     */
+    public static function implodeByKey($glue, array $array){
+        $arrayImplode = array_keys($array);
+        return implode($glue, $arrayImplode);
+    }
+
 }

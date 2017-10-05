@@ -3,6 +3,7 @@
 namespace obbz\yii2\behaviors;
 
 use Imagine\Image\ManipulatorInterface;
+use obbz\yii2\utils\ObbzYii;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidParamException;
@@ -14,7 +15,15 @@ use yii\imagine\Image;
 class UploadImageBehavior extends UploadBehavior
 {
     /**
-     * @var string
+     * @var string|Closure align for default thumbnal if closure must be return align path for default thaumbnail img
+     *
+     * ```php
+     * function ($model, $behavior)
+     * ```
+     *
+     * - `$model`: the current model
+     * - `$behavior`: the current UploadImageBehavior instance
+     *
      */
     public $placeholder;
     /**
@@ -142,7 +151,7 @@ class UploadImageBehavior extends UploadBehavior
             $url = $this->resolvePath($this->thumbUrl);
             $fileName = $model->getOldAttribute($attribute);
             $thumbName = $this->getThumbFileName($fileName, $profile);
-
+            $abc = Yii::getAlias($url );
             return Yii::getAlias($url . '/' . $thumbName);
         } elseif ($this->placeholder) {
             return $this->getPlaceholderUrl($profile);
@@ -157,7 +166,13 @@ class UploadImageBehavior extends UploadBehavior
      */
     protected function getPlaceholderUrl($profile)
     {
-        list ($path, $url) = Yii::$app->assetManager->publish($this->placeholder);
+        if ($this->placeholder instanceof \Closure) {
+            $placeholderPath = call_user_func($this->placeholder, $this->owner, $this);
+        } else { // string
+            $placeholderPath = $this->placeholder;
+        }
+
+        list ($path, $url) = Yii::$app->assetManager->publish($placeholderPath);
         $filename = basename($path);
         $thumb = $this->getThumbFileName($filename, $profile);
         $thumbPath = dirname($path) . DIRECTORY_SEPARATOR . $thumb;
@@ -167,7 +182,7 @@ class UploadImageBehavior extends UploadBehavior
             $this->generateImageThumb($this->thumbs[$profile], $path, $thumbPath);
         }
 
-        return Yii::getAlias($thumbUrl);
+        return Yii::getAlias('@frontendUrl'.$thumbUrl);
     }
 
     /**

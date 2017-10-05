@@ -54,7 +54,13 @@ class SocialShare extends ShareLinks
         return self::shareUrl(self::SOCIAL_XING, $url);
     }
 
-
+    public static function registerMetaTags($seoParams){
+        foreach($seoParams as $key=>$param){
+            if($param != null){
+                \Yii::$app->view->registerMetaTag(['name'=>$key, 'content'=>$param], $key);
+            }
+        }
+    }
 
 
 }
