@@ -35,6 +35,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     const AUTODATE_DBTYPE_DATETIME = 'datetime';
 
     const CACHE_PREFIX = '';
+    const CACHE_PREFIX_API = 'api-';
 
     public $uploadFolder;
 
@@ -252,5 +253,16 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             }
 
         }
+    }
+
+    public function clearDefaultCacheApi(){
+        $className = self::className();
+        ObbzYii::cache()->delete(self::getCacheApiByKey($className::CACHE_PUBLISHED_ALL));
+        ObbzYii::cache()->delete(self::getCacheApiByKey($className::CACHE_ACTIVE_ALL));
+    }
+
+    public function getCacheApiByKey($key){
+        $className = self::className();
+        return $className::CACHE_PREFIX_API . $key;
     }
 }

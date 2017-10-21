@@ -15,7 +15,7 @@ use yii\imagine\Image;
 class UploadImageBehavior extends UploadBehavior
 {
     /**
-     * @var string|Closure align for default thumbnal if closure must be return align path for default thaumbnail img
+     * @var string|array|Closure align for default thumbnal if closure must be return align path for default thaumbnail img
      *
      * ```php
      * function ($model, $behavior)
@@ -168,7 +168,10 @@ class UploadImageBehavior extends UploadBehavior
     {
         if ($this->placeholder instanceof \Closure) {
             $placeholderPath = call_user_func($this->placeholder, $this->owner, $this);
-        } else { // string
+        }else if(is_array($this->placeholder)){
+            $placeholderPath = call_user_func($this->placeholder);
+        }
+        else { // string
             $placeholderPath = $this->placeholder;
         }
 
