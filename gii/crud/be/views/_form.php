@@ -64,18 +64,22 @@ use obbz\yii2\utils\ObbzYii;
 		
 		
 	</div>
-	<div class="form-group col-md-12 text-right">
+	<div class="form-group row">
+		<div class="col-md-offset-8 col-md-2 col-xs-6">
 		<?= "<?php echo " ?>\obbz\yii2\widgets\ButtonLink::widget([
 				'url'=>ObbzYii::referrerUrl(['index']),
 				'text'=>\Yii::t('app', 'Back'),
-				'prefixIcon'=>'chevron-circle-left'
+				'prefixIcon'=>'chevron-circle-left',
+				'btnClass'=>'default btn-block',
 			]); ?>
+		</div>
+		<div class="col-md-2  col-xs-6">
 			<?= "<?php echo " ?>\obbz\yii2\widgets\Button::widget([
 				'text'=><?= $generator->generateString('Save') ?>,
-				'btnClass'=>'primary',
+				'btnClass'=>'primary  btn-block',
 				'prefixIcon'=>'save'
 			]) ?>
-			
+		</div>
 	</div>
 	
 

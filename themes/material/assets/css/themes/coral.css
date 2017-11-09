@@ -1,0 +1,44 @@
+
+.btn-primary{
+    background: #CC4E46 !important;
+}
+.btn-danger{
+    background: #f49f36 !important;
+}
+a{
+    color: #CC4E46;
+}
+.tab-nav:not([data-tab-color]) > li > a:after {
+    background: #CC4E46;
+}
+.fg-line:not([class*=has-]):after {
+    background: #CC4E46;
+}
+.checkbox .input-helper::after {
+    border-bottom: 2px solid #CC4E46;
+    border-left: 2px solid #CC4E46;
+}
+.has-error .form-control {
+    border-color: #f49f36;
+}
+.has-error .help-block,
+.has-error .control-label,
+.has-error .radio,
+.has-error .checkbox,
+.has-error .radio-inline,
+.has-error .checkbox-inline,
+.has-error.radio label,
+.has-error.checkbox label,
+.has-error.radio-inline label,
+.has-error.checkbox-inline label {
+    color: #f49f36;
+}
+#header .logo a{
+    color: #fff;
+}
+.action-column-row a{
+    color: #000;
+}
+.action-column-row  a.btn-action-delete{
+    color: #fff;
+}

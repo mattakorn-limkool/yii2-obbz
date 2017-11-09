@@ -10,27 +10,31 @@ use yii\web\AssetBundle;
 class MaterialAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/obbz/yii2/themes/material/assets';
-
+    const THEME = "default";
 //    public $disableMainTitle = true;
 
-
-    public $css = [
-        //### theme ###
+    public function init(){
+        $this->css = [
+            //### theme ###
 //        'vendors/bower_components/fullcalendar/dist/fullcalendar.min.css',
-        'vendors/bower_components/animate.css/animate.min.css',
-        'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css',
-        'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css',
-        'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css',
-        'vendors/bower_components/lightgallery/light-gallery/css/lightGallery.css',
+            'vendors/bower_components/animate.css/animate.min.css',
+            'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css',
+            'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css',
+            'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css',
+            'vendors/bower_components/lightgallery/light-gallery/css/lightGallery.css',
 //        'vendors/bootgrid/jquery.bootgrid.min.css',
-        'css/app.css',
+            'css/app.css',
+            'css/themes/'. static::THEME . '.css',
 //        'css/app.min.1.css',
 //        'css/app.min.2.css',
 
-        // external font by google
-        'https://fonts.googleapis.com/css?family=Kanit',
-        'css/custom.css',
-    ];
+            // external font by google
+            'https://fonts.googleapis.com/css?family=Kanit',
+            'css/custom.css',
+        ];
+        parent::init();
+    }
+
     public $js = [
         //### theme ###
 //        'vendors/bower_components/jquery/dist/jquery.min.js',

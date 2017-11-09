@@ -71,18 +71,18 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         return in_array($this->scenario, $arrayScenario);
     }
 
-    public function scenarios(){
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_SEARCH] = $scenarios['default'];
-        $scenarios[self::SCENARIO_CREATE] = $scenarios['default'];
-        $scenarios[self::SCENARIO_UPDATE] = $scenarios['default'];
-        $scenarios[self::SCENARIO_DELETE] = $scenarios['default'];
-        $scenarios[self::SCENARIO_BE_SEARCH] = $scenarios['default'];
-        $scenarios[self::SCENARIO_BE_CREATE] = $scenarios['default'];
-        $scenarios[self::SCENARIO_BE_UPDATE] = $scenarios['default'];
-        $scenarios[self::SCENARIO_BE_DELETE] = $scenarios['default'];
-        return $scenarios;
-    }
+//    public function scenarios(){
+//        $scenarios = parent::scenarios();
+//        $scenarios[self::SCENARIO_SEARCH] = $scenarios['default'];
+//        $scenarios[self::SCENARIO_CREATE] = $scenarios['default'];
+//        $scenarios[self::SCENARIO_UPDATE] = $scenarios['default'];
+//        $scenarios[self::SCENARIO_DELETE] = $scenarios['default'];
+//        $scenarios[self::SCENARIO_BE_SEARCH] = $scenarios['default'];
+//        $scenarios[self::SCENARIO_BE_CREATE] = $scenarios['default'];
+//        $scenarios[self::SCENARIO_BE_UPDATE] = $scenarios['default'];
+//        $scenarios[self::SCENARIO_BE_DELETE] = $scenarios['default'];
+//        return $scenarios;
+//    }
 
     public function init(){
 

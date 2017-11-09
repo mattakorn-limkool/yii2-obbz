@@ -51,6 +51,35 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
     }
 <?php endforeach; ?>
 
+//	public function beforeValidate() {
+//        if(parent::beforeValidate()) {
+//            // your code here
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }
 
+//    public function afterValidate()
+//    {
+//        // your code here
+//        parent::afterValidate();
+//    }
+
+//    public function beforeSave($insert)
+//    {
+//        if (parent::beforeSave($insert)) {
+//           // your code here
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+
+//    public function afterSave($insert, $changedAttributes)
+//    {
+//        // your code here
+//        parent::afterSave($insert, $changedAttributes);
+//    }
    
 }

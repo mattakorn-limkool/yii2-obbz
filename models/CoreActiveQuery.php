@@ -41,6 +41,13 @@ class CoreActiveQuery extends ActiveQuery
         $modelClass = $this->modelClass;
         return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->all();
     }
+    // utilities for list
+    public function allList($pk = 'id', $showAttribute = 'title'){
+        $modelClass = $this->modelClass;
+        $t = $modelClass::tableName() . '.';
+        $data = $this->all();
+        return ArrayHelper::map($data, $pk, $showAttribute);
+    }
     #endregion
 
     #region default scope
@@ -167,6 +174,7 @@ class CoreActiveQuery extends ActiveQuery
     public function activeList($showAttribute = 'title', $cache  = true){ // for be
         return ArrayHelper::map($this->activeAll($cache), 'id', $showAttribute);
     }
+
     #endregion
 
 

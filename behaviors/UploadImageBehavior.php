@@ -179,13 +179,26 @@ class UploadImageBehavior extends UploadBehavior
         $filename = basename($path);
         $thumb = $this->getThumbFileName($filename, $profile);
         $thumbPath = dirname($path) . DIRECTORY_SEPARATOR . $thumb;
-        $thumbUrl =  dirname($url) . '/' . $thumb;
+//        $thumbUrl =  dirname($url) . '/' . $thumb;
+        $chkAssets = explode("/", $url);
+        $foundAssetKey = array_search("assets", $chkAssets);
+        if($foundAssetKey !== false){
+            foreach($chkAssets as $key => $chkAsset){
+                if($foundAssetKey > $key)
+                    unset($chkAssets[$key]);
+            }
+            $url = '@frontendUrl/' . implode('/', $chkAssets);
+        }else{
+            $url = dirname($url) . '/' . $thumb;
+        }
+
+        $thumbUrl =  $url;
 
         if (!is_file($thumbPath)) {
             $this->generateImageThumb($this->thumbs[$profile], $path, $thumbPath);
         }
 
-        return Yii::getAlias('@frontendUrl'.$thumbUrl);
+        return Yii::getAlias($thumbUrl);
     }
 
     /**

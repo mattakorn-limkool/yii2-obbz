@@ -437,6 +437,7 @@ class ObbzYii
     }
 
     /**
+     * support only single model
      * @param $model Model
      * @return array
      */
@@ -449,6 +450,7 @@ class ObbzYii
         }
     }
     /**
+     * @deprecated - using AjaxValidate insted
      * @param $model Model
      * @return array
      */
@@ -459,6 +461,16 @@ class ObbzYii
             return false;
         }
     }
+
+    /**
+     * checking for is yii ajax request
+     * @return bool|mixed
+     */
+    public static function isAjax(){
+        return \Yii::$app->request->isAjax;
+    }
+
+
 
     public static function debug($data, $end = true){
         echo "<pre>" . print_r($data, true) . "</pre>";

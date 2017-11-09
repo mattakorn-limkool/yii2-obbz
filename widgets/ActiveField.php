@@ -16,7 +16,7 @@ use kartik\widgets\TouchSpin;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\i18n\CoreFormatter;
 use obbz\yii2\utils\ObbzYii;
-use pudinglabs\tagsinput\TagsinputWidget;
+use obbz\yii2\widgets\tagsinput\TagsInputWidgets;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\captcha\Captcha;
@@ -484,7 +484,7 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function tagsInput($config=[]){
 
-        return $this->widget(TagsinputWidget::className(), array_merge([
+        return $this->widget(TagsInputWidgets::className(), array_merge([
 
         ], $config));
     }
