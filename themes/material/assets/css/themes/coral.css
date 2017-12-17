@@ -1,9 +1,17 @@
 
 .btn-primary{
-    background: #CC4E46 !important;
+    background: #fff !important;
+    color: #CC4E46 !important;
+
+}
+.btn-float:not(.bgm-white):not(.bgm-gray) > i {
+    color: #CC4E46;
 }
 .btn-danger{
     background: #f49f36 !important;
+}
+.btn-success {
+    background: #CC4E46 !important;
 }
 a{
     color: #CC4E46;
@@ -15,11 +23,11 @@ a{
     background: #CC4E46;
 }
 .checkbox .input-helper::after {
-    border-bottom: 2px solid #CC4E46;
-    border-left: 2px solid #CC4E46;
+    border-bottom: 2px solid #CC4E46 !important;
+    border-left: 2px solid #CC4E46 !important;
 }
 .has-error .form-control {
-    border-color: #f49f36;
+    border-color: #f49f36 !important;
 }
 .has-error .help-block,
 .has-error .control-label,
@@ -33,6 +41,9 @@ a{
 .has-error.checkbox-inline label {
     color: #f49f36;
 }
+.btn-action-delete, .btn-action-delete:hover, .btn-action-delete:focus, .btn-action-delete-selected, .btn-action-delete-selected:hover, .btn-action-delete-selected:focus {
+    background-color: #f49f36 !important;
+}
 #header .logo a{
     color: #fff;
 }
@@ -42,3 +53,15 @@ a{
 .action-column-row  a.btn-action-delete{
     color: #fff;
 }
+
+.alert-info {
+    background-color: #efefef;
+    color: #666;
+}
+
+@media (max-width: 767px){
+    .ha-menu {
+        background: #CC4E46;
+    }
+}
+

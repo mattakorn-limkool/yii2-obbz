@@ -62,7 +62,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
         if(parent::beforeValidate()) {
             #region core
 //            ObbzYii::debug( $this->scenarioCreate() + $this->scenarioUpdate());
-            $checkScenario = $this->scenarioCreate() + $this->scenarioUpdate();
+            $checkScenario = $this->scenarioCU();
             if($this->isScenario($checkScenario)){
 
                 $this->deleted = ObbzYii::getValue($this, 'deleted', false);

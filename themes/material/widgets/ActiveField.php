@@ -256,24 +256,36 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
      */
     public function checkboxList($items, $options = [])
     {
+        $this->enableLabel = false;
         if ($this->inline) {
-            if (!isset($options['template'])) {
-                $this->template = $this->inlineCheckboxListTemplate;
-            } else {
-                $this->template = $options['template'];
-                unset($options['template']);
+
+            if(!isset($options['item'])){
+                $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
+                $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions) {
+                    $return = '<div class="checkbox checkbox-inline m-b-20"><label >';
+                    $return .= Html::checkbox($name, $checked, array_merge($itemOptions, ['value'=>$value]));
+                    $return .= '<i class="input-helper"></i>';
+                    $return .= '<span>' . ucwords($label) . '</span>';
+                    $return .= '</label></div>';
+
+                    return $return;
+                };
             }
-            if (!isset($options['itemOptions'])) {
-                $options['itemOptions'] = [
-                    'labelOptions' => ['class' => 'checkbox-inline'],
-                ];
+
+        }  else{
+            if(!isset($options['item'])){
+                $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
+                $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions) {
+                    $return = '<div class="checkbox m-b-15"><label >';
+                    $return .= Html::checkbox($name, $checked, array_merge($itemOptions, ['value'=>$value]));
+                    $return .= '<i class="input-helper"></i>';
+                    $return .= '<span>' . ucwords($label) . '</span>';
+                    $return .= '</label></div>';
+
+                    return $return;
+                };
             }
-        }  elseif (!isset($options['item'])) {
-            $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions) {
-                $options = array_merge(['label' => $label, 'value' => $value], $itemOptions);
-                return '<div class="checkbox">' . Html::checkbox($name, $checked, $options) . '</div>';
-            };
+
         }
         parent::checkboxList($items, $options);
         return $this;
@@ -290,7 +302,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                 $options['item'] = function($index, $label, $name, $checked, $value) {
 
                     $return = '<label class="radio radio-inline m-r-20">';
-                    $return .= Html::radio($name, $checked, ['value'=>$value]);
+                    $return .= Html::radio($name, $checked, array_merge($itemOptions, ['value'=>$value]));
 
                     $return .= '<i class="input-helper"></i>';
                     $return .= '<span>' . ucwords($label) . '</span>';
@@ -299,18 +311,19 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                     return $return;
                 };
             }
-        }  elseif (!isset($options['item'])) { // horizontal
+        }  else{ // horizontal
+            if(!isset($options['item'])){
+                $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
+                $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions) {
+                    $return = '<div class="radio m-b-15"><label >';
+                    $return .= Html::radio($name, $checked, array_merge($itemOptions, ['value'=>$value]));
+                    $return .= '<i class="input-helper"></i>';
+                    $return .= '<span>' . ucwords($label) . '</span>';
+                    $return .= '</label></div>';
 
-            $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions) {
-                $return = '<div class="radio m-b-15"><label >';
-                $return .= Html::radio($name, $checked, ['value'=>$value]);
-                $return .= '<i class="input-helper"></i>';
-                $return .= '<span>' . ucwords($label) . '</span>';
-                $return .= '</label></div>';
-
-                return $return;
-            };
+                    return $return;
+                };
+            }
         }
 
 

@@ -42,47 +42,58 @@ use obbz\yii2\utils\ObbzYii;
  * @var $form obbz\yii2\themes\material\widgets\ActiveForm
  */
 ?>
-
-<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form row">
-	<?= "<?php " ?>$form = ActiveForm::begin(); ?>
-	<div class="col-md-4">
-<?php echo "    	<?php echo " . $generator->generateActiveField('image') . " ?>\n"; ?>
-	</div>
-	<div class="col-md-8">
-    
-<?php foreach ($generator->getColumnNames() as $attribute) {
-    if (in_array($attribute, $safeAttributes)) {
-		if(in_array($attribute, $commentAttributes)){
-			echo "    	<?php //echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
-		}
-		else{
-			echo "    	<?php echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
-		}
-        
-    }
-} ?>
-		
-		
-	</div>
-	<div class="form-group row">
-		<div class="col-md-offset-8 col-md-2 col-xs-6">
-		<?= "<?php echo " ?>\obbz\yii2\widgets\ButtonLink::widget([
-				'url'=>ObbzYii::referrerUrl(['index']),
-				'text'=>\Yii::t('app', 'Back'),
-				'prefixIcon'=>'chevron-circle-left',
-				'btnClass'=>'default btn-block',
-			]); ?>
+<?= "<?php " ?>$form = ActiveForm::begin(); ?>
+	<div class="card">
+		<div class="card-header ch-alt">
+			<h2><?= "<?= " ?>Html::encode($this->title) ?></h2>
 		</div>
-		<div class="col-md-2  col-xs-6">
-			<?= "<?php echo " ?>\obbz\yii2\widgets\Button::widget([
-				'text'=><?= $generator->generateString('Save') ?>,
-				'btnClass'=>'primary  btn-block',
-				'prefixIcon'=>'save'
-			]) ?>
+
+		<div class="card-body card-padding">
+			<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form row">
+
+				<div class="col-md-4">
+					<?php echo "    	<?php echo " . $generator->generateActiveField('image') . " ?>\n"; ?>
+				</div>
+				<div class="col-md-8">
+
+					<?php foreach ($generator->getColumnNames() as $attribute) {
+						if (in_array($attribute, $safeAttributes)) {
+							if(in_array($attribute, $commentAttributes)){
+								echo "    	<?php //echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
+							}
+							else{
+								echo "    	<?php echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
+							}
+
+						}
+					} ?>
+
+
+				</div>
+				<div class="form-group row">
+					<div class="col-md-offset-8 col-md-2 col-xs-6">
+						<?= "<?php echo " ?>\obbz\yii2\widgets\ButtonLink::widget([
+						'url'=>ObbzYii::referrerUrl(['index']),
+						'text'=>\Yii::t('app', 'Back'),
+						'prefixIcon'=>'chevron-circle-left',
+						'btnClass'=>'default btn-block',
+						]); ?>
+					</div>
+					<div class="col-md-2  col-xs-6">
+						<?= "<?php echo " ?>\obbz\yii2\widgets\Button::widget([
+						'text'=><?= $generator->generateString('Save') ?>,
+						'btnClass'=>'primary  btn-block',
+						'prefixIcon'=>'check'
+						]) ?>
+					</div>
+				</div>
+
+
+
+
+			</div>
 		</div>
+
 	</div>
-	
+<?= "<?php " ?>ActiveForm::end(); ?>
 
-    <?= "<?php " ?>ActiveForm::end(); ?>
-
-</div>

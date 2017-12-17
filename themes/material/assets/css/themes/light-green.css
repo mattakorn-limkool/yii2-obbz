@@ -1,0 +1,45 @@
+
+.btn-primary{
+    background: #32c787 !important;
+}
+.btn-float:not(.bgm-white):not(.bgm-gray) > i {
+    color: #32c787;
+}
+
+.btn-success {
+    background: #32c787 !important;
+}
+a, a:hover{
+    color: #32c787;
+}
+.tab-nav:not([data-tab-color]) > li > a:after {
+    background: #32c787;
+}
+.fg-line:not([class*=has-]):after {
+    background: #32c787;
+}
+.checkbox .input-helper::after {
+    border-bottom: 2px solid #32c787 !important;
+    border-left: 2px solid #32c787 !important;
+}
+
+#header .logo a{
+    color: #fff;
+}
+.action-column-row a{
+    color: #000;
+}
+.action-column-row  a.btn-action-delete{
+    color: #fff;
+}
+
+.alert-info {
+    background-color: #efefef;
+    color: #666;
+}
+
+@media (max-width: 767px) {
+    .ha-menu {
+        background-color: #ffc107;
+    }
+}

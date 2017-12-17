@@ -68,13 +68,13 @@ class CoreActionColumn extends ActionColumn
         if(!isset($this->visibleButtons['publish'])){
             $this->visibleButtons['publish'] = function($model, $key, $index){
                 /** @var $model CoreActiveRecord */
-                return $model->hasUnpublished();
+                return method_exists($model, 'hasUnpublished') ? $model->hasUnpublished() : false;
             };
         }
         if(!isset($this->visibleButtons['unpublish'])){
             $this->visibleButtons['unpublish'] = function($model, $key, $index){
                 /** @var $model CoreActiveRecord */
-                return $model->hasPublished();
+                return method_exists($model, 'hasPublished') ? $model->hasPublished() : false;
             };
         }
 
@@ -171,6 +171,6 @@ class CoreActionColumn extends ActionColumn
 
     public static function name2Title($name){
         $name = str_replace('-', ' ', $name);
-        return \Yii::t('yii', ucfirst($name));
+        return \Yii::t('obbz', ucfirst($name));
     }
 }

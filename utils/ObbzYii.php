@@ -11,6 +11,7 @@ use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
 use yii\helpers\Url;
 use yii\web\Response;
@@ -450,7 +451,7 @@ class ObbzYii
         }
     }
     /**
-     * @deprecated - using AjaxValidate insted
+     *
      * @param $model Model
      * @return array
      */
@@ -460,6 +461,21 @@ class ObbzYii
         }else{
             return false;
         }
+    }
+
+    /**
+     * @param $validateModelArray - array of validate result of model (can be single or multiple)
+     *  ex. [validateModel, validateCollectionOfModels,...]
+     *
+     * @return array for ajax validate
+     */
+    public static function responseAjaxValidate($validateModelArray){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $result = [];
+        foreach($validateModelArray as $key => $validateModel){
+            $result = ArrayHelper::merge($result, $validateModel);
+        }
+        return $result;
     }
 
     /**

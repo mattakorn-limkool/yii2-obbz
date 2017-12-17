@@ -16,13 +16,16 @@ use yii\widgets\DetailView;
 use obbz\yii2\utils\ObbzYii;
 use obbz\yii2\widgets\ButtonLink;
 
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
+/**
+ * @var $this yii\web\View
+ * @var $model <?= ltrim($generator->modelClass, '\\') ?>
+ */
+
 
 $this->title = $model-><?= $generator->getNameAttribute() ?>;
 $this->context->showTitle = false;
-$this->params['breadcrumbs'][] = ['label' => <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>, 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = ['label' => <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>, 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-view card">
 	 <div class="card-header">

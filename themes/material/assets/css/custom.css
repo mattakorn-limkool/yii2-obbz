@@ -8,9 +8,14 @@
 
 /** coral skin **/
 [data-current-skin="coral"] {
-    background-color: #CC4E46
+    background-color: #CC4E46;
 }
-
+[data-current-skin="yellow"] {
+    background-color: #ffc107;
+}
+[data-current-skin="light-green"] {
+    background-color: #32c787;
+}
 /*[data-current-skin="lavender"] .logo a {  }*/
 /*[data-current-skin="lavender"] .ha-menu > ul > li:not(.active) > *:not(ul) {}*/
 .ha-menu > ul > li.active > *:not(ul) {
@@ -470,7 +475,17 @@ a.btn-action-unpublish-selected:focus{
 .tm-with-label{
     padding: 0 10px;
 }
+a.disabled {
+    color: #ccc !important;
+    /*cursor: not-allowed;*/
+    pointer-events: none;
+}
 
+.text-ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 @media(min-width:768px){
     .form-inline select.form-group {

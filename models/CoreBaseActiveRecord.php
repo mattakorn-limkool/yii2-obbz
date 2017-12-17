@@ -127,7 +127,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         if(!isset($options['placeholder'])){
             $placeholder = "";
         }else if($options['placeholder'] === 'default'){
-            $placeholder = '@uploadPath/default/'. $this->uploadFolder .'/default.png';
+            $placeholder = '@uploadPath/default/'. $this->uploadFolder .'/default.jpg';
         }else{
             $placeholder = $options['placeholder'];
         }

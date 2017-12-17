@@ -27,6 +27,16 @@ $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::ca
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-index">
+	<div class="row">
+		<div class="col-md-2 col-md-offset-10">
+			<?= '<?php echo ButtonLink::widget([
+							"text"=>"Create",
+							"url"=>["create"],
+							"btnClass"=>"success btn-block",
+							"prefixIcon" => "plus",
+						]); ?>'."\n" ?>
+		</div>
+	</div>
     <div class="card">
         <div class="card-header ch-alt ">
 			<h2><?= "<?= " ?>Html::encode($this->title) ?></h2>
@@ -37,12 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				]);*/ ?>'  ?>
 			
 				<ul class="actions ">
-					<li><?= '<?php echo ButtonLink::widget([
-							"text"=>"Create",
-							"url"=>["create"],
-							"btnClass"=>"success",
-							"prefixIcon" => "plus",
-						]); ?>'."\n" ?>
+					<li>
 					</li>
 <!--		            <li>-->
 <!--		                <a href="">-->
