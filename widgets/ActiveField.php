@@ -12,6 +12,7 @@ use kartik\datetime\DateTimePicker;
 use kartik\field\FieldRange;
 use kartik\time\TimePicker;
 use kartik\widgets\DatePicker;
+use kartik\widgets\Select2;
 use kartik\widgets\TouchSpin;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
 use obbz\yii2\i18n\CoreFormatter;
@@ -522,6 +523,15 @@ class ActiveField extends \yii\widgets\ActiveField
                 'multiple' => false,
             ], $config)
         );
+    }
+
+    public function select2($config=[]){
+
+        return $this->widget(Select2::className(), array_merge([
+            'model' => $this->model,
+            'attribute' => $this->attribute,
+            'language' => \Yii::$app->params['language']
+        ], $config));
     }
 
     public function hiddenInput($options = [])

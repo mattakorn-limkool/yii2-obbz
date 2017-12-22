@@ -84,6 +84,46 @@ class CoreFormatter extends Formatter
         }
     }
 
+    /**
+     * display date thai periods for popular short term
+     * @param $dateFrom  date from db format
+     * @param $dateTo date from db format
+     * @param bool|true $shortMonth - need to show short month
+     * @param bool|true $shortYear -  need to show short year
+     * @return date period format ex.
+     *   12-13 ก.ย. 60
+     *   12 ก.ย. - 13 ส.ค. 60
+     *   12 ก.ย. 60 - 20 ม.ค. 61
+     */
+    function asDateThaiPeriod($dateFrom, $dateTo, $shortMonth = true, $shortYear = true){
+
+        if($shortMonth){
+            $fromFormat = ObbzYii::formatter()->asDate($dateFrom, 'medium');
+            $toFormat = ObbzYii::formatter()->asDate($dateTo, 'medium');
+        }else{
+            $fromFormat = ObbzYii::formatter()->asDate($dateFrom, 'long');
+            $toFormat = ObbzYii::formatter()->asDate($dateTo, 'long');
+        }
+        $fromArray = explode(" ", $fromFormat);
+        $toArray = explode(" ", $toFormat);
+        $fromArray[2] += 543;
+        $toArray[2] += 543;
+
+        if($shortYear){
+            $fromArray[2] = substr($fromArray[2],2);
+            $toArray[2] = substr($toArray[2],2);
+        }
+
+        if($fromArray[1] == $toArray [1] && $fromArray[2] == $toArray[2]){ // month and year is equal
+            // exmple 12-13 ก.ย. 2560
+            return $fromArray[0] . ' - ' . $toArray[0] . ' ' . $fromArray[1] . ' ' . $fromArray[2];
+        }else if($fromArray[2] == $toArray [2]){
+            return $fromArray[0] . ' ' . $fromArray[1]  . ' - ' . $toArray[0] . ' ' . $toArray[1] . ' ' . $fromArray[2];
+        }else{
+            return $fromArray[0] . ' ' . $fromArray[1] . ' ' . $fromArray[2]  . ' - ' . $toArray[0] . ' ' . $toArray[1] . ' ' . $fromArray[2];
+        }
+    }
+
 
     function asTimeAgo($date, $granularity=2) {
         // just support in 2 language, other lange fallback to en

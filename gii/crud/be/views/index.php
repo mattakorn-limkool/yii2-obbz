@@ -3,6 +3,7 @@
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use obbz\yii2\utils\ObbzYii;
+use obbz\yii2\widgets\grid\CoreActionColumn;
 
 /* @var $this yii\web\View */
 /* @var $generator yii\gii\generators\crud\Generator */
@@ -19,12 +20,15 @@ use obbz\yii2\utils\ObbzYii;
 use <?= $generator->indexWidgetType === 'grid' ? "yii\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
 <?= $generator->enablePjax ? 'use yii\widgets\Pjax;' : '' ?>
 
-/* @var $this yii\web\View */
+/** 
+ * @var $this yii\web\View 
+ * @var $dataProvider yii\data\ActiveDataProvider
+ */
 <?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
-/* @var $dataProvider yii\data\ActiveDataProvider */
+
 
 $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>;
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-index">
 	<div class="row">
@@ -100,8 +104,19 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 						'value' => function ($model) { return  $model->displayPublishStatus(); },
 					],*/
 					[
-						'class' => obbz\yii2\widgets\grid\CoreActionColumn::className(),
+						'class' => CoreActionColumn::className(),
 						'enableHeaderAction'  => false,
+						//'template' => '{publish}{unpublish} {update} {delete}',
+						/*'buttons'=>[
+							'customBtn' => function ($url, $model, $key) {
+								$name = 'customBtn';
+								return CoreActionColumn::generateButton(
+										$name, 'custom name',
+										['url'] , 'icon'
+									);
+
+							},
+						], */
 					],
                 ],
             ]); ?>

@@ -58,24 +58,22 @@ class ObbzYii
      * @throws \yii\base\InvalidConfigException
      */
     public static function assetBaseUrl($path = null, $assetName = null){
-        if(!isset($assetName)){
-            if(\Yii::$app->id == self::APP_FRONTEND_ID){
-                $assetName = 'frontend\assets\AppAsset';
-            }else if(\Yii::$app->id == self::APP_BACKEND_ID){
-                $assetName = 'backend\assets\AppAsset';
-            }else if(\Yii::$app->id == self::APP_API_ID){
-                $assetName = 'api\assets\AppAsset';
-            }else{
-                $assetName = '';
-            }
-
-            if($path){
-                $path = "/" . $path;
-            }
-            return \Yii::$app->getAssetManager()->getBundle($assetName)->baseUrl . $path;
-        }else{
-            return '';
+        if(\Yii::$app->id == self::APP_FRONTEND_ID){
+            $assetName = 'frontend\assets\AppAsset';
+        }else if(\Yii::$app->id == self::APP_BACKEND_ID){
+            $assetName = 'backend\assets\AppAsset';
+        }else if(\Yii::$app->id == self::APP_API_ID){
+            $assetName = 'api\assets\AppAsset';
+        }else if(isset($assetName)){
+            $assetName = $assetName;
+        }else{ // null assetName
+            $assetName = '';
         }
+//        ObbzYii::debug($assetName);
+        if($path){
+            $path = "/" . $path;
+        }
+        return \Yii::$app->getAssetManager()->getBundle($assetName)->baseUrl . $path;
 
     }
 

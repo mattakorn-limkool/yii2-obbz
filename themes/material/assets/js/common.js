@@ -50,6 +50,9 @@ $('.gallery-img-detail').lightGallery({
     thumbnail:true
     //enableTouch: true
 });
+$(".disabled-link").click(function(event) {
+    event.preventDefault();
+});
 //if(typeof(CKEDITOR) !== 'undefined'){
 //    CKEDITOR.config.toolbar = [
 //        //['Styles','Format','Font','FontSize'],

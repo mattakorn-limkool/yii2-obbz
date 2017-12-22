@@ -41,6 +41,18 @@ use obbz\yii2\utils\ObbzYii;
  * @var $model <?= ltrim($generator->modelClass, '\\') ?>
  * @var $form obbz\yii2\themes\material\widgets\ActiveForm
  */
+
+$this->context->showTitle = true;
+$this->context->headerActions = [
+	Html::a('<i class="fa fa-trash"></i>', ['delete', 'id'=>$model->id],
+		[
+			'data' => [
+				'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+				'method' => 'post',
+			]
+		]
+	)
+];
 ?>
 <?= "<?php " ?>$form = ActiveForm::begin(); ?>
 	<div class="card">
@@ -56,17 +68,17 @@ use obbz\yii2\utils\ObbzYii;
 				</div>
 				<div class="col-md-8">
 
-					<?php foreach ($generator->getColumnNames() as $attribute) {
-						if (in_array($attribute, $safeAttributes)) {
-							if(in_array($attribute, $commentAttributes)){
-								echo "    	<?php //echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
-							}
-							else{
-								echo "    	<?php echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
-							}
+<?php foreach ($generator->getColumnNames() as $attribute) {
+	if (in_array($attribute, $safeAttributes)) {
+		if(in_array($attribute, $commentAttributes)){
+			echo "    				<?php //echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
+		}
+		else{
+			echo "    				<?php echo " . $generator->generateActiveField($attribute) . " ?>\n\n";
+		}
 
-						}
-					} ?>
+	}
+} ?>
 
 
 				</div>

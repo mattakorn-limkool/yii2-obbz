@@ -15,7 +15,8 @@ class CoreController extends  \yii\web\Controller
 {
     /** @var  $modelClass CoreActiveRecord */
     public $modelClass;
-
+    public $showTitle = true;
+    public $headerActions = [];
 
     public function actions()
     {
