@@ -3,7 +3,8 @@
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use obbz\yii2\utils\ObbzYii;
-use obbz\yii2\widgets\grid\CoreActionColumn;
+
+
 
 /* @var $this yii\web\View */
 /* @var $generator yii\gii\generators\crud\Generator */
@@ -17,12 +18,19 @@ echo "<?php\n";
 use yii\helpers\Html;
 use obbz\yii2\widgets\ButtonLink;
 use obbz\yii2\utils\ObbzYii;
+use obbz\yii2\widgets\grid\CoreActionColumn;
+<?php if(!empty($generator->refererModel)): ?>
+use <?= ltrim($generator->refererModel, '\\') ?>;
+<?php endif; ?>
 use <?= $generator->indexWidgetType === 'grid' ? "yii\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
 <?= $generator->enablePjax ? 'use yii\widgets\Pjax;' : '' ?>
 
 /** 
  * @var $this yii\web\View 
  * @var $dataProvider yii\data\ActiveDataProvider
+<?php if(!empty($generator->refererModel)): ?>
+ * @var $<?php echo $generator->getRefererVariablize() ?>Model <?= ltrim($generator->refererModel, '\\') ?>
+<?php endif; ?>
  */
 <?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
 
@@ -35,7 +43,7 @@ $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::ca
 		<div class="col-md-2 col-md-offset-10">
 			<?= '<?php echo ButtonLink::widget([
 							"text"=>"Create",
-							"url"=>["create"],
+							"url"=>' . $generator->additionalUrlString() .',
 							"btnClass"=>"success btn-block",
 							"prefixIcon" => "plus",
 						]); ?>'."\n" ?>
@@ -71,6 +79,7 @@ $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::ca
 			<div class="table-responsive">
     <?= "		<?= " ?>\obbz\yii2\widgets\grid\CoreGridView::widget([
 				'dataProvider' => $dataProvider,
+				<?= !empty($generator->refererField) ? "'additionalUrlParams'=>['". $generator->refererField ."'=>$". $generator->getRefererVariablize() ."Model->id],\n" : "\n" ?>
                 //'sortableEnable'=>false,
 				'enableSelectedAction'=>false,
 				<?= !empty($generator->searchModelClass) ? "//'filterModel' => \$searchModel,\n        		'columns' => [\n" : "'columns' => [\n"; ?>

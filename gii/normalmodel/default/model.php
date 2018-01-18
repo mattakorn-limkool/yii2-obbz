@@ -27,7 +27,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
     public function rules(){
         return array_merge(parent::rules(),[
-			
+            //[['field'], 'required', 'on'=>$this->scenarioCU()],
         ]);
     }
 

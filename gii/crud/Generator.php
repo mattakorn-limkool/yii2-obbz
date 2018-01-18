@@ -3,12 +3,15 @@
 namespace obbz\yii2\gii\crud;
 
 use obbz\yii2\models\CoreActiveRecord;
+use obbz\yii2\utils\ObbzYii;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 use yii\db\Schema;
 use yii\gii\CodeFile;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 
@@ -39,6 +42,11 @@ class Generator extends \yii\gii\Generator
     public $baseControllerClass = 'BaseController';
     public $indexWidgetType = 'grid';
     public $searchModelClass = '';
+
+    // if not empety will be auto generate depended controller
+    public $refererField;
+    public $refererModel;
+
     /**
      * @var bool whether to wrap the `GridView` or `ListView` widget with the `yii\widgets\Pjax` widget
      * @since 2.0.5
@@ -82,7 +90,9 @@ class Generator extends \yii\gii\Generator
             [['modelClass'], 'validateModelClass'],
             [['enableI18N', 'enablePjax'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
-            ['viewPath', 'safe'],
+            [['refererField'] , 'validateRefererField'],
+            [['refererModel'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
+            [['viewPath','refererField', 'refererModel'] , 'safe'],
         ]);
     }
 
@@ -99,6 +109,7 @@ class Generator extends \yii\gii\Generator
             'indexWidgetType' => 'Widget Used in Index Page',
             'searchModelClass' => 'Search Model Class',
             'enablePjax' => 'Enable Pjax',
+            'refererField' => 'Referer Field',
         ]);
     }
 
@@ -126,6 +137,9 @@ class Generator extends \yii\gii\Generator
             'enablePjax' => 'This indicates whether the generator should wrap the <code>GridView</code> or <code>ListView</code>
                 widget on the index page with <code>yii\widgets\Pjax</code> widget. Set this to <code>true</code> if you want to get
                 sorting, filtering and pagination without page refreshing.',
+            'refererField' => 'Set field must need for enable depended controller mode',
+            'refererModel' => 'This is the ActiveRecord class associated with the table that CRUD will be built upon.
+                You should provide a fully qualified class name, e.g., <code>app\models\Post</code>.',
         ]);
     }
 
@@ -156,6 +170,29 @@ class Generator extends \yii\gii\Generator
         if (empty($pk)) {
             $this->addError('modelClass', "The table associated with $class must have primary key(s).");
         }
+    }
+
+    public function validateRefererField()
+    {
+        if(isset($this->refererField)){
+            if (is_subclass_of($this->modelClass, 'yii\db\ActiveRecord')) {
+                $allColumn = $this->getColumnNames();
+                if(!in_array($this->refererField, $allColumn)){
+                    $this->addError('refererField', "'". $this->refererField ."' must be any filed of model.");
+                }else{
+                    if(!isset($this->refererModel)){
+                        $this->addError('refererModel', "refererModel must be set");
+                    }else{
+                        $class = new $this->refererModel;
+                        if (!is_subclass_of($class, 'yii\db\ActiveRecord')) {
+                            $this->addError('refererModel', "refererModel must be sub class of active record");
+                        }
+                    }
+                }
+            }
+
+        }
+
     }
 
     /**
@@ -262,7 +299,7 @@ class Generator extends \yii\gii\Generator
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "\$form->field(\$model, '$attribute')->dropDownList("
-                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
+                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
                 return "\$form->field(\$model, '$attribute')->$input()";
             } else {
@@ -589,6 +626,10 @@ class Generator extends \yii\gii\Generator
         }
     }
 
+//    public function getColumnNamesList(){
+//        return ArrayHelper::map($this->getColumnNames(), '');
+//    }
+
     /**
      * @return string driver name of modelClass db connection.
      * @since 2.0.6
@@ -632,5 +673,55 @@ class Generator extends \yii\gii\Generator
             }
         }
         return $str;
+    }
+
+    public function getRefererVar(){
+        if(empty($this->refererField)){
+            $result = [
+                'actionParams'=>'',
+                'actionParamsComment'=>'',
+                'indexMoreParam1'=>'',
+                'icMoreParam2'=>'',
+                'createMoreParam1'=>'',
+                'modelClass'=>'',
+                'updateMoreParam1'=>'',
+            ];
+        }else{
+            $result = [
+                'actionParams' => '$' . $this->refererField,
+                'actionParamsComment' => '@param string $' . $this->refererField ,
+                'indexMoreParam1' => '$'. $this->getRefererVariablize() .'Model ' . ' = $this->find' . ucfirst($this->getRefererVariablize()) . '($'. $this->refererField .');' . "\n" .
+                    "\t\t".'$searchModel->' . $this->refererField . '= $' . $this->refererField . ";",
+                'icMoreParam2' => "'" . $this->getRefererVariablize() . "Model' => $" . $this->getRefererVariablize() . "Model, ",
+                'createMoreParam1' => '$'. $this->getRefererVariablize() .'Model ' . ' = $this->find' . ucfirst($this->getRefererVariablize()) . '($'. $this->refererField .');' . "\n" .
+                    "\t\t".'$model->' . $this->refererField . '= $' . $this->getRefererVariablize() . "Model->id;",
+                'updateMoreParam1' => '$model->' . $this->refererField,
+                'modelClass' => StringHelper::basename($this->refererModel),
+
+            ];
+
+        }
+
+        return $result;
+    }
+
+    public function getRefererVariablize(){
+        if(empty($this->refererField)){
+            return '';
+        }else{
+            $result = str_replace("_id", '', $this->refererField);
+            return Inflector::variablize($result);
+        }
+
+    }
+
+    public function additionalUrlString(){
+
+        if(empty($this->refererField)){
+            $result = '["create"]';
+        }else{
+            $result = '["create", "'. $this->refererField .'" => $'. $this->getRefererVariablize() .'Model->id]';
+        }
+        return $result;
     }
 }

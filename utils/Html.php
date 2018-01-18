@@ -7,6 +7,8 @@
 namespace obbz\yii2\utils;
 
 
+use yii\helpers\ArrayHelper;
+
 class Html
 {
     /**
@@ -29,5 +31,37 @@ class Html
         $result = preg_replace('/>\s+</', '><', $htmlString);
         $result = str_replace(["\n", "\r", "\t"], "", $result);
         return $result;
+    }
+
+    /**
+     * @param $valueKey - value key of list
+     * @param $mappingList - mapping of list
+     * @param $mapingConfig  - array for mapping between value list key and css class
+     *                  [
+     *                       'success_key' => [
+     *                                          'css'  => 'text-error',
+     *                                          'icon' => 'fa fa-close',
+     *                                       ]
+     *                          ]
+     * @param $wrapper
+     */
+    public static function wrapListValue(
+                     $valueKey, $mappingList,
+                     $mappingConfig = [],
+                     $wrapper = '<span class="{css}">{label}</span>',
+                     $defaultValue='')
+    {
+        $label = ArrayHelper::getValue($mappingList, $valueKey);
+        if($label != null){
+            $result = $wrapper;
+            $css = ArrayHelper::getValue($mappingConfig, $valueKey . '.css', '');
+            $result = str_replace('{css}', $css, $result);
+            $icon = ArrayHelper::getValue($mappingConfig, $valueKey . '.icon', '');
+            $result = str_replace('{icon}', $icon, $result);
+            $result = str_replace('{label}', $label, $result);
+            return $result;
+        }else{
+            return $defaultValue;
+        }
     }
 }

@@ -86,8 +86,8 @@ class CoreFormatter extends Formatter
 
     /**
      * display date thai periods for popular short term
-     * @param $dateFrom  date from db format
-     * @param $dateTo date from db format
+     * @param string $dateFrom  date from db format
+     * @param string $dateTo date from db format
      * @param bool|true $shortMonth - need to show short month
      * @param bool|true $shortYear -  need to show short year
      * @return date period format ex.

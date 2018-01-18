@@ -168,24 +168,24 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 
         if($this->form->layout === 'default'){
             $this->label(true);
-            $this->options = ['class' => 'form-group fg-padding'];
+            $this->options = ['class' => 'form-group fg-padding fg-padding-dropdown'];
         }
 
         if($this->form->layout === 'horizontal'){
             $this->label(true);
-            $this->options = ['class' => 'form-group fg-padding'];
+            $this->options = ['class' => 'form-group fg-padding fg-padding-dropdown'];
             $this->horizontalCssClasses['offset'] = "";
             return parent::dropDownList($items, $options) ;
         }
 
+//        if($this->label){
+//
+//        }
+
         // parent dropDownList
+        $this->template = "{addonPrepend}\n<div class=\"fg-line\">{label}\n<div class=\"select\">{input}</div></div>\n{addonAppend}\n{hint}\n{error}";
 
-//        $options = array_merge($this->inputOptions, $options);
-//        $this->addAriaAttributes($options);
-//        $this->adjustLabelFor($options);
-//        $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
-
-        return '<div class="select">'.parent::dropDownList($items, $options) . '</div>';
+        return parent::dropDownList($items, $options) ;
     }
 
 

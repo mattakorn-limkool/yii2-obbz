@@ -21,7 +21,12 @@
 .ha-menu > ul > li.active > *:not(ul) {
     box-shadow: inset 0px -3px 0 0px #fff;
 }
-
+.form-control[readonly], fieldset[readonly] .form-control {
+    pointer-events: none;
+}
+.fixed-inline-input .form-group{
+    margin-top:0;
+}
 
 
 h1, h2, h3, h4, legend {
@@ -76,6 +81,9 @@ h1, h2, h3, h4, legend {
 .fg-padding .fg-label{
     font-size: 11px;
     color: #959595;
+}
+.fg-padding-dropdown{
+    margin-top: -12px;
 }
 
 .has-success .input-group-addon {
@@ -485,6 +493,11 @@ a.disabled {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.auto-height{
+    height: auto !important;
+    min-height: auto !important;
 }
 
 @media(min-width:768px){

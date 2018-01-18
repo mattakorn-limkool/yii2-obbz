@@ -17,9 +17,10 @@ class CoreModel extends \yii\base\Model
      * @param $modelClass
      * @param array $multipleModels
      * @param array $scenario
+     * @param int $initCount number of create model
      * @return \Codeception\Lib\Interfaces\ActiveRecord[]
      */
-    public static function createDefaultMultiple($modelClass, $multipleModels = [], $scenario = [])
+    public static function createDefaultMultiple($modelClass, $multipleModels = [], $scenario = [], $initCount = 1)
     {
         /** @var ActiveRecord[] $models */
         $models   = [];
@@ -29,7 +30,11 @@ class CoreModel extends \yii\base\Model
             if(isset($scenario) && isset($scenario['create'])){
                 $options = ['scenario'=>$scenario['create']];
             }
-            $models = [new $modelClass($options)];
+            while($initCount > 0){
+                $models[] = new $modelClass($options);
+                $initCount--;
+            }
+//            $models = [new $modelClass($options)];
         }else{
             $models = $multipleModels;
             if(isset($scenario) && isset($scenario['update'])){

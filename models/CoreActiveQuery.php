@@ -42,7 +42,7 @@ class CoreActiveQuery extends ActiveQuery
         return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->all();
     }
     // utilities for list
-    public function allList($pk = 'id', $showAttribute = 'title'){
+    public function allList( $showAttribute = 'title', $pk = 'id'){
         $modelClass = $this->modelClass;
         $t = $modelClass::tableName() . '.';
         $data = $this->all();
@@ -167,12 +167,12 @@ class CoreActiveQuery extends ActiveQuery
     #endregion
 
     #region data list
-    public function publishedList($showAttribute = 'title', $cache  = true){ // for fe
-        return ArrayHelper::map($this->publishedAll($cache), 'id', $showAttribute);
+    public function publishedList($showAttribute = 'title', $cache  = true, $pk = 'id'){ // for fe
+        return ArrayHelper::map($this->publishedAll($cache), $pk, $showAttribute);
     }
 
-    public function activeList($showAttribute = 'title', $cache  = true){ // for be
-        return ArrayHelper::map($this->activeAll($cache), 'id', $showAttribute);
+    public function activeList($showAttribute = 'title', $cache  = true, $pk = 'id'){ // for be
+        return ArrayHelper::map($this->activeAll($cache), $pk, $showAttribute);
     }
 
     #endregion

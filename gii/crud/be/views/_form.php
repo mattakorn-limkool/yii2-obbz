@@ -38,21 +38,23 @@ use obbz\yii2\utils\ObbzYii;
 
 /**
  * @var $this yii\web\View
- * @var $model <?= ltrim($generator->modelClass, '\\') ?>
+ * @var $model <?= ltrim($generator->modelClass, '\\') . "\n" ?>
  * @var $form obbz\yii2\themes\material\widgets\ActiveForm
  */
 
 $this->context->showTitle = true;
-$this->context->headerActions = [
-	Html::a('<i class="fa fa-trash"></i>', ['delete', 'id'=>$model->id],
-		[
-			'data' => [
-				'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-				'method' => 'post',
+if(!$model->isNewRecord){
+	$this->context->headerActions = [
+		Html::a('<i class="fa fa-trash"></i>', ['delete', 'id'=>$model->id],
+			[
+				'data' => [
+					'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+					'method' => 'post',
+				]
 			]
-		]
-	)
-];
+		)
+	];
+}
 ?>
 <?= "<?php " ?>$form = ActiveForm::begin(); ?>
 	<div class="card">
