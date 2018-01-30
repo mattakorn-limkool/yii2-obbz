@@ -85,6 +85,7 @@ class CoreController extends  \yii\web\Controller
      * @return array
      */
     public function mainPageUrl(){
-        return ['index','key'=>ObbzYii::get('key')];
+//        return ['index','key'=>ObbzYii::get('key')];
+        return ObbzYii::referrerUrl(['index','key'=>ObbzYii::get('key')]);
     }
 }

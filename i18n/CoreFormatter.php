@@ -96,7 +96,7 @@ class CoreFormatter extends Formatter
      *   12 ก.ย. 60 - 20 ม.ค. 61
      */
     function asDateThaiPeriod($dateFrom, $dateTo, $shortMonth = true, $shortYear = true){
-
+        \Yii::$app->formatter->locale = 'th-TH';
         if($shortMonth){
             $fromFormat = ObbzYii::formatter()->asDate($dateFrom, 'medium');
             $toFormat = ObbzYii::formatter()->asDate($dateTo, 'medium');
@@ -120,7 +120,44 @@ class CoreFormatter extends Formatter
         }else if($fromArray[2] == $toArray [2]){
             return $fromArray[0] . ' ' . $fromArray[1]  . ' - ' . $toArray[0] . ' ' . $toArray[1] . ' ' . $fromArray[2];
         }else{
-            return $fromArray[0] . ' ' . $fromArray[1] . ' ' . $fromArray[2]  . ' - ' . $toArray[0] . ' ' . $toArray[1] . ' ' . $fromArray[2];
+            return $fromArray[0] . ' ' . $fromArray[1] . ' ' . $fromArray[2]  . ' - ' . $toArray[0] . ' ' . $toArray[1] . ' ' . $toArray[2];
+        }
+    }
+
+    /**
+     * todo- test this function, is not check now.
+     * @param $dateFrom
+     * @param $dateTo
+     * @param bool|true $shortMonth
+     * @param bool|true $shortYear
+     * @return string
+     */
+    function asDateEnPeriod($dateFrom, $dateTo, $shortMonth = true, $shortYear = true){
+        \Yii::$app->formatter->locale = 'en-US';
+        if($shortMonth){
+            $fromFormat = ObbzYii::formatter()->asDate($dateFrom, 'medium');
+            $toFormat = ObbzYii::formatter()->asDate($dateTo, 'medium');
+        }else{
+            $fromFormat = ObbzYii::formatter()->asDate($dateFrom, 'long');
+            $toFormat = ObbzYii::formatter()->asDate($dateTo, 'long');
+        }
+        $fromArray = explode(" ", $fromFormat);
+        $toArray = explode(" ", $toFormat);
+//        $fromArray[2] += 543;
+//        $toArray[2] += 543;
+
+        if($shortYear){
+            $fromArray[2] = substr($fromArray[2],2);
+            $toArray[2] = substr($toArray[2],2);
+        }
+
+        if($fromArray[1] == $toArray [1] && $fromArray[2] == $toArray[2]){ // month and year is equal
+            // exmple 12-13 ก.ย. 2560
+            return $fromArray[0] . ' - ' . $toArray[0] . ' ' . $fromArray[1] . ' ' . $fromArray[2];
+        }else if($fromArray[2] == $toArray [2]){
+            return $fromArray[0] . ' ' . $fromArray[1]  . ' - ' . $toArray[0] . ' ' . $toArray[1] . ' ' . $fromArray[2];
+        }else{
+            return $fromArray[0] . ' ' . $fromArray[1] . ' ' . $fromArray[2]  . ' - ' . $toArray[0] . ' ' . $toArray[1] . ' ' . $toArray[2];
         }
     }
 

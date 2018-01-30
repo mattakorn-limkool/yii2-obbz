@@ -9,7 +9,7 @@ namespace obbz\yii2\utils;
 
 use yii\helpers\ArrayHelper;
 
-class Html
+class Html extends \yii\helpers\Html
 {
     /**
      * get src value from a html tag or other html tag
@@ -62,6 +62,21 @@ class Html
             return $result;
         }else{
             return $defaultValue;
+        }
+    }
+
+    public static function socialUrl($username, $url = '', $urlEmptyName = 'Url'){
+        if(empty($url) && empty($username)){
+            return '';
+        }
+        else if(empty($url)){
+            return $username;
+        }
+        else if(empty($username)){
+            return self::a($urlEmptyName, $url, ['target'=>'_blank']);
+        }
+        else{
+            return self::a($username, $url, ['target'=>'_blank']);
         }
     }
 }

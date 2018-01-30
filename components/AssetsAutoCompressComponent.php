@@ -56,7 +56,7 @@ class AssetsAutoCompressComponent extends \skeeks\yii2\assetsAuto\AssetsAutoComp
                 }
             }
 //            $view->jsFiles = [];
-            ObbzYii::debug($view->jsFiles);
+//            ObbzYii::debug($view->jsFiles);
             \Yii::endProfile('Compress js files');
         }
 

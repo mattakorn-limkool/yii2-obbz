@@ -120,6 +120,36 @@ class ObbzYii
     }
 
     /**
+     * get returnUrl with default url
+     * @param null $defaultUrl
+     * @return mixed|null|string
+     */
+    public static function getReturnUrl($defaultUrl = null){
+        if(!isset(self::user()->returnUrl)){
+            if(self::isExternalUrl($defaultUrl)){
+                return $defaultUrl;
+            }else{
+                return Url::to($defaultUrl);
+            }
+
+        }
+        return self::user()->returnUrl;
+    }
+
+    /**
+     * set return url default by current url
+     * @param null $url
+     */
+    public static function setReturnUrl($url = null){
+        if(!isset($url)){
+            $url = Url::current();
+        }
+        self::user()->returnUrl = $url;
+    }
+
+
+
+    /**
      * generate url by form params
      * @param $url - default url array of yii
      * @param Model $form

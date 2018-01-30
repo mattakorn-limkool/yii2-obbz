@@ -932,6 +932,9 @@ class Excel extends \yii\base\Widget {
         return self::widget($config);
     }
 
+
+
+
     /**
      * @param array $config
      * @return string
@@ -950,4 +953,25 @@ class Excel extends \yii\base\Widget {
         }
     }
 
+    /**
+     * for need to use template
+     * @param $fileName
+     * @return \PHPExcel
+     * @throws \PHPExcel_Reader_Exception
+     */
+    public function importTemplate($fileName) {
+        $excelReader = \PHPExcel_IOFactory::createReader($this->format);
+        $objectPhpExcel = $excelReader->load($fileName);
+        return $objectPhpExcel;
+    }
+
+    /**
+     * @param $phpExcelOpject \PHPExcel
+     */
+    public function exportTemplate($phpExcelOpject){
+        if ($this->asAttachment) {
+            $this->setHeaders();
+        }
+        $this->writeFile($phpExcelOpject);
+    }
 }
