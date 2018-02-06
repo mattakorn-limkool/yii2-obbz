@@ -498,7 +498,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 
     public function datePicker($config=[]){
         $this->template = $this->dateTimePickerTemplate;
-        $this->options = ['class' => 'form-group fg-padding'];
+        $this->options = ['class' => 'form-group fg-padding datetime-line'];
         $dateFormat = ObbzYii::formatter()->dateFormat;
         return parent::widget(DatePicker::className(), array_merge([
             'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -511,7 +511,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 
     public function timePicker($config=[]){
         $this->template = $this->dateTimePickerTemplate;
-        $this->options = ['class' => 'form-group fg-padding'];
+        $this->options = ['class' => 'form-group fg-padding datetime-line'];
         $dateFormat = ObbzYii::formatter()->timeFormat;
         return parent::widget(TimePicker::className(), array_merge([
             'name' => $this->attribute,

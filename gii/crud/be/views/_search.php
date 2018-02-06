@@ -17,7 +17,7 @@ use obbz\yii2\utils\ObbzYii;
 /* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
 /* @var $form obbz\yii2\themes\material\widgets\ActiveForm */
 ?>
-<div class="row core-filter">
+<div id="core-filter" class="row core-filter collapse">
 	<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
 
     <?= "<?php " ?>$form = ActiveForm::begin([
@@ -52,8 +52,8 @@ foreach ($generator->getColumnNames() as $attribute) {
 	
 }
 ?>
-		<div class="form-group">
-			<?= "<?php echo " ?>Html::submitButton('<i class="fa fa-search"></i> ' . <?= $generator->generateString('Search') ?>, ['class' => 'btn btn-primary']) ?>
+		<div class="col-sm-2">
+			<?= "<?php echo " ?>Html::submitButton('<i class="fa fa-search"></i> ' . <?= $generator->generateString('Search') ?>, ['class' => 'btn btn-primary btn-block']) ?>
 			<?= "<?php // echo " ?>Html::resetButton(<?= $generator->generateString('Reset') ?>, ['class' => 'btn btn-default']) ?>
 		</div>
 

@@ -103,6 +103,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         $searchModel = new <?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>();
         <?php echo $refererVar['indexMoreParam1'] . "\n"; ?>
         $dataProvider = $searchModel->beSearch(Yii::$app->request->queryParams);
+        ObbzYii::setReturnUrl();
 
         return $this->render('index', [
             'searchModel' => $searchModel,

@@ -26,7 +26,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
     public function rules(){
         return array_merge(parent::rules(),[
-			['image', 'file', 'extensions' => 'jpg', 'on'=>$this->scenarioCU()],
+			['image', 'file', 'extensions' => 'jpg, jpeg', 'maxSize' => \Yii::$app->params['upload.maxSize'], 'on'=>$this->scenarioCU()],
             //[['field'], 'required', 'on'=>$this->scenarioCU()],
         ]);
     }
@@ -83,6 +83,13 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 //    {
 //        // your code here
 //        parent::afterSave($insert, $changedAttributes);
+//    }
+
+//    public function afterFind($insert, $changedAttributes)
+//    {
+//        parent::afterFind();
+//        // your code here
+//
 //    }
 
    

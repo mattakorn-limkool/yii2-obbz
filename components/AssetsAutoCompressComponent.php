@@ -2,6 +2,8 @@
 namespace obbz\yii2\components;
 use obbz\yii2\utils\ObbzYii;
 use yii\base\BootstrapInterface;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\View;
 
 /**
@@ -147,6 +149,111 @@ JS
             }
 
             \Yii::endProfile('Moving css files bottom');
+        }
+    }
+
+    /**
+     * @param array $files
+     * @return array
+     */
+    protected function _processingJsFiles($files = [])
+    {
+        $fileName   =  md5( implode(array_keys($files)) . $this->getSettingsHash()) . '.js';
+        $publicUrl  = \Yii::getAlias('@web/assets/js-compress/' . $fileName);
+
+        $rootDir    = \Yii::getAlias('@webroot/assets/js-compress');
+        $rootUrl    = $rootDir . '/' . $fileName;
+
+        if (file_exists($rootUrl))
+        {
+            $resultFiles        = [];
+
+            foreach ($files as $fileCode => $fileTag)
+            {
+                if (!Url::isRelative($fileCode))
+                {
+                    $resultFiles[$fileCode] = $fileTag;
+                } else
+                {
+                    if ($this->jsFileRemouteCompile)
+                    {
+                        $resultFiles[$fileCode] = $fileTag;
+                    }
+                }
+            }
+
+            $publicUrl                  = $publicUrl . "?v=" . filemtime($rootUrl);
+            $resultFiles[$publicUrl]    = Html::jsFile($publicUrl, $this->jsOptions);
+            return $resultFiles;
+        }
+
+        //Reading the contents of the files
+        try
+        {
+            $resultContent  = [];
+            $resultFiles    = [];
+            foreach ($files as $fileCode => $fileTag)
+            {
+                if (Url::isRelative($fileCode))
+                {
+                    $contentFile = $this->fileGetContents( Url::to(\Yii::getAlias($fileCode), true) );
+                    $resultContent[] = trim($contentFile) . "\n;";;
+                } else
+                {
+                    if ($this->jsFileRemouteCompile)
+                    {
+                        //Пытаемся скачать удаленный файл
+                        $contentFile = $this->fileGetContents( $fileCode );
+                        $resultContent[] = trim($contentFile);
+                    } else
+                    {
+                        $resultFiles[$fileCode] = $fileTag;
+                    }
+                }
+            }
+        } catch (\Exception $e)
+        {
+            \Yii::error($e->getMessage(), static::className());
+            return $files;
+        }
+
+        if ($resultContent)
+        {
+            $content = implode($resultContent, ";\n");
+            if (!is_dir($rootDir))
+            {
+                if (!FileHelper::createDirectory($rootDir, 0777))
+                {
+                    return $files;
+                }
+            }
+
+            if ($this->jsFileCompress)
+            {
+                $content = \JShrink\Minifier::minify($content, ['flaggedComments' => $this->jsFileCompressFlaggedComments]);
+            }
+
+            $page = \Yii::$app->request->absoluteUrl;
+            $useFunction = function_exists('curl_init') ? 'curl extension' : 'php file_get_contents';
+            $filesString = implode(', ', array_keys($files));
+
+            \Yii::info("Create js file: {$publicUrl} from files: {$filesString} to use {$useFunction} on page '{$page}'", static::className());
+
+            $file = fopen($rootUrl, "w");
+            fwrite($file, $content);
+            fclose($file);
+        }
+
+
+        if (file_exists($rootUrl))
+        {
+            $publicUrl                  = $publicUrl . "?v=" . filemtime($rootUrl);
+            $resultFiles[$publicUrl]    = Html::jsFile($publicUrl, $this->jsOptions);
+//            foreach($this->ignoreAssetsJs)
+            return $resultFiles;
+        } else
+        {
+            return $files;
         }
     }
 

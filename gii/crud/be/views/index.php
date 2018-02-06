@@ -59,8 +59,12 @@ $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::ca
 				]);*/ ?>'  ?>
 			
 				<ul class="actions ">
-					<li>
-					</li>
+<!--					<li>-->
+<!--						<a class="" data-toggle="collapse" data-target="#core-filter">-->
+<!--							<i class="zmdi zmdi-search"></i>-->
+<!--						</a>-->
+<!--					</li>-->
+
 <!--		            <li>-->
 <!--		                <a href="">-->
 <!--		                    <i class="zmdi zmdi-plus"></i>-->

@@ -50,6 +50,14 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\
     {
         return parent::one($db);
     }
-	
+
+//    public function defaultOrder(){
+//        $t = Fiction::tableName();
+//        $this->orderBy([
+//            "{$t}.id"=>SORT_ASC
+//        ]);
+//        return $this;
+//    }
+
 
 }
