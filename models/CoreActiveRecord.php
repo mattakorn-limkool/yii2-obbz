@@ -65,8 +65,8 @@ class CoreActiveRecord extends CoreBaseActiveRecord
             $checkScenario = $this->scenarioCU();
             if($this->isScenario($checkScenario)){
 
-                $this->deleted = ObbzYii::getValue($this, 'deleted', false);
-                $this->disabled = ObbzYii::getValue($this, 'disabled', false);
+                $this->deleted = ObbzYii::getValue($this, 'deleted', 0);
+                $this->disabled = ObbzYii::getValue($this, 'disabled', 0);
 //                $this->sorting = ObbzYii::getValue($this, 'sorting', 99999);
 
                 $userId = ObbzYii::user()->getId();

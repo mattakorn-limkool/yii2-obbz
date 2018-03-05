@@ -1,0 +1,35 @@
+
+.btn-primary{
+    background: #808080 !important;
+}
+
+.tab-nav:not([data-tab-color]) > li > a:after{
+    background: #808080;
+}
+
+a, a:hover, a:focus {
+    color: #808080;
+}
+.fg-line:not([class*=has-]):after {
+    background: #808080;
+}
+.checkbox .input-helper:after {
+    border-bottom: 2px solid #808080;
+    border-left: 2px solid #808080;
+}
+body.login-content::before {
+    height: 100%;
+    background: #808080;
+}
+
+
+.btn-success{
+    color: #ffffff;
+    background-color: #333 !important;
+}
+.alert-success {
+    background-color: #333;
+}
+.progress-bar-success{
+    background-color: #333;
+}

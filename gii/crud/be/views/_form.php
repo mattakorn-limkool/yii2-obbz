@@ -111,3 +111,15 @@ if(!$model->isNewRecord){
 	</div>
 <?= "<?php " ?>ActiveForm::end(); ?>
 
+<?php
+
+$this->registerJs( <<<JS
+
+JS
+	, \yii\web\View::POS_HEAD); ?>
+
+
+<?php $this->registerJs( <<<JS
+
+JS
+); ?>

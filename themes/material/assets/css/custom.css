@@ -16,6 +16,9 @@
 [data-current-skin="light-green"] {
     background-color: #32c787;
 }
+[data-current-skin="gray"] {
+    background-color: #808080;
+}
 /*[data-current-skin="lavender"] .logo a {  }*/
 /*[data-current-skin="lavender"] .ha-menu > ul > li:not(.active) > *:not(ul) {}*/
 .ha-menu > ul > li.active > *:not(ul) {
@@ -47,14 +50,7 @@ h1, h2, h3, h4, legend {
     margin-bottom: 10px;
 }
 
-.checkbox .input-helper:after {
-    border-bottom: 2px solid #2196f3;
-    border-left: 2px solid #2196f3;
-}
 
-.radio .input-helper:after {
-    background: #2196f3;
-}
 
 .input-group.fg-float{
     margin-bottom: 0;

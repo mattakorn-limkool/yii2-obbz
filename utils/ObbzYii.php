@@ -132,8 +132,10 @@ class ObbzYii
                 return Url::to($defaultUrl);
             }
 
+        }else{
+            return self::user()->returnUrl;
         }
-        return self::user()->returnUrl;
+
     }
 
     /**

@@ -227,6 +227,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 //                throw new ErrorException('Must be set dbType of AutoDateFields items');
 //            }
             $field = ArrayHelper::getValue($fieldsConf, 'field');
+//            ObbzYii::debug($this->$field);
             if(!isset($field)){
                 throw new ErrorException('Must be set field of AutoDateFields items');
             }
@@ -236,6 +237,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             if(!empty($this->$field)){
                 $scenarios = ArrayHelper::getValue($fieldsConf, 'scenarios', $this->scenarioCU());
                 if($this->isScenario($scenarios)){
+//                    ObbzYii::debug($this->$field);
                     if($type == self::AUTODATE_TYPE_DATE){
                         $this->$field =  ObbzYii::formatter()->asDbDate($this->$field);
                     }else if($type == self::AUTODATE_TYPE_DATETIME){

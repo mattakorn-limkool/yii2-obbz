@@ -73,7 +73,7 @@ $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::ca
 		        </ul>
 		</div>
 		<div class="card-body ">
-<?= $generator->enablePjax ? "    		<?php Pjax::begin(['timeout' => 5000]); ?>\n" : '' ?>
+<?= $generator->enablePjax ? "    		<?php Pjax::begin([]); ?>\n" : '' ?>
 <?php if(!empty($generator->searchModelClass)): ?>
 <?= "    		<?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php endif; ?>

@@ -24,13 +24,14 @@ class MaterialAsset extends AssetBundle
             'vendors/bower_components/lightgallery/light-gallery/css/lightGallery.css',
 //        'vendors/bootgrid/jquery.bootgrid.min.css',
             'css/app.css',
+            'css/custom.css',
             'css/themes/'. static::THEME . '.css',
 //        'css/app.min.1.css',
 //        'css/app.min.2.css',
 
             // external font by google
             'https://fonts.googleapis.com/css?family=Kanit',
-            'css/custom.css',
+
         ];
         parent::init();
     }

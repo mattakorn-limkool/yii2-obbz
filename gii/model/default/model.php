@@ -85,7 +85,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 //        parent::afterSave($insert, $changedAttributes);
 //    }
 
-//    public function afterFind($insert, $changedAttributes)
+//    public function afterFind()
 //    {
 //        parent::afterFind();
 //        // your code here

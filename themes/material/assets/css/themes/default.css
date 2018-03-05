@@ -1,0 +1,8 @@
+.checkbox .input-helper:after {
+    border-bottom: 2px solid #2196f3;
+    border-left: 2px solid #2196f3;
+}
+
+.radio .input-helper:after {
+    background: #2196f3;
+}
