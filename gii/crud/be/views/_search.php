@@ -17,7 +17,7 @@ use obbz\yii2\utils\ObbzYii;
 /* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
 /* @var $form obbz\yii2\themes\material\widgets\ActiveForm */
 ?>
-<div id="core-filter" class="row core-filter collapse">
+<div id="core-filter" class="row core-filter">
 	<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
 
     <?= "<?php " ?>$form = ActiveForm::begin([

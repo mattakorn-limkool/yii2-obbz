@@ -33,3 +33,14 @@ body.login-content::before {
 .progress-bar-success{
     background-color: #333;
 }
+
+/** datepicker **/
+.datepicker table thead tr:last-child:not(:only-child) {
+    background-color: #808080;
+}
+.datepicker table td.active:before {
+    background-color: #808080;
+}
+.datepicker table tr td span.active:active, .datepicker table tr td span.active:hover:active, .datepicker table tr td span.active.disabled:active, .datepicker table tr td span.active.disabled:hover:active, .datepicker table tr td span.active.active, .datepicker table tr td span.active:hover.active, .datepicker table tr td span.active.disabled.active, .datepicker table tr td span.active.disabled:hover.active {
+    background-color: #808080;
+}

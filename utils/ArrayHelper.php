@@ -16,13 +16,17 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
      * @param Model[] $data - array of Model
      * @param string $field - attribute name for search
      * @param int|string $value - value for need to equal
+     * @param bool $reIndex - need to re index of result
      * @return array of Model
      */
-    public static function modelFilterEqual($data, $field, $value){
+    public static function modelFilterEqual($data, $field, $value, $reIndex = true){
         $result = [];
-        foreach($data as $model){
+        foreach($data as $key => $model){
             if($model->$field == $value){
-                $result[] = $model;
+                if($reIndex)
+                    $result[] = $model;
+                else
+                    $result[$key] = $model;
             }
         }
         return $result;

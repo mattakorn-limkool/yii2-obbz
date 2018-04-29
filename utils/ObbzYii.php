@@ -292,6 +292,10 @@ class ObbzYii
         header("Cache-Control: max-age=0");
     }
 
+    public static function getIpAddress(){
+        return \Yii::$app->request->userIP;
+    }
+
     /**
      * @return \Mobile_Detect
      */

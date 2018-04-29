@@ -2,9 +2,9 @@
 .btn-primary{
     background: #32c787 !important;
 }
-.btn-float:not(.bgm-white):not(.bgm-gray) > i {
-    color: #32c787;
-}
+/*.btn-float:not(.bgm-white):not(.bgm-gray) > i {*/
+/*color: #32c787;*/
+/*}*/
 
 .btn-success {
     background: #32c787 !important;
@@ -26,8 +26,8 @@ a, a:hover{
 #header .logo a{
     color: #fff;
 }
-.action-column-row a{
-    color: #000;
+.action-column-row a:not(.btn-info):not(.btn-danger):not(.btn-primary):not(.btn-success):not(.btn-warning) {
+    color: #32c787;
 }
 .action-column-row  a.btn-action-delete{
     color: #fff;
@@ -37,9 +37,26 @@ a, a:hover{
     background-color: #efefef;
     color: #666;
 }
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: #32c787;
+}
+/** datepicker */
+.datepicker table thead tr:last-child:not(:only-child) {
+    background-color: #32c787;
+}
+.datepicker table td.active:before {
+    background-color: #32c787;
+}
+.datepicker table tr td span.active:active, .datepicker table tr td span.active:hover:active, .datepicker table tr td span.active.disabled:active, .datepicker table tr td span.active.disabled:hover:active, .datepicker table tr td span.active.active, .datepicker table tr td span.active:hover.active, .datepicker table tr td span.active.disabled.active, .datepicker table tr td span.active.disabled:hover.active {
+    background-color: #32c787;
+}
+.datepicker table thead tr:last-child:not(:only-child) {
+    background-color: #32c787;
+}
+
 
 @media (max-width: 767px) {
     .ha-menu {
-        background-color: #ffc107;
+        background-color: #32c787;
     }
 }

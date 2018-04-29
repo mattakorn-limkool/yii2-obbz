@@ -704,16 +704,35 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 //        if(!empty($this->addon)){
 //            $this->options["class"] .= " input-group fg-float";
 //        }
+        $wraperBegin = '';
+        $wraperEnd = '';
         if(!empty($this->addon['prepend']) || !empty($this->addon['append'])){
-            $htmlPrepend = '<div class="input-group fg-float">';
-            $htmlAppend = '</div>';
-        }else{
-            $htmlPrepend = '<div>';
-            $htmlAppend = '</div>';
+            $wraperBegin = '<div class="input-group fg-float">';
+            $wraperEnd = '</div>';
         }
 
-        $this->parts['{addonPrepend}'] = $htmlPrepend. static::getAddonContent(ArrayHelper::getValue($this->addon, 'prepend', '')) ;
-        $this->parts['{addonAppend}'] = static::getAddonContent(ArrayHelper::getValue($this->addon, 'append', '')) . $htmlAppend;
+        if(!empty($this->addon['prepend'] )){
+//            $this->options = ['class' => str_replace('form-group', 'input-group', $this->options['class'])];
+//            $begin = '<span class="input-group-addon">';
+//            $end = '</span>';
+
+            $this->parts['{addonPrepend}'] = $wraperBegin. static::getAddonContent(ArrayHelper::getValue($this->addon, 'prepend', '')) ;
+        }else{
+            $this->parts['{addonPrepend}'] = $wraperBegin . '';
+        }
+
+        if(!empty($this->addon['append'])){
+//            $this->options = ['class' => str_replace('form-group', 'input-group', $this->options['class'])];
+//            $begin = '<span class="input-group-addon last">';
+//            $end = '</span>';
+            $this->parts['{addonAppend}'] = static::getAddonContent(ArrayHelper::getValue($this->addon, 'append', '')) . $wraperEnd ;
+        }
+        else{
+            $this->parts['{addonAppend}'] = '' . $wraperEnd;
+        }
+
+
+
 
     }
 }

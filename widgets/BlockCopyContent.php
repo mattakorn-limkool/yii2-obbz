@@ -78,14 +78,6 @@ class BlockCopyContent extends \yii\bootstrap\Widget
             $(document).on("contextmenu",function(e){
                e.preventDefault();
             });
-
-            /// Block highlight text ///
-            document.onselectstart=new Function ("return false");
-            if (window.sidebar){
-                document.onmousedown=_disableselect;
-                document.onclick=_reEnable
-            }
-
         ' ,View::POS_READY);
     }
 

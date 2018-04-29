@@ -8,6 +8,7 @@
 
 namespace obbz\yii2\models;
 
+use common\models\User;
 use obbz\yii2\utils\ObbzYii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -29,6 +30,11 @@ use yii\helpers\Html;
  * @property integer $modify_user_id
  * @property integer $deleted_user_id
  * @property string $key_name
+ *
+ * core relations
+ * @property User $createdUser
+ * @property User $updatedUser
+ * @property User $deletedUser
  */
 class CoreActiveRecord extends CoreBaseActiveRecord
 {
@@ -209,7 +215,29 @@ class CoreActiveRecord extends CoreBaseActiveRecord
         return self::attributes();
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCreatedUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'create_user_id']);
+    }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'modify_user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeletedUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'deleted_user_id']);
+    }
 
 
 

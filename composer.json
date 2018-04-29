@@ -42,8 +42,8 @@
 		"omnilight/yii2-shopping-cart": "*",
         "moonlandsoft/yii2-phpexcel": "*",
 		"wbraganca/yii2-dynamicform": "*",
-		"light/hashids": "^2.0",
         "kongoon/yii2-paypal": "dev-master",
+        "sjaakp/yii2-gcharts": "*",
         "php": ">=5.3.0"
     },
 	"require-dev": {

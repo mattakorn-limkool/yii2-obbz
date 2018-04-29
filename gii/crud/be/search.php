@@ -41,9 +41,9 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function rules()
     {
-        return [
-            <?= implode(",\n            ", $rules) ?>,
-        ];
+        return array_merge(parent::rules(),[
+            //[['field'], 'safe'],
+        ]);
     }
 
     /**
