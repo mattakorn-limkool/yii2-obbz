@@ -52,6 +52,12 @@ class UploadImageBehavior extends UploadBehavior
      */
     public $thumbUrl;
 
+    /**
+     * work with createThumbsOnSave only
+     * @var bool
+     */
+    public $removeOriginalImage = false;
+
 
     /**
      * @inheritdoc
@@ -94,6 +100,10 @@ class UploadImageBehavior extends UploadBehavior
         parent::afterUpload();
         if ($this->createThumbsOnSave) {
             $this->createThumbs();
+            if($this->removeOriginalImage){
+                $path = $this->getUploadPath($this->attribute);
+                unlink($path);
+            }
         }
     }
 
@@ -142,7 +152,12 @@ class UploadImageBehavior extends UploadBehavior
     {
         /** @var BaseActiveRecord $model */
         $model = $this->owner;
-        $path = $this->getUploadPath($attribute, true);
+        if($this->createThumbsOnRequest){
+            $path = $this->getUploadPath($attribute, true);
+        }else{
+            $path = $this->getThumbUploadPath($attribute, $profile, true);
+        }
+
 
         if (is_file($path)) {
             if ($this->createThumbsOnRequest) {
@@ -263,9 +278,10 @@ class UploadImageBehavior extends UploadBehavior
                 $width = ceil($height * $ratio);
             }
         }
-
         // Fix error "PHP GD Allowed memory size exhausted".
+        $defaulMemLimit = ini_get ('memory_limit');
         ini_set('memory_limit', '512M');
         Image::thumbnail($path, $width, $height, $mode)->save($thumbPath, ['quality' => $quality]);
+        ini_set ('memory_limit',$defaulMemLimit);
     }
 }

@@ -125,12 +125,14 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     public function defaultImgBehavior($attribute, $thumbs = [], $options = []){
 
         if(!isset($options['placeholder'])){
-            $placeholder = "";
+            $options['placeholder'] = "";
         }else if($options['placeholder'] === 'default'){
-            $placeholder = '@uploadPath/default/'. $this->uploadFolder .'/default.jpg';
-        }else{
-            $placeholder = $options['placeholder'];
+            $options['placeholder'] = '@uploadPath/default/'. $this->uploadFolder .'/default.jpg';
         }
+//        else{
+//            $placeholder = $options['placeholder'];
+//        }
+
 
         if(!isset($options['path']) or $options['path'] === 'default')
             $path = '@uploadPath/'. $this->uploadFolder .'/{id}';
@@ -144,17 +146,17 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         else
             $url = $options['url'];
 
-
-        return [
+//        if($options)
+        return array_merge([
             'class' => UploadImageBehavior::className(),
             'attribute' => $attribute,
-            'scenarios' => isset($options['scenarios']) ? $options['scenarios'] : [],
-            'placeholder' => $placeholder,
+//            'scenarios' => isset($options['scenarios']) ? $options['scenarios'] : [],
+//            'placeholder' => $placeholder,
             'path' => $path,
             'url' => $url,
             'thumbs' => $thumbs,
 
-        ];
+        ], $options);
     }
 
     public function defaultFileBehavior($attribute, $options = []){
@@ -168,13 +170,13 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         else
             $url = $options['url'];
 
-        return [
+        return array_merge([
             'class' => UploadBehavior::className(),
             'attribute' => $attribute,
             'scenarios' => isset($options['scenarios']) ? $options['scenarios'] : [],
             'path' => $path,
             'url' => $url,
-        ];
+        ],$options);
     }
 
     public function beforeSave($insert)

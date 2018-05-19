@@ -28,6 +28,11 @@ class UploadBehavior extends \mongosoft\file\UploadBehavior
         }
     }
 
+    public function getUploadPathFolder($attribute){
+        $uploadPath = $this->getUploadPath($attribute);
+        return dirname($uploadPath);
+    }
+
 //    /**
 //     * @param UploadedFile $file
 //     * @param string $path

@@ -303,6 +303,18 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function fileInput($options = [])
     {
+        $filePath = $this->model->getUploadUrl($this->attribute);
+        $downloadLink = '';
+        if(!empty($filePath)){
+            $downloadLink = \yii\helpers\Html::a(
+                '<i class="fa fa-download"></i> ' . \Yii::t('obbz', 'Download File'),
+                $filePath,
+                [
+                    'target'=>'_blank'
+                ]
+            );
+        }
+
         $this->template = "{label}\n{input}\n{hint}\n{error}";
         $labelName = $this->model->getAttributeLabel($this->attribute);
         // https://github.com/yiisoft/yii2/pull/795
@@ -321,7 +333,7 @@ class ActiveField extends \yii\widgets\ActiveField
                         <span class="fileinput-exists">'. \Yii::t('obbz', 'Change') .'</span>
                         '. Html::activeFileInput($this->model, $this->attribute, $options) .'
                     </span>
-                    <span class="fileinput-filename"></span>
+                    <span class="fileinput-filename">'. $downloadLink .'</span>
                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
                 </div>';
 

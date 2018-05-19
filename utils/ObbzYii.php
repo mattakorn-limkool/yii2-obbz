@@ -472,6 +472,7 @@ class ObbzYii
         return $result;
     }
 
+
     /**
      * support only single model
      * @param $model Model
