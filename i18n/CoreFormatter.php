@@ -28,6 +28,7 @@ class CoreFormatter extends Formatter
     public $currencyCode = 'THB';
     public $nullDisplay = '';
 
+
     /**
      * @param $value
      * @param int $length

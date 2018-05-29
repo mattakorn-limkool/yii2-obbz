@@ -48,7 +48,7 @@ class Html extends \yii\helpers\Html
     public static function wrapListValue(
                      $valueKey, $mappingList,
                      $mappingConfig = [],
-                     $wrapper = '<span class="{css}">{label}</span>',
+                     $wrapper = '<span class="{css}"><i class="{icon}"></i> {label}</span>',
                      $defaultValue='')
     {
         $label = ArrayHelper::getValue($mappingList, $valueKey);
