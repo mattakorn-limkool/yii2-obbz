@@ -9,7 +9,7 @@ namespace obbz\yii2\behaviors;
 
 use obbz\yii2\utils\UploadedFile;
 
-class UploadBehavior extends \mongosoft\file\UploadBehavior
+class UploadBehavior extends \mohorev\file\UploadBehavior
 {
 //    public $isBase64Upload = false;
 
