@@ -5,7 +5,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
    $('html').addClass('ismobile');
 }
 
-$(window).load(function () {
+$(window).on('load', function () {
     /* --------------------------------------------------------
      Page Loader
      -----------------------------------------------------------*/
