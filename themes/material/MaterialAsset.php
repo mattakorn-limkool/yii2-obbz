@@ -55,7 +55,7 @@ class MaterialAsset extends AssetBundle
         'vendors/bower_components/Waves/dist/waves.min.js',
 //        'vendors/bootstrap-growl/bootstrap-growl.min.js',
         'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js',
-        'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
+        'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js',
 
 //        'vendors/bower_components/lightgallery/light-gallery/js/lightGallery.js',
         'vendors/bower_components/lightGallery139/dist/js/lightgallery.js',
