@@ -23,6 +23,7 @@ echo "<?php\n";
 ?>
 
 namespace <?= $generator->queryNs ?>;
+use <?= $modelFullClassName ?>;
 
 
 /**
@@ -51,8 +52,10 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\
         return parent::one($db);
     }
 
+
+
 //    public function defaultOrder(){
-//        $t = Fiction::tableName();
+//        $t = <?= $modelClassName ?>::tableName();
 //        $this->orderBy([
 //            "{$t}.id"=>SORT_ASC
 //        ]);

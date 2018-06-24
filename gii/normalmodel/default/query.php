@@ -23,7 +23,7 @@ echo "<?php\n";
 ?>
 
 namespace <?= $generator->queryNs ?>;
-
+use <?= $modelFullClassName ?>;
 
 /**
  * This is the ActiveQuery class for [[<?= $modelFullClassName ?>]].
@@ -50,6 +50,23 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\
     {
         return parent::one($db);
     }
-	
+
+//    public function published(){
+//        $t = <?= $modelClassName ?>::tableName();
+//        return $this;
+//    }
+
+//    public function active(){
+//        $t = <?= $modelClassName ?>::tableName();
+//        return $this;
+//    }
+
+//    public function defaultOrder(){
+//        $t = <?= $modelClassName ?>::tableName();
+//        $this->orderBy([
+//            "{$t}.id"=>SORT_ASC
+//        ]);
+//        return $this;
+//    }
 
 }
