@@ -58,17 +58,28 @@ class ObbzYii
      * @throws \yii\base\InvalidConfigException
      */
     public static function assetBaseUrl($path = null, $assetName = null){
-        if(\Yii::$app->id == self::APP_FRONTEND_ID){
-            $assetName = 'frontend\assets\AppAsset';
-        }else if(\Yii::$app->id == self::APP_BACKEND_ID){
-            $assetName = 'backend\assets\AppAsset';
-        }else if(\Yii::$app->id == self::APP_API_ID){
-            $assetName = 'api\assets\AppAsset';
-        }else if(isset($assetName)){
-            $assetName = $assetName;
-        }else{ // null assetName
-            $assetName = '';
+        if(!isset($assetName)){
+            if(\Yii::$app->id == self::APP_FRONTEND_ID){
+                $assetName = 'frontend\assets\AppAsset';
+            }else if(\Yii::$app->id == self::APP_BACKEND_ID){
+                $assetName = 'backend\assets\AppAsset';
+            }else if(\Yii::$app->id == self::APP_API_ID){
+                $assetName = 'api\assets\AppAsset';
+            }else{
+                $assetName = '';
+            }
         }
+//        if(\Yii::$app->id == self::APP_FRONTEND_ID){
+//            $assetName = 'frontend\assets\AppAsset';
+//        }else if(\Yii::$app->id == self::APP_BACKEND_ID){
+//            $assetName = 'backend\assets\AppAsset';
+//        }else if(\Yii::$app->id == self::APP_API_ID){
+//            $assetName = 'api\assets\AppAsset';
+//        }else if(isset($assetName)){
+//            $assetName = $assetName;
+//        }else{ // null assetName
+//            $assetName = '';
+//        }
 //        ObbzYii::debug($assetName);
         if($path){
             $path = "/" . $path;
@@ -275,6 +286,12 @@ class ObbzYii
         header('Content-type: ' . $ctype);
     }
 
+    /**
+     * @deprecated
+     * @param $name
+     * @param $mime
+     * @param string $encoding
+     */
     public static function setHttpHeaders($name, $mime, $encoding = 'utf-8')
     {
         \Yii::$app->response->format = Response::FORMAT_RAW;
@@ -290,6 +307,44 @@ class ObbzYii
         header("Content-Type: {$mime}; charset={$encoding}");
         header("Content-Disposition: attachment; filename={$name}");
         header("Cache-Control: max-age=0");
+    }
+
+    /**
+     * @param $filePath - file path for download
+     * @param $name - file name
+     * @param $mime - mime type for file
+     * @param string $encoding
+     */
+    public static function setDownloadResponse($filePath, $name = null, $mime = null, $encoding = 'utf-8'){
+        if(is_file($filePath)){
+            if(!isset($mime)){
+                $mime = \yii\helpers\FileHelper::getMimeType($filePath);
+            }
+
+            if(!isset($name)){
+                $ext = \yii\helpers\FileHelper::getExtensionsByMimeType($mime);
+                $name = time() . '.' . $ext[0];
+            }
+
+            \Yii::$app->response->format = Response::FORMAT_RAW;
+            if (strstr($_SERVER["HTTP_USER_AGENT"], "MSIE") == false) {
+                header("Cache-Control: no-cache");
+                header("Pragma: no-cache");
+            } else {
+                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header("Pragma: public");
+            }
+            header("Expires: 0");
+            header("Content-Encoding: {$encoding}");
+            header("Content-Type: {$mime}; charset={$encoding}");
+            header("Content-Disposition: attachment; filename={$name}");
+            header('Content-Length: ' . filesize($filePath));
+            header("Cache-Control: max-age=0");
+            readfile($filePath);
+        }else{
+            throw new Exception("Cannot download this file.");
+        }
+
     }
 
     public static function getIpAddress(){
