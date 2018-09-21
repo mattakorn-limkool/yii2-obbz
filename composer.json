@@ -46,6 +46,7 @@
         "scotthuangzl/yii2-google-chart": "dev-master",
         "linslin/yii2-curl" : "*",
         "consik/yii2-websocket": "^1.0",
+        "yiisoft/yii2-mongodb": "~2.1.0",
         "php": ">=5.3.0"
     },
 	"require-dev": {

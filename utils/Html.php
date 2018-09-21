@@ -6,8 +6,7 @@
 
 namespace obbz\yii2\utils;
 
-
-use yii\helpers\ArrayHelper;
+//use yii\helpers\ArrayHelper;
 
 class Html extends \yii\helpers\Html
 {
