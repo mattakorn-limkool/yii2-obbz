@@ -84,6 +84,8 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 //        return $scenarios;
 //    }
 
+//    public $translateAttributesOptions = [];
+
     public function init(){
 
         if(!isset($this->uploadFolder)){
@@ -268,5 +270,43 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     public function getCacheApiByKey($key){
         $className = self::className();
         return $className::CACHE_PREFIX_API . $key;
+    }
+
+    public static function supportedTranslationTable($modelClass){
+        $obj = new $modelClass;
+        return $obj->hasAttribute('language') &&  $obj->hasAttribute('language_pid');
+    }
+
+    public static function replaceAllTranslationWithoutQuery(&$originalModels, $translationModels){
+        if(empty($originalModels) || empty($translationModels)){
+            return $originalModels;
+        }
+        else{
+            foreach($originalModels as $originalModel){
+                foreach($translationModels as $translationModel){
+                    if($originalModel->id == $translationModel->language_pid){
+
+                        $originalModel = self::replaceTranslationWithoutQuery($originalModel, $translationModel);
+
+                        break;
+                    }
+                }
+
+            }
+
+            return $originalModels;
+        }
+    }
+
+    public static function replaceTranslationWithoutQuery($model, $translationModel = null){
+        if(isset($translationModel)){
+            foreach($model->translationAttributes as $attribute){
+                if($translationModel->$attribute !== null and $translationModel->$attribute !== ''){
+                    $model->owner->$attribute = $translationModel->$attribute;
+                }
+            }
+        }
+
+        return $model;
     }
 }

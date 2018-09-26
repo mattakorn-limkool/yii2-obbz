@@ -8,6 +8,7 @@ namespace obbz\yii2\behaviors;
 
 
 use creocoder\translateable\TranslateableBehavior;
+use obbz\yii2\utils\ObbzYii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 
@@ -22,18 +23,30 @@ class TranslationBehavior extends TranslateableBehavior
     }
 
     /**
+     * @deprecated using CoreBaseActiveRecord instead for more perfomance when query.
      * Shortcut easy using for showing data
      * Returns default the translation owner model for default language.
-     * ** be carefully if call this method that will be replace all attribute to owner model
+     * be carefully if call this method that will be replace all attribute to owner model
      * @return ActiveRecord
      */
     public function replaceTranslation($language = null){
-        $translate = $this->translate($language);
-        foreach($this->translationAttributes as $attribute){
-            if($translate->$attribute !== null and $translate->$attribute !== ''){
-                $this->owner->$attribute = $translate->$attribute;
+
+        if(!isset($language))
+            $language = \Yii::$app->language;
+
+        $doTranslate = \Yii::$app->params['language'] !=  $language;
+
+        if($doTranslate){
+            $translate = $this->translate($language);
+            foreach($this->translationAttributes as $attribute){
+                if($translate->$attribute !== null and $translate->$attribute !== ''){
+                    $this->owner->$attribute = $translate->$attribute;
+                }
             }
         }
+
     }
+
+
 
 }

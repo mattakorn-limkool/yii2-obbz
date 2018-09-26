@@ -9,6 +9,7 @@
 namespace obbz\yii2\models;
 
 use Codeception\Lib\Interfaces\ActiveRecord;
+use obbz\yii2\utils\Html;
 use obbz\yii2\utils\ObbzYii;
 use yii\base\Model;
 use yii\db\ActiveQuery;
@@ -41,6 +42,49 @@ class CoreActiveQuery extends ActiveQuery
         $modelClass = $this->modelClass;
         return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->all();
     }
+    public function translateOne($language = null, $db = null){
+        if($language === null)
+            $language = \Yii::$app->language;
+
+        $doTranslate = \Yii::$app->params['language'] !=  $language;
+
+        if($doTranslate){
+            $modelClass = $this->modelClass;
+            $t = $modelClass::tableName();
+            $oriQuery = clone $this;
+            $oriModel = $oriQuery->one($db);
+            if($oriModel){
+                $translateQuery = clone $this;
+                $translateModel = $translateQuery->where(["{$t}.language"=>$language, "{$t}.language_pid"=>$oriModel->id])->one($db);
+                return $modelClass::replaceTranslationWithoutQuery($oriModel, $translateModel);
+            }else{
+                return $oriModel;
+            }
+        }else{
+            return $this->all($db);
+        }
+    }
+    public function translateAll($language = null, $db = null){
+        if($language === null)
+            $language = \Yii::$app->language;
+
+        $doTranslate = \Yii::$app->params['language'] !=  $language;
+
+        if($doTranslate){
+            $modelClass = $this->modelClass;
+            $t = $modelClass::tableName();
+            $oriQuery = clone $this;
+            $oriModels = $oriQuery->all($db);
+            $ids = \obbz\yii2\utils\ArrayHelper::prepareInQueryArray($oriModels, 'id');
+            $translateQuery = clone $this;
+            $translateModels = $translateQuery->where(["{$t}.language"=>$language, "{$t}.language_pid"=>$ids])->all($db);
+
+            return $modelClass::replaceAllTranslationWithoutQuery($oriModels, $translateModels);
+        }else{
+            return $this->all($db);
+        }
+    }
+
     // utilities for list
     public function allList( $showAttribute = 'title', $pk = 'id'){
         $modelClass = $this->modelClass;
@@ -48,6 +92,7 @@ class CoreActiveQuery extends ActiveQuery
         $data = $this->all();
         return ArrayHelper::map($data, $pk, $showAttribute);
     }
+
     #endregion
 
     #region default scope
@@ -56,6 +101,7 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function published(){
+        $this->defaultLanguage();
         $modelClass = $this->modelClass;
 //        $this->andWhere(['not','( disabled <> 0) OR ( deleted <> 0) ']);
         $this->andWhere(['<>',$modelClass::tableName().'.disabled',1]);
@@ -68,6 +114,7 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function unpublished(){
+        $this->defaultLanguage();
         $modelClass = $this->modelClass;
         $this->andWhere('('.$modelClass::tableName().'.deleted = 1 OR '.$modelClass::tableName().'.disabled = 1)');
         return $this;
@@ -78,6 +125,7 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function active(){
+        $this->defaultLanguage();
         $modelClass = $this->modelClass;
         $this->andWhere([$modelClass::tableName().'.deleted'=>0]);
         return $this;
@@ -88,6 +136,7 @@ class CoreActiveQuery extends ActiveQuery
      * @return $this
      */
     public function archived(){
+        $this->defaultLanguage();
         $modelClass = $this->modelClass;
         $this->andWhere([$modelClass::tableName().'.deleted'=> 1]);
         return $this;
@@ -104,6 +153,19 @@ class CoreActiveQuery extends ActiveQuery
         $this->andWhere([$modelClass::tableName().'.create_user_id'=>ObbzYii::user()->id]);
         return $this;
     }
+
+    public function defaultLanguage(){
+        $modelClass = $this->modelClass;
+//        $obj = new $modelClass();
+//        ObbzYii::debug($obj->hasAttribute('language'));
+//        ObbzYii::debug(property_exists($modelClass, 'language'));
+        if($modelClass::supportedTranslationTable($modelClass)){
+            $this->andWhere([$modelClass::tableName().'.language'=>null]);
+        }
+//        $this->andWhere([$modelClass::tableName().'.language'=>null]);
+        return $this;
+    }
+
     #endregion
 
     #region find with cache
