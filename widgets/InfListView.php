@@ -17,7 +17,7 @@ class InfListView extends ListView
     public $pagerAdditional = [];
     public function init(){
         $this->pager =array_merge([
-            'class' => ScrollPager::className(),
+            'class' => ScrollPager::class,
             'triggerTemplate' => '<div class="ias-trigger" style="text-align: center; cursor: pointer;">
                                     <div class="load-more">
                                         <a><i class="zmdi zmdi-refresh-alt"></i> {text}</a>

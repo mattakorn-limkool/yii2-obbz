@@ -117,7 +117,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 						'value' => function ($model) { return  $model->displayPublishStatus(); },
 					],*/
 					[
-						'class' => CoreActionColumn::className(),
+						'class' => CoreActionColumn::class,
 						'enableHeaderAction'  => false,
 						//'template' => '{publish}{unpublish} {update} {delete}',
 						/*'buttons'=>[

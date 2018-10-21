@@ -95,7 +95,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     }
 
     public static function getCacheKey($key){
-        $className = self::className();
+        $className = self::class;
         return $className::CACHE_PREFIX . $key;
     }
 
@@ -150,7 +150,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 
 //        if($options)
         return array_merge([
-            'class' => UploadImageBehavior::className(),
+            'class' => UploadImageBehavior::class,
             'attribute' => $attribute,
 //            'scenarios' => isset($options['scenarios']) ? $options['scenarios'] : [],
 //            'placeholder' => $placeholder,
@@ -173,7 +173,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             $url = $options['url'];
 
         return array_merge([
-            'class' => UploadBehavior::className(),
+            'class' => UploadBehavior::class,
             'attribute' => $attribute,
             'scenarios' => isset($options['scenarios']) ? $options['scenarios'] : [],
             'path' => $path,
@@ -262,13 +262,13 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     }
 
     public function clearDefaultCacheApi(){
-        $className = self::className();
+        $className = self::class;
         ObbzYii::cache()->delete(self::getCacheApiByKey($className::CACHE_PUBLISHED_ALL));
         ObbzYii::cache()->delete(self::getCacheApiByKey($className::CACHE_ACTIVE_ALL));
     }
 
     public function getCacheApiByKey($key){
-        $className = self::className();
+        $className = self::class;
         return $className::CACHE_PREFIX_API . $key;
     }
 

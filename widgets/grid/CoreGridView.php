@@ -44,7 +44,7 @@ class CoreGridView extends GridView
 
 
             if($this->sortableFirstColumn){
-                array_unshift($this->columns, ['class' => \kotchuprik\sortable\grid\Column::className()]);
+                array_unshift($this->columns, ['class' => \kotchuprik\sortable\grid\Column::class]);
             }
 
 
@@ -59,7 +59,7 @@ class CoreGridView extends GridView
 
         if($this->enableSelectedAction){
             array_unshift($this->columns, [
-                'class' => \obbz\yii2\widgets\grid\CoreCheckboxColumn::className(),
+                'class' => \obbz\yii2\widgets\grid\CoreCheckboxColumn::class,
                 'options'=>['style'=>'width: 50px'],
             ]);
         }

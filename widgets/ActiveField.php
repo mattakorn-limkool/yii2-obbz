@@ -417,12 +417,12 @@ class ActiveField extends \yii\widgets\ActiveField
             $config['template'] :
             '<div class="col-sm-3">{image}</div><div class="col-sm-9"><div class="fg-line">{input}</div></div>';
 
-        return parent::widget(Captcha::className(), $config);
+        return parent::widget(Captcha::class, $config);
     }
 
     public function rte($config = []){
 
-        return $this->widget(CoreCKEditor::className(), array_merge([
+        return $this->widget(CoreCKEditor::class, array_merge([
             'options' => ['rows' => 6],
             'preset' => ObbzYii::user()->can(\common\components\Roles::THE_CREATOR) ? 'full' : 'basic',
             'clientOptions' => [
@@ -433,7 +433,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
     public function datePicker($config=[]){
         $dateFormat = ObbzYii::formatter()->dateFormat;
-        return $this->widget(DatePicker::className(), array_merge([
+        return $this->widget(DatePicker::class, array_merge([
             'type' => DatePicker::TYPE_COMPONENT_APPEND,
             'options'=> $this->inputOptions,
             'pluginOptions' => [
@@ -445,7 +445,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
     public function timePicker($config=[]){
         $dateFormat = ObbzYii::formatter()->timeFormat;
-        return parent::widget(TimePicker::className(), array_merge([
+        return parent::widget(TimePicker::class, array_merge([
             'name' => $this->attribute,
             'options'=> $this->inputOptions,
             'pluginOptions' => [
@@ -458,7 +458,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
     public function dateTimePicker($config=[]){
         $datetimeFormat = ObbzYii::formatter()->datetimeFormat;
-        return $this->widget(DateTimePicker::className(), array_merge([
+        return $this->widget(DateTimePicker::class, array_merge([
             'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
             'options'=> $this->inputOptions,
             'pluginOptions' => [
@@ -500,14 +500,14 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function tagsInput($config=[]){
 
-        return $this->widget(TagsInputWidgets::className(), array_merge([
+        return $this->widget(TagsInputWidgets::class, array_merge([
 
         ], $config));
     }
 
     public function autoCompleteWithId($idAttribute, $data, $config = []){
         return $this->widget(
-            AutoCompleteWithId::className(),
+            AutoCompleteWithId::class,
             array_merge([
                 'model'=> $this->model,
                 'name' => $this->attribute,
@@ -531,7 +531,7 @@ class ActiveField extends \yii\widgets\ActiveField
     public function ajaxAutoComplete($idAttribute, $url, $config=[]){
 
         return $this->widget(
-            AutoCompleteAjax::className(),
+            AutoCompleteAjax::class,
             array_merge([
                 'idAttribute' => $idAttribute,
                 'url' => $url,
@@ -542,7 +542,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
     public function select2($config=[]){
 
-        return $this->widget(Select2::className(), array_merge([
+        return $this->widget(Select2::class, array_merge([
             'model' => $this->model,
             'attribute' => $this->attribute,
             'language' => \Yii::$app->params['language']
@@ -565,7 +565,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
     public function touchSpin($config=[]){
 
-        return $this->widget(TouchSpin::className(), array_merge([
+        return $this->widget(TouchSpin::class, array_merge([
 
         ], $config));
     }

@@ -50,7 +50,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
         return [
             // for sortable grid
             'sortable' => [
-                'class' => \kotchuprik\sortable\behaviors\Sortable::className(),
+                'class' => \kotchuprik\sortable\behaviors\Sortable::class,
                 'query' => self::find(),
                 'orderAttribute'=>'sorting',
             ],
@@ -220,7 +220,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      */
     public function getCreatedUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'create_user_id']);
+        return $this->hasOne(User::class, ['id' => 'create_user_id']);
     }
 
     /**
@@ -228,7 +228,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      */
     public function getUpdatedUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'modify_user_id']);
+        return $this->hasOne(User::class, ['id' => 'modify_user_id']);
     }
 
     /**
@@ -236,7 +236,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      */
     public function getDeletedUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'deleted_user_id']);
+        return $this->hasOne(User::class, ['id' => 'deleted_user_id']);
     }
 
     /**
@@ -244,7 +244,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      */
     public function getTranslations()
     {
-        return $this->hasMany(self::className(), ['language_pid' => 'id']);
+        return $this->hasMany(self::class, ['language_pid' => 'id']);
     }
 
 

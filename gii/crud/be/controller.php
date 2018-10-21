@@ -65,7 +65,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
 //                    [  // not require authenticate action index
 //                        'actions' => ['index'],
@@ -78,7 +78,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],

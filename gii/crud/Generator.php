@@ -81,8 +81,8 @@ class Generator extends \yii\gii\Generator
             [['modelClass', 'controllerClass', 'baseControllerClass', 'indexWidgetType'], 'required'],
             [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
             [['modelClass', 'controllerClass', 'baseControllerClass', 'searchModelClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
-            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
-            [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::className()]],
+            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::class]],
+            [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::class]],
             [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
             [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
             [['controllerClass', 'searchModelClass'], 'validateNewClass'],
@@ -91,7 +91,7 @@ class Generator extends \yii\gii\Generator
             [['enableI18N', 'enablePjax'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['refererField'] , 'validateRefererField'],
-            [['refererModel'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
+            [['refererModel'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::class]],
             [['viewPath','refererField', 'refererModel'] , 'safe'],
         ]);
     }

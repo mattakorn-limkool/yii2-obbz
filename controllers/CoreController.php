@@ -23,57 +23,57 @@ class CoreController extends  \yii\web\Controller
         return [
 
             'publish' => [
-                'class' => \obbz\yii2\actions\CorePublish::className(),
+                'class' => \obbz\yii2\actions\CorePublish::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'publish-selected' => [
-                'class' => \obbz\yii2\actions\CorePublishSelected::className(),
+                'class' => \obbz\yii2\actions\CorePublishSelected::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'unpublish' => [
-                'class' => \obbz\yii2\actions\CoreUnpublish::className(),
+                'class' => \obbz\yii2\actions\CoreUnpublish::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'unpublish-selected' => [
-                'class' => \obbz\yii2\actions\CoreUnpublishSelected::className(),
+                'class' => \obbz\yii2\actions\CoreUnpublishSelected::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'active' => [
-                'class' => \obbz\yii2\actions\CoreActive::className(),
+                'class' => \obbz\yii2\actions\CoreActive::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'active-selected' => [
-                'class' => \obbz\yii2\actions\CoreActiveSelected::className(),
+                'class' => \obbz\yii2\actions\CoreActiveSelected::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'delete' => [
-                'class' => \obbz\yii2\actions\CoreDelete::className(),
+                'class' => \obbz\yii2\actions\CoreDelete::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'delete-selected' => [
-                'class' => \obbz\yii2\actions\CoreDeleteSelected::className(),
+                'class' => \obbz\yii2\actions\CoreDeleteSelected::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'sorting' => [
-                'class' => \obbz\yii2\actions\CoreSorting::className(),
+                'class' => \obbz\yii2\actions\CoreSorting::class,
                 'modelClass' => $this->modelClass,
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'translate' => [
-                'class' => \obbz\yii2\actions\CoreTranslate::className(),
+                'class' => \obbz\yii2\actions\CoreTranslate::class,
                 'modelClass' => $this->modelClass,
 //                'redirectUrl' => $this->mainPageUrl()
             ],

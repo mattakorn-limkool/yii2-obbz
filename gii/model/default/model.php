@@ -37,7 +37,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
                     'thumb'=> ['width'=>300, 'quality' => 100]
                 ], ['scenarios' => $this->scenarioCU()]) ,
 //            'translateable' => [
-//                'class' => \obbz\yii2\behaviors\TranslationBehavior::className(),
+//                'class' => \obbz\yii2\behaviors\TranslationBehavior::class,
 //                'translationAttributes' => ['title','detail'],
 //            ],
 			// other behavior

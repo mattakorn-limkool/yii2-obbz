@@ -213,7 +213,7 @@ JS
             }
         } catch (\Exception $e)
         {
-            \Yii::error($e->getMessage(), static::className());
+            \Yii::error($e->getMessage(), static::class);
             return $files;
         }
 
@@ -237,7 +237,7 @@ JS
             $useFunction = function_exists('curl_init') ? 'curl extension' : 'php file_get_contents';
             $filesString = implode(', ', array_keys($files));
 
-            \Yii::info("Create js file: {$publicUrl} from files: {$filesString} to use {$useFunction} on page '{$page}'", static::className());
+            \Yii::info("Create js file: {$publicUrl} from files: {$filesString} to use {$useFunction} on page '{$page}'", static::class);
 
             $file = fopen($rootUrl, "w");
             fwrite($file, $content);

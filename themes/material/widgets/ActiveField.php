@@ -500,7 +500,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->template = $this->dateTimePickerTemplate;
         $this->options = ['class' => 'form-group fg-padding fg-padding-dropdown'];
         $dateFormat = ObbzYii::formatter()->dateFormat;
-        return parent::widget(DatePicker::className(), array_merge([
+        return parent::widget(DatePicker::class, array_merge([
             'type' => DatePicker::TYPE_COMPONENT_APPEND,
             'options'=> $this->inputOptions,
             'pluginOptions' => [
@@ -514,7 +514,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->template = $this->dateTimePickerTemplate;
         $this->options = ['class' => 'form-group fg-padding fg-padding-dropdown'];
         $dateFormat = ObbzYii::formatter()->timeFormat;
-        return parent::widget(TimePicker::className(), array_merge([
+        return parent::widget(TimePicker::class, array_merge([
             'name' => $this->attribute,
             'options'=> $this->inputOptions,
             'pluginOptions' => [
@@ -529,7 +529,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->template = $this->dateTimePickerTemplate;
         $this->options = ['class' => 'form-group fg-padding fg-padding-dropdown'];
         $datetimeFormat = ObbzYii::formatter()->datetimeFormat;
-        return parent::widget(DateTimePicker::className(), array_merge([
+        return parent::widget(DateTimePicker::class, array_merge([
             'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
             'options'=> $this->inputOptions,
             'pluginOptions' => [
@@ -545,7 +545,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
             $config['template'] :
             '<div class="row"><div class="col-sm-3">{image}</div><div class="col-sm-9"><div class="fg-line">{input}</div></div></div>';
 
-        return parent::widget(Captcha::className(), $config);
+        return parent::widget(Captcha::class, $config);
     }
 
     public function rte($config = []){
@@ -553,7 +553,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 //        $this->disableFloatingLabel();
 //        $this->label(true);
 
-        return $this->widget(CoreCKEditor::className(), array_merge([
+        return $this->widget(CoreCKEditor::class, array_merge([
             'options' => ['rows' => 6],
             'preset' => ObbzYii::user()->can(\common\components\Roles::THE_CREATOR) ? 'full' : 'basic',
             'clientOptions' => [
@@ -566,7 +566,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
     public function autoCompleteWithId($idAttribute, $data, $config = []){
 
         return \yii\widgets\ActiveField::widget(
-            AutoCompleteWithId::className(),
+            AutoCompleteWithId::class,
             array_merge([
                 'model'=> $this->model,
                 'name' => $this->attribute,
@@ -591,7 +591,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
 //        $this->options = ['class' => 'form-group fg-float'];
 //        $this->template = $this->widgetTemplate;
         return \yii\widgets\ActiveField::widget(
-            AutoCompleteAjax::className(),
+            AutoCompleteAjax::class,
             array_merge([
                 'idAttribute' => $idAttribute,
                 'url' => $url,
