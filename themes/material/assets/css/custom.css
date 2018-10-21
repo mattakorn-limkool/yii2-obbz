@@ -536,6 +536,50 @@ a.disabled {
 .datetime-line{
     margin-top: -10px;
 }
+.bootstrap-tagsinput{
+    width: 100%;
+    margin-bottom: 0;
+}
+
+/** blog */
+.blog-view{
+    font-size: 15px;
+    font-family: 'Kanit';
+}
+.blog-view .feature-image{
+    margin: 15px 0;
+}
+.blog-view h1{
+    font-size: 30px;
+    margin-bottom: 17px;
+}
+.blog-view h2{
+    font-size: 25px;
+    margin-bottom: 17px;
+}
+.blog-view h3{
+    font-size: 21px;
+    margin-bottom: 17px;
+}
+.blog-view h4{
+    font-size: 18px;
+    margin-bottom: 17px;
+}
+.blog-view h5{
+    font-size: 15px;
+    margin-bottom: 17px;
+}
+.blog-view .date-text{
+    font-size: 15px;
+}
+
+.wall-comment-list .media{
+    margin-bottom: 15px;
+}
+
+
+/** end blog */
+
 @media(min-width:768px){
     .form-inline select.form-group {
         display: block;

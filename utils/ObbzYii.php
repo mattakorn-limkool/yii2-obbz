@@ -601,7 +601,9 @@ class ObbzYii
     }
 
     /**
-     * @param $query Query
+     * @param $query
+     * @param null $db
+     * @param bool|true $end
      */
     public static function debugQuery($query, $db = null , $end = true){
         echo "<pre>" . $query->createCommand($db)->rawSql . "</pre>";

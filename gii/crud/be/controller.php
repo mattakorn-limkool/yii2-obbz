@@ -46,6 +46,7 @@ use yii\filters\VerbFilter;
 use obbz\yii2\utils\ObbzYii;
 use backend\components;
 use common\components\Roles;
+use obbz\yii2\actions\CoreTranslate;
 <?php if(!empty($generator->refererModel)): ?>
 use <?= ltrim($generator->refererModel, '\\') ?>;
 <?php endif; ?>
@@ -87,7 +88,12 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
 	public function actions()
     {
-        return array_merge(parent::actions(), [
+        $parent = parent::actions();
+
+        //$parent['translate']['attributesOptions']['title'] = ['type' => CoreTranslate::INPUT_TYPE_TEXT];
+        //$parent['translate']['attributesOptions']['detail'] = ['type' => CoreTranslate::INPUT_TYPE_TEXT_AREA];
+
+        return array_merge($parent, [
 
         ]);
     }

@@ -45,7 +45,7 @@ class CoreTranslate extends CoreBaseAction
         $this->attributesOptions = array_merge($defaultOptions, $this->attributesOptions);
     }
 
-    public function run($id, $language, $key= null)
+    public function run($id, $language)
     {
 
         $this->controller->layout = $this->layout;

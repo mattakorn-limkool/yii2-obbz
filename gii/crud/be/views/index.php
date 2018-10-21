@@ -84,7 +84,7 @@ $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::ca
     <?= "		<?= " ?>\obbz\yii2\widgets\grid\CoreGridView::widget([
 				'dataProvider' => $dataProvider,
 				<?= !empty($generator->refererField) ? "'additionalUrlParams'=>['". $generator->refererField ."'=>$". $generator->getRefererVariablize() ."Model->id],\n" : "\n" ?>
-                //'sortableEnable'=>false,
+                'sortableEnable'=>false,
 				'enableSelectedAction'=>false,
 				<?= !empty($generator->searchModelClass) ? "//'filterModel' => \$searchModel,\n        		'columns' => [\n" : "'columns' => [\n"; ?>
 					// ['class' => 'yii\grid\SerialColumn'],

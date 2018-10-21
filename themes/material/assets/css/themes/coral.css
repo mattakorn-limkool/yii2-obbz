@@ -13,6 +13,9 @@
 .btn-success {
     background: #CC4E46 !important;
 }
+.text-primary{
+    color: #CC4E46 !important;
+}
 a{
     color: #CC4E46;
 }

@@ -10,7 +10,8 @@ use obbz\yii2\actions\CoreTranslate;
  * @var $translationAttributes
  * @var $attributesOptions
  */
-$this->title =   \Yii::t('obbz', 'Translate to ') . $language;
+$languageLabel = isset(\Yii::$app->params['languages'][$language]) ? \Yii::$app->params['languages'][$language]: $language;
+$this->title =   \Yii::t('obbz', 'Translate to ') . $languageLabel;
 ?>
 
 <div class="card branch-update">

@@ -239,6 +239,13 @@ class CoreActiveRecord extends CoreBaseActiveRecord
         return $this->hasOne(User::className(), ['id' => 'deleted_user_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTranslations()
+    {
+        return $this->hasMany(self::className(), ['language_pid' => 'id']);
+    }
 
 
 }

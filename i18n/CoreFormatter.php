@@ -44,6 +44,15 @@ class CoreFormatter extends Formatter
         return $result;
     }
 
+    public function asTextBreak($value){
+        $textArr =explode('<div style="page-break-after: always"><span style="display: none;">&nbsp;</span></div>', $value);
+        if(isset($textArr[0])){
+            return $textArr[0];
+        }else{
+            return '';
+        }
+    }
+
     /**
      * @param $value
      * @return int|string

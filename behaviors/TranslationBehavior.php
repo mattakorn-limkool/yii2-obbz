@@ -31,10 +31,14 @@ class TranslationBehavior extends TranslateableBehavior
      */
     public function replaceTranslation($language = null){
 
-        if(!isset($language))
+        if(!isset($language)){
             $language = \Yii::$app->language;
+            $doTranslate = \Yii::$app->params['language'] !=  $language;
+        }
+        else // force to translate
+            $doTranslate = true;
 
-        $doTranslate = \Yii::$app->params['language'] !=  $language;
+
 
         if($doTranslate){
             $translate = $this->translate($language);

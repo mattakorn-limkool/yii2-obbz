@@ -60,6 +60,11 @@ if(!$model->isNewRecord){
 	<div class="card">
 		<div class="card-header ch-alt">
 			<h2><?= "<?= " ?>Html::encode($this->title) ?></h2>
+			<ul class="actions">
+				<?= "<?php " ?> if(!$model->isNewRecord): ?>
+					<li><?= "<?php " ?> echo \obbz\yii2\widgets\TranslationTool::widget(['model'=>$model]); ?></li>
+				<?= "<?php " ?> endif; ?>
+			</ul>
 		</div>
 
 		<div class="card-body card-padding">
@@ -111,15 +116,15 @@ if(!$model->isNewRecord){
 	</div>
 <?= "<?php " ?>ActiveForm::end(); ?>
 
-<?php
+<?= "<?php " ?>
 
 $this->registerJs( <<<JS
 
 JS
-	, \yii\web\View::POS_HEAD); ?>
+	, \yii\web\View::POS_HEAD);
 
 
-<?php $this->registerJs( <<<JS
+$this->registerJs( <<<JS
 
 JS
 ); ?>
