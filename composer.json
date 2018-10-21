@@ -1,64 +1,49 @@
 {
-    "name": "obbz/yii2",
-    "description": "Yii2 shortcut, utilities, gii model generator",
-    "keywords": ["yii2", "gii", "crud"],
-    "homepage": "",
-    "type": "yii2-extension",
-    "license": "BSD-4-Clause",
-    "authors": [
+    "name": "obbz/yii2-app-advanced",
+    "description": "Yii 2 Core Project",
+    "keywords": ["yii2", "framework", "advanced", "project template"],
+    "type": "project",
+    "license": "BSD-3-Clause",
+
+    "minimum-stability": "dev",
+    "repositories": [
         {
-            "name": "Mattakorn Limkool",
-            "email": "mattakron@gmail.com"
+            "type":"vcs",
+            "url":"D:\\htdocs\\obbz-repository\\yii2"
         }
     ],
     "require": {
-        "yiisoft/yii2": "*",
-        "yiisoft/yii2-bootstrap": "*",
-        "kartik-v/yii2-builder": "*",
-        "kartik-v/yii2-widgets": "*",
-        "kartik-v/yii2-helpers": "*",
-        "kartik-v/yii2-widget-activeform": "*",
-        "kartik-v/yii2-grid": "*",
-        "kartik-v/yii2-detail-view": "*",
-        "kartik-v/yii2-widget-datepicker": "*",
-        "kartik-v/yii2-field-range": "dev-master",
-		"kartik-v/yii2-widget-select2": "@dev",
-        "kartik-v/yii2-widget-rating": "*",
-        "hauntd/yii2-vote": "*",
-        "zircote/swagger-php": "^2.0",
-        "bower-asset/swagger-ui": "2.1.4",
-        "mohorev/yii2-upload-behavior": "*",
-        "kotchuprik/yii2-sortable-widgets": "*",
-        "rmrevin/yii2-fontawesome": "~2.17",
-        "2amigos/yii2-ckeditor-widget": "^2.0",
-		"creocoder/yii2-translateable": "^1.0",
-        "pudinglabs/yii2-bootstrap-tags-input" : "*",
-        "skeeks/yii2-assets-auto-compress": "*",
-        "philippfrenzel/yii2fullcalendar":"*",
-        "alexandernst/yii2-device-detect": "0.0.11",
-		"kop/yii2-scroll-pager": "dev-master",
-		"ijackua/yii2-sharelinks-widget": "dev-master",
-		"newerton/yii2-fancybox": "dev-master",
-        "bupy7/yii2-flexslider": "dev-master",
-		"cybercog/yii2-google-analytics": "*",
-		"omnilight/yii2-shopping-cart": "*",
-        "moonlandsoft/yii2-phpexcel": "*",
-		"wbraganca/yii2-dynamicform": "*",
-        "kongoon/yii2-paypal": "dev-master",
-        "scotthuangzl/yii2-google-chart": "dev-master",
-        "linslin/yii2-curl" : "*",
-        "consik/yii2-websocket": "^1.0",
-        "php": ">=5.3.0"
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "~2.0.6",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "mdmsoft/yii2-admin": "~2.0",
+        "obbz/yii2": "dev-master",
+        "yiisoft/yii2-authclient": "^2.1",
+        "voskobovich/yii2-linker-behavior": "^4.0",
+        "codemix/yii2-localeurls": "dev-master",
+        "newerton/yii2-fancybox": "dev-master",
+        "2amigos/yii2-file-upload-widget": "~1.0"
     },
-	"require-dev": {
-		"fabpot/php-cs-fixer": "^1.11"
-	},
-    "autoload": {
-        "psr-4": {
-            "obbz\\yii2\\": ""
-        }
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+
+        "codeception/base": "^2.2.3",
+        "codeception/verify": "*"
+    },
+    "config": {
+        "vendor-dir":"../yii2-vendors",
+        "process-timeout": 1800
     },
     "extra": {
-        "bootstrap": "obbz\\yii2\\Bootstrap"
+        "asset-installer-paths": {
+            "npm-asset-library": "../yii2-vendors/npm",
+            "bower-asset-library": "../yii2-vendors/bower"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": "php init --env=Development --overwrite=n"
     }
 }
