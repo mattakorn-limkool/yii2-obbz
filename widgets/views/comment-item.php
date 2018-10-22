@@ -21,10 +21,11 @@ use frontend\widgets\FeActiveForm;
         <p class="m-t-5 m-b-10"><?php echo ObbzYii::formatter()->asNtext($model->content) ?></p>
         <?php if($withVote): ?>
         <div class="comment-vote-tool">
-            <?php echo \obbz\yii2\widgets\VoteWidget::widget([
-                'entity' => 'commentVote',
+            <?php echo \obbz\vote\widgets\Vote::widget([
+                'entity' => $model::PLUGIN_VOTE,
                 'model' => $model,
-                'options' => ['class' => 'vote vote-visible-buttons']
+                'options' => ['class' => 'vote vote-visible-buttons'],
+                ''
             ]); ?>
         </div>
         <?php endif; ?>
