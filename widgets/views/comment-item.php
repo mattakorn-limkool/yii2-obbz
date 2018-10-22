@@ -20,14 +20,16 @@ use frontend\widgets\FeActiveForm;
         <small class="c-gray m-l-10"><?php echo ObbzYii::formatter()->asTimeAgo($model->created_time) ?></small>
         <p class="m-t-5 m-b-10"><?php echo ObbzYii::formatter()->asNtext($model->content) ?></p>
         <?php if($withVote): ?>
-        <div class="comment-vote-tool">
-            <?php echo \obbz\vote\widgets\Vote::widget([
-                'entity' => $model::PLUGIN_VOTE,
-                'model' => $model,
-                'options' => ['class' => 'vote vote-visible-buttons'],
-                ''
-            ]); ?>
-        </div>
+            <div class="comment-vote-tool">
+                <?php echo \obbz\vote\widgets\Vote::widget([
+                    'entity' => $model::PLUGIN_VOTE,
+                    'model' => $model,
+                    'options' => ['class' => 'vote vote-visible-buttons'],
+//                'pagerAdditional' => [
+//                    'triggerOffset'=> 50
+//                ]
+                ]); ?>
+            </div>
         <?php endif; ?>
     </div>
     <hr>
