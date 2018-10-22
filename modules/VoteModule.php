@@ -6,5 +6,5 @@ namespace obbz\yii2\modules ;
  */
 class VoteModule extends \hauntd\vote\Module
 {
-
+    public $redirectUrl = ['/site/login'];
 }
