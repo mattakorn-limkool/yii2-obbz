@@ -1,6 +1,6 @@
 <?php
 
-use hauntd\vote\models\Vote;
+use obbz\yii2\models\Vote;
 
 /* @var $jsCodeKey string */
 /* @var $entity string */

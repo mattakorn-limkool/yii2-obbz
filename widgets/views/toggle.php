@@ -1,6 +1,6 @@
 <?php
 
-use hauntd\vote\models\Vote;
+use obbz\yii2\models\Vote;
 use yii\helpers\Html;
 
 /* @var $jsCodeKey string */

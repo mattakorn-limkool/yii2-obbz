@@ -7,7 +7,7 @@
 namespace obbz\yii2\actions;
 use obbz\yii2\modules\VoteModule;
 use hauntd\vote\events\VoteActionEvent;
-use hauntd\vote\models\Vote;
+use obbz\yii2\models\Vote;
 use hauntd\vote\models\VoteAggregate;
 use obbz\yii2\models\VoteForm;
 use hauntd\vote\traits\ModuleTrait;
