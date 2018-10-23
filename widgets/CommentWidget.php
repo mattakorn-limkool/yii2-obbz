@@ -12,6 +12,7 @@ use yii\base\Exception;
 use yii\base\Widget;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 class CommentWidget extends Widget
 {
@@ -25,6 +26,7 @@ class CommentWidget extends Widget
     public $withVote = true;
     public $voteQueryFunction = 'withVote';
     public $orderByRating = true;
+    public $orderRagingEntity = 'commentVoteAggregate';
     public $viewFile = '@vendor/obbz/yii2/widgets/views/comment';
     public $viewFileItem = '@vendor/obbz/yii2/widgets/views/comment-item';
 
@@ -92,7 +94,8 @@ class CommentWidget extends Widget
             $func = $this->voteQueryFunction;
             $query->$func();
             if($this->orderByRating){
-                $this->orderBy = ['`commentVoteAggregate`.`rating`' =>SORT_DESC] + $this->orderBy;
+                $this->orderBy = [new Expression('IFNULL(`' . $this->orderRagingEntity . '`.`rating`,0) DESC')]
+                    + $this->orderBy;
             }
         }
 
