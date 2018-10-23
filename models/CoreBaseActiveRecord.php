@@ -39,6 +39,14 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 
     public $uploadFolder;
 
+    /**
+     * Returns the fully qualified name of this class.
+     * @return string the fully qualified name of this class.
+     */
+    public static function calledClass()
+    {
+        return get_called_class();
+    }
 
     /**
      * Example.  [

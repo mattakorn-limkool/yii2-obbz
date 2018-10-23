@@ -244,7 +244,7 @@ class CoreActiveRecord extends CoreBaseActiveRecord
      */
     public function getTranslations()
     {
-        return $this->hasMany(self::class, ['language_pid' => 'id']);
+        return $this->hasMany(self::calledClass(), ['language_pid' => 'id']);
     }
 
 
