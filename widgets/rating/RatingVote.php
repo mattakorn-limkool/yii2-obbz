@@ -18,7 +18,8 @@ class RatingVote extends Rating
     public $viewFile = '@vendor/obbz/yii2/widgets/rating/views/vote';
     public $ajaxSubmit = true;
     public $ajaxSubmitUrl = ['site/rating'];
-
+    public $jsBeforeSendRequest = 'function( xhr ) {}';
+    public $jsDoneSendRequest = "function(data){}";
 
     public function run()
     {
@@ -47,10 +48,11 @@ class RatingVote extends Rating
             $modelPk = $this->model->getPrimaryKey();
             $ajaxSubmitUrl = Url::to($this->ajaxSubmitUrl + ['entity'=>$this->entity, 'target_id'=>$modelPk, 'version'=>$this->version]);
             $submitJs = new JsExpression("function(event, starValue) {
+
                 jQuery.ajax({
                     url: '$ajaxSubmitUrl&action=' + event.type + '&value=' + starValue, type: 'POST', dataType: 'json', cache: false,
-                    data: {}
-                });
+                    beforeSend: $this->jsBeforeSendRequest
+                }).done($this->jsDoneSendRequest);
             }");
 
             return $pluginEvents = [
