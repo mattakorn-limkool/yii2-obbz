@@ -14,6 +14,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
 use yii\helpers\Url;
+use yii\mail\MessageInterface;
 use yii\web\Response;
 use yii\web\View;
 use yii\widgets\ActiveForm;
@@ -435,6 +436,20 @@ class ObbzYii
     public static function userDb($cache = true){
 //        return $userId = self::user()->identity;
         return User::findIdentity(self::user()->id, $cache);
+    }
+
+    /**
+     * @param array $composeView
+     * @param array $composeParams
+     * @param string $senderName
+     * @return MessageInterface
+     */
+    public static function getAutoMail($composeView = null, $composeParams = [], $senderName = null){
+        if(!isset($senderName)){
+            $senderName = \Yii::$app->name;
+        }
+        return \Yii::$app->mailer->compose($composeView, $composeParams)
+            ->setFrom([\Yii::$app->params['autoEmail'] => $senderName]);
     }
 
     /**
