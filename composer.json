@@ -49,6 +49,7 @@
         "linslin/yii2-curl" : "*",
         "consik/yii2-websocket": "^1.0",
 		"yiisoft/yii2-mongodb": "~2.1.0",
+        "2amigos/yii2-croppie-widget": "*",
         "php": ">=5.3.0"
     },
 	"require-dev": {
