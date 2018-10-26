@@ -13,12 +13,14 @@ class RatingAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/obbz/yii2/widgets/rating/assets';
 
-    public $js = [
-    ];
 
     public $css = [
         'rating.css',
     ];
+
+    public $js = [
+    ];
+
 
     public $depends = [
         'yii\web\JqueryAsset'

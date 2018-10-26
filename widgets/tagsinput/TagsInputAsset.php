@@ -19,12 +19,12 @@ class TagsInputAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/obbz/yii2/widgets/tagsinput/bootstrap-tags-input';
 
-    public $js = [
-    	'bootstrap-tagsinput.js'
-    ];
-
     public $css = [
     	'bootstrap-tagsinput.css'
+    ];
+
+    public $js = [
+        'bootstrap-tagsinput.js'
     ];
     
     public $depends = [
