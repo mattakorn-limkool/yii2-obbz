@@ -12,18 +12,42 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
 
+/**
+ * UploadImageBehavior automatically uploads image, creates thumbnails and fills
+ * the specified attribute with a value of the name of the uploaded image.
+ *
+ * To use UploadImageBehavior, insert the following code to your ActiveRecord class:
+ *
+ * ```php
+ * use obbz\yii2\behaviors\UploadImageBehavior;
+ *
+ * function behaviors()
+ * {
+ *     return [
+ *         [
+ *             'class' => UploadImageBehavior::class,
+ *             'attribute' => 'file',
+ *             'scenarios' => ['insert', 'update'],
+ *             'placeholder' => '@app/modules/user/assets/images/userpic.jpg',
+ *             'path' => '@webroot/upload/{id}/images',
+ *             'url' => '@web/upload/{id}/images',
+ *             'thumbPath' => '@webroot/upload/{id}/images/thumb',
+ *             'thumbUrl' => '@web/upload/{id}/images/thumb',
+ *             'thumbs' => [
+ *                   'thumb' => ['width' => 400, 'quality' => 90],
+ *                   'preview' => ['width' => 200, 'height' => 200],
+ *              ],
+ *         ],
+ *     ];
+ * }
+ * ```
+ *
+ * @see https://github.com/mohorev/yii2-upload-behavior
+ */
 class UploadImageBehavior extends UploadBehavior
 {
     /**
-     * @var string|array|Closure align for default thumbnal if closure must be return align path for default thaumbnail img
-     *
-     * ```php
-     * function ($model, $behavior)
-     * ```
-     *
-     * - `$model`: the current model
-     * - `$behavior`: the current UploadImageBehavior instance
-     *
+     * @var string
      */
     public $placeholder;
     /**
@@ -35,10 +59,19 @@ class UploadImageBehavior extends UploadBehavior
      */
     public $createThumbsOnRequest = false;
     /**
+     * Whether delete original uploaded image after thumbs generating.
+     * Defaults to FALSE
+     * @var boolean
+     */
+    public $deleteOriginalFile = false;
+    /**
      * @var array the thumbnail profiles
      * - `width`
      * - `height`
      * - `quality`
+     * - `mode` = ManipulatorInterface::THUMBNAIL...
+     * - `bg_color`
+     *
      */
     public $thumbs = [
         'thumb' => ['width' => 200, 'height' => 200, 'quality' => 100],
@@ -52,21 +85,19 @@ class UploadImageBehavior extends UploadBehavior
      */
     public $thumbUrl;
 
-    /**
-     * work with createThumbsOnSave only
-     * @var bool
-     */
-    public $removeOriginalImage = false;
-
 
     /**
      * @inheritdoc
      */
     public function init()
     {
+        if (!class_exists(Image::class)) {
+            throw new NotSupportedException("Yii2-imagine extension is required to use the UploadImageBehavior");
+        }
+
         parent::init();
 
-        if ($this->createThumbsOnSave) {
+        if ($this->createThumbsOnSave || $this->createThumbsOnRequest) {
             if ($this->thumbPath === null) {
                 $this->thumbPath = $this->path;
             }
@@ -100,10 +131,6 @@ class UploadImageBehavior extends UploadBehavior
         parent::afterUpload();
         if ($this->createThumbsOnSave) {
             $this->createThumbs();
-            if($this->removeOriginalImage){
-                $path = $this->getUploadPath($this->attribute);
-                unlink($path);
-            }
         }
     }
 
@@ -113,16 +140,26 @@ class UploadImageBehavior extends UploadBehavior
     protected function createThumbs()
     {
         $path = $this->getUploadPath($this->attribute);
+        if (!is_file($path)) {
+            return;
+        }
+
         foreach ($this->thumbs as $profile => $config) {
             $thumbPath = $this->getThumbUploadPath($this->attribute, $profile);
             if ($thumbPath !== null) {
                 if (!FileHelper::createDirectory(dirname($thumbPath))) {
-                    throw new InvalidParamException("Directory specified in 'thumbPath' attribute doesn't exist or cannot be created.");
+                    throw new InvalidArgumentException(
+                        "Directory specified in 'thumbPath' attribute doesn't exist or cannot be created."
+                    );
                 }
                 if (!is_file($thumbPath)) {
                     $this->generateImageThumb($config, $path, $thumbPath);
                 }
             }
+        }
+
+        if ($this->deleteOriginalFile) {
+            parent::delete($this->attribute);
         }
     }
 
@@ -166,7 +203,6 @@ class UploadImageBehavior extends UploadBehavior
             $url = $this->resolvePath($this->thumbUrl);
             $fileName = $model->getOldAttribute($attribute);
             $thumbName = $this->getThumbFileName($fileName, $profile);
-            $abc = Yii::getAlias($url );
             return Yii::getAlias($url . '/' . $thumbName);
         } elseif ($this->placeholder) {
             return $this->getPlaceholderUrl($profile);
@@ -194,42 +230,6 @@ class UploadImageBehavior extends UploadBehavior
 
         return Yii::getAlias($thumbUrl);
     }
-//    protected function getPlaceholderUrlBAK($profile)
-//    {
-//        if ($this->placeholder instanceof \Closure) {
-//            $placeholderPath = call_user_func($this->placeholder, $this->owner, $this);
-//        }else if(is_array($this->placeholder)){
-//            $placeholderPath = call_user_func($this->placeholder);
-//        }
-//        else { // string
-//            $placeholderPath = $this->placeholder;
-//        }
-//
-//        list ($path, $url) = Yii::$app->assetManager->publish($placeholderPath);
-//        $filename = basename($path);
-//        $thumb = $this->getThumbFileName($filename, $profile);
-//        $thumbPath = dirname($path) . DIRECTORY_SEPARATOR . $thumb;
-////        $thumbUrl =  dirname($url) . '/' . $thumb;
-//        $chkAssets = explode("/", $url);
-//        $foundAssetKey = array_search("assets", $chkAssets);
-//        if($foundAssetKey !== false){
-//            foreach($chkAssets as $key => $chkAsset){
-//                if($foundAssetKey > $key)
-//                    unset($chkAssets[$key]);
-//            }
-//            $url = '@frontendUrl/' . implode('/', $chkAssets);
-//        }else{
-//            $url = dirname($url) . '/' . $thumb;
-//        }
-//
-//        $thumbUrl =  $url;
-//
-//        if (!is_file($thumbPath)) {
-//            $this->generateImageThumb($this->thumbs[$profile], $path, $thumbPath);
-//        }
-//
-//        return Yii::getAlias($thumbUrl);
-//    }
 
     /**
      * @inheritdoc
@@ -268,6 +268,7 @@ class UploadImageBehavior extends UploadBehavior
         $height = ArrayHelper::getValue($config, 'height');
         $quality = ArrayHelper::getValue($config, 'quality', 100);
         $mode = ArrayHelper::getValue($config, 'mode', ManipulatorInterface::THUMBNAIL_OUTBOUND);
+        $bg_color = ArrayHelper::getValue($config, 'bg_color', 'FFF');
 
         if (!$width || !$height) {
             $image = Image::getImagine()->open($path);
@@ -281,6 +282,7 @@ class UploadImageBehavior extends UploadBehavior
         // Fix error "PHP GD Allowed memory size exhausted".
         $defaulMemLimit = ini_get ('memory_limit');
         ini_set('memory_limit', '512M');
+        Image::$thumbnailBackgroundColor = $bg_color;
         Image::thumbnail($path, $width, $height, $mode)->save($thumbPath, ['quality' => $quality]);
         ini_set ('memory_limit',$defaulMemLimit);
     }
