@@ -580,6 +580,15 @@ a.disabled {
 
 /** end blog */
 
+/** sweet alert new version */
+.sweet-alert h2{
+    font-size: 18px !important;
+}
+.sweet-alert button {
+    font-size: 12px !important;
+    padding: 8px 40px !important;
+}
+
 @media(min-width:768px){
     .form-inline select.form-group {
         display: block;
