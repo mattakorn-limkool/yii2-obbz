@@ -86,6 +86,7 @@ $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::ca
 				<?= !empty($generator->refererField) ? "'additionalUrlParams'=>['". $generator->refererField ."'=>$". $generator->getRefererVariablize() ."Model->id],\n" : "\n" ?>
                 'sortableEnable'=>false,
 				'enableSelectedAction'=>false,
+				//'additionalUrlParams' => ['key'=>$paramKey],
 				<?= !empty($generator->searchModelClass) ? "//'filterModel' => \$searchModel,\n        		'columns' => [\n" : "'columns' => [\n"; ?>
 					// ['class' => 'yii\grid\SerialColumn'],
 
@@ -121,8 +122,8 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 						'enableHeaderAction'  => false,
 						//'template' => '{publish}{unpublish} {update} {delete}',
 						/*'buttons'=>[
-							'customBtn' => function ($url, $model, $key) {
-								$name = 'customBtn';
+							'custom' => function ($url, $model, $key) {
+								$name = 'custom';
 								return CoreActionColumn::generateButton(
 										$name, 'custom name',
 										['url'] , 'icon'

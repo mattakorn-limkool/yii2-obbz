@@ -172,7 +172,12 @@ class ObbzYii
      */
     public static function formParamsUrl($url, $form, $params = []){
         $urlString = Url::to($url);
-        $className = \yii\helpers\StringHelper::basename(get_class($form));
+        if(is_string($form)){
+            $className = \yii\helpers\StringHelper::basename($form);
+        }else{
+            $className = \yii\helpers\StringHelper::basename(get_class($form));
+        }
+
         $tail = '?';
         if (strpos($urlString, '?') !== false) {
             $tail = '&';

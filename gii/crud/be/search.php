@@ -64,6 +64,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function search($params)
     {
+        $t = <?= $modelClass ?>::tableName();
         $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->published()->defaultOrder();
 
         // add conditions that should always apply here
@@ -98,6 +99,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function beSearch($params)
     {
+        $t = <?= $modelClass ?>::tableName();
         $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->active()->defaultOrder();
 
         // add conditions that should always apply here

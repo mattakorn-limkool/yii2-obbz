@@ -26,7 +26,10 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
     public function rules(){
         return array_merge(parent::rules(),[
-			['image', 'file', 'extensions' => 'jpg, jpeg', 'maxSize' => \Yii::$app->params['upload.maxSize'], 'on'=>$this->scenarioCU()],
+			['image', 'image', 'extensions' => 'jpg, jpeg',
+                'maxSize' => \Yii::$app->params['upload.maxSize'],
+                //'minHeight' => 300, 'minWidth'=> 300,
+                'on'=>$this->scenarioCU()],
             //[['field'], 'required', 'on'=>$this->scenarioCU()],
         ]);
     }
@@ -34,7 +37,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 	public function behaviors(){
         return array_merge(parent::behaviors(),[
 			'uploadImage' => $this->defaultImgBehavior('image', [
-                    'thumb'=> ['width'=>300, 'quality' => 100]
+                    'thumb'=> ['width'=>300]
                 ], ['scenarios' => $this->scenarioCU()]) ,
 //            'translateable' => [
 //                'class' => \obbz\yii2\behaviors\TranslationBehavior::class,
