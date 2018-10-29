@@ -17,7 +17,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
      */
     public $options = ['role' => 'form'];
     /**
-     * @var string the form layout. Either 'default', 'horizontal' or 'inline'.
+     * @var string the form layout. Either 'default', 'horizontal', 'inline', 'placeholder'
      * By choosing a layout, an appropriate default field configuration is applied. This will
      * render the form fields with slightly different markup for each layout. You can
      * override these defaults through [[fieldConfig]].
@@ -31,7 +31,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
      */
     public function init()
     {
-        if (!in_array($this->layout, ['default', 'horizontal', 'inline'])) {
+        if (!in_array($this->layout, ['default', 'horizontal', 'inline', 'placeholder'])) {
             throw new InvalidConfigException('Invalid layout type: ' . $this->layout);
         }
 
@@ -44,7 +44,8 @@ class ActiveForm extends \yii\widgets\ActiveForm
     }
 
     /**
-     * @return obbz\yii2\widgets\ActiveField
+     * @inheritdoc
+     * @return ActiveField the created ActiveField object
      */
     public function field($model, $attribute, $options = [])
     {

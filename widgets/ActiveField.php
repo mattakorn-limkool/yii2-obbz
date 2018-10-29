@@ -96,8 +96,53 @@ class ActiveField extends \yii\widgets\ActiveField
     {
         $layoutConfig = $this->createLayoutConfig($config);
         $config = ArrayHelper::merge($layoutConfig, $config);
+
         parent::__construct($config);
     }
+
+    public function init(){
+        parent::init();
+
+    }
+
+
+
+
+    /**
+     * @inheritdoc
+     */
+    public function input($type, $options = [])
+    {
+        $options = $this->replacePlaceholder($options);
+        return parent::input($options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function textInput($options = [])
+    {
+        $options = $this->replacePlaceholder($options);
+        return parent::textInput($options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function passwordInput($options = [])
+    {
+        $options = $this->replacePlaceholder($options);
+        return parent::passwordInput($options);
+    }
+    /**
+     * @inheritdoc
+     */
+    public function textarea($options = [])
+    {
+        $options = $this->replacePlaceholder($options);
+        return parent::textarea($options);
+    }
+
 
     /**
      * @inheritdoc
@@ -105,6 +150,9 @@ class ActiveField extends \yii\widgets\ActiveField
     public function render($content = null)
     {
         if ($content === null) {
+
+
+
             if (!isset($this->parts['{beginWrapper}'])) {
                 $options = $this->wrapperOptions;
                 $tag = ArrayHelper::remove($options, 'tag', 'div');
@@ -303,17 +351,21 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function fileInput($options = [])
     {
-        $filePath = $this->model->getUploadUrl($this->attribute);
         $downloadLink = '';
-        if(!empty($filePath)){
-            $downloadLink = \yii\helpers\Html::a(
-                '<i class="fa fa-download"></i> ' . \Yii::t('obbz', 'Download File'),
-                $filePath,
-                [
-                    'target'=>'_blank'
-                ]
-            );
+        if(method_exists($this->model, 'getUploadUrl')){
+            $filePath = $this->model->getUploadUrl($this->attribute);
+            if(!empty($filePath)){
+                $downloadLink = \yii\helpers\Html::a(
+                    '<i class="fa fa-download"></i> ' . \Yii::t('obbz', 'Download File'),
+                    $filePath,
+                    [
+                        'target'=>'_blank'
+                    ]
+                );
+            }
         }
+
+
 
         $this->template = "{label}\n{input}\n{hint}\n{error}";
         $labelName = $this->model->getAttributeLabel($this->attribute);
@@ -401,6 +453,8 @@ class ActiveField extends \yii\widgets\ActiveField
         $this->inline = (bool) $value;
         return $this;
     }
+
+
 
     public function widget($class, $config = []){
 //        $this->label(true);
@@ -614,6 +668,8 @@ class ActiveField extends \yii\widgets\ActiveField
 //            $config['enableError'] = false;
         }
 
+
+
         return $config;
     }
 
@@ -623,6 +679,7 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     protected function renderLabelParts($label = null, $options = [])
     {
+
         $options = array_merge($this->labelOptions, $options);
         if ($label === null) {
             if (isset($options['label'])) {
@@ -641,5 +698,14 @@ class ActiveField extends \yii\widgets\ActiveField
         if (!isset($this->parts['{labelTitle}'])) {
             $this->parts['{labelTitle}'] = $label;
         }
+    }
+
+    protected function replacePlaceholder($options){
+        if ($this->form->layout === 'placeholder') {
+            $this->enableLabel = false;
+            $options['placeholder'] = $this->model->getAttributeLabel($this->attribute);
+
+        }
+        return $options;
     }
 }
