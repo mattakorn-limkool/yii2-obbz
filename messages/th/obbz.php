@@ -17,17 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Download File' => '',
     'Active' => 'เปิดใช้งาน',
     'Change' => 'เปลี่ยน',
     'Deleted' => 'ลบแล้ว',
-    'Delete' => 'ลบ',
     'Publish Status' => 'สถานะการเผยแพร่',
-    'Published/Unpublished'=> 'สถานะการเผยแพร่',
     'Published' => 'เปิด',
-    'Publish' => 'เปิด',
-    'Unpublish' => 'ปิด',
-    'Update' => 'แก้ไข',
-    'Back'=>'กลับ',
     'Save Translate' => 'บันทึกการแปล',
     'Select {label}' => 'แนบ{label}',
     'Sorry for the inconvenience!' => 'ขออภัยในความไม่สะดวก',

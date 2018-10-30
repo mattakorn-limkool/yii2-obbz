@@ -74,7 +74,7 @@ class UploadImageBehavior extends UploadBehavior
      *
      */
     public $thumbs = [
-        'thumb' => ['width' => 200, 'height' => 200, 'quality' => 100],
+        'thumb' => ['width' => 200, 'height' => 200, 'quality' => 80],
     ];
     /**
      * @var string|null
@@ -266,7 +266,7 @@ class UploadImageBehavior extends UploadBehavior
     {
         $width = ArrayHelper::getValue($config, 'width');
         $height = ArrayHelper::getValue($config, 'height');
-        $quality = ArrayHelper::getValue($config, 'quality', 100);
+        $quality = ArrayHelper::getValue($config, 'quality', 90);
         $mode = ArrayHelper::getValue($config, 'mode', ManipulatorInterface::THUMBNAIL_OUTBOUND);
         $bg_color = ArrayHelper::getValue($config, 'bg_color', 'FFF');
 
