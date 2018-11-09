@@ -39,7 +39,7 @@ class YoutubeUtil
      */
     public static function getIdByUrl($youtubeLink){
         preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtubeLink, $match);
-        return $match[1];
+        return isset($match[1]) ? $match[1] : '';
     }
 
     /**
