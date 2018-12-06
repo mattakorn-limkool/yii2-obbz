@@ -19,6 +19,7 @@ use yii\helpers\ArrayHelper;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
 use yii\jui\AutoComplete;
+use yii\validators\ImageValidator;
 use yii\web\JsExpression;
 
 class ActiveField extends \obbz\yii2\widgets\ActiveField
@@ -459,6 +460,31 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
                                     <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
                                 </div>
                             </div>';
+
+        return $this;
+    }
+
+    public function imgHint(){
+        $validators = $this->model->getValidators($this->attribute);
+        $hint = null;
+        foreach($validators as $validator){
+            if($validator instanceof ImageValidator){
+                if($validator->minWidth && $validator->minHeight){
+                    $labelName = $this->model->getAttributeLabel($this->attribute);
+                    $hint = \Yii::t('obbz',  '{field} size must be greater than {width}x{height}',
+                            [
+                                'field' => $labelName,
+                                'width' => $validator->minWidth,
+                                'height' => $validator->minHeight,
+                            ]);
+                    break;
+                }
+            }
+        }
+
+        if($hint){
+            $this->hint($hint);
+        }
 
         return $this;
     }

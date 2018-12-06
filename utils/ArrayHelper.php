@@ -42,7 +42,7 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
         foreach($data as $model){
             $result[] = $model->$field;
         }
-        return $result;
+        return array_unique($result);
     }
 
     /**
