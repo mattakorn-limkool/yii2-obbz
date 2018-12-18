@@ -25,6 +25,7 @@
         "kartik-v/yii2-field-range": "dev-master",
 		"kartik-v/yii2-widget-select2": "@dev",
         "kartik-v/yii2-widget-rating": "*",
+        "kartik-v/yii2-widget-fileinput": "@dev",
         "obbz/yii2-vote": "*",
         "zircote/swagger-php": "^2.0",
         "bower-asset/swagger-ui": "2.1.4",
