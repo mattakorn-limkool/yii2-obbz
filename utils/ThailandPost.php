@@ -73,7 +73,7 @@ class ThailandPost
             };
         }else{
             $trackError = "ERROR!! - Wrong shipping type";
-            return 0;
+            return false;
         }
 
         return $rate;

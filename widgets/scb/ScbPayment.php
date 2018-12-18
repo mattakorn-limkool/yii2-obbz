@@ -50,12 +50,18 @@ class ScbPayment extends Component
         if(isset(\Yii::$app->params['scb.terminalId'])){
             $this->terminalId = \Yii::$app->params['scb.terminalId'];
         }
+        if(isset(\Yii::$app->params['scb.isProduction'])){
+            $this->isProduction = \Yii::$app->params['scb.isProduction'];
+        }
 
         if(!isset($this->merchantId)){
             throw new \Exception('Please define merchantId');
         }
         if(!isset($this->terminalId)){
             throw new \Exception('Please define terminalId');
+        }
+        if(!isset($this->isProduction)){
+            throw new \Exception('Please define isProduction');
         }
 
         parent::init();

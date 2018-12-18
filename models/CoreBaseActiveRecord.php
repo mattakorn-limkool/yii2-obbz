@@ -247,7 +247,9 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             $type = ArrayHelper::getValue($fieldsConf, 'inputType', self::AUTODATE_TYPE_DATE);
 
             if(!empty($this->$field)){
+
                 $scenarios = ArrayHelper::getValue($fieldsConf, 'scenarios', $this->scenarioCU());
+
                 if($this->isScenario($scenarios)){
 //                    ObbzYii::debug($this->$field);
                     if($type == self::AUTODATE_TYPE_DATE){
