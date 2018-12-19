@@ -15,6 +15,7 @@ use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use kartik\widgets\TouchSpin;
 use obbz\yii2\extensions\ckeditor\CoreCKEditor;
+use obbz\yii2\themes\material\FileInputAsset;
 use obbz\yii2\i18n\CoreFormatter;
 use obbz\yii2\utils\ObbzYii;
 use obbz\yii2\widgets\tagsinput\TagsInputWidgets;
@@ -379,6 +380,7 @@ class ActiveField extends \yii\widgets\ActiveField
         }
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
+        FileInputAsset::register(\Yii::$app->getView());
         $this->parts['{input}'] = '<div class="fileinput fileinput-new" data-provides="fileinput">
                     <span class="btn btn-primary btn-file m-r-10">
                         <span class="fileinput-new">'. \Yii::t('obbz', 'Select {label}',['label'=>$labelName])  .'</span>
@@ -423,6 +425,7 @@ class ActiveField extends \yii\widgets\ActiveField
         }
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
+        FileInputAsset::register(\Yii::$app->getView());
         $this->parts['{input}'] = '<div class="fileinput fileinput-new" data-provides="fileinput">
                                  <div class="fileinput-new thumbnail no-border no-padding" data-trigger="fileinput">
 									'. Html::img($imgPath) .'

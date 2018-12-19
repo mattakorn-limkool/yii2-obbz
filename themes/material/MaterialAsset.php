@@ -59,7 +59,7 @@ class MaterialAsset extends AssetBundle
 
 //        'vendors/bower_components/lightgallery/light-gallery/js/lightGallery.js',
         'vendors/bower_components/lightGallery139/dist/js/lightgallery.js',
-        'vendors/fileinput/fileinput.min.js',
+//        'vendors/fileinput/fileinput.min.js',
         'js/flot-charts/curved-line-chart.js',
         'js/flot-charts/line-chart.js',
         'js/charts.js',
@@ -79,4 +79,5 @@ class MaterialAsset extends AssetBundle
         'yii\bootstrap\BootstrapPluginAsset',
         'rmrevin\yii\fontawesome\AssetBundle',
     ];
+
 }
