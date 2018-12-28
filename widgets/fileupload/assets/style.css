@@ -1,0 +1,15 @@
+.images-management .button-tools {
+    position:absolute;
+    top: -6px;
+    right: 6px;
+}
+.images-management .button-tools button{
+    border-radius: 100%;
+}
+.images-management .error .alert{
+    margin-bottom: 0px;
+}
+
+.lSSlideOuter .lSPager.lSGallery{
+    margin: 5px auto;
+}

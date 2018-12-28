@@ -8,6 +8,8 @@ namespace obbz\yii2\widgets\rating;
 
 
 
+use obbz\yii2\utils\ObbzYii;
+
 class RatingResult extends Rating
 {
     public $viewFile = '@vendor/obbz/yii2/widgets/rating/views/result';
@@ -27,7 +29,6 @@ class RatingResult extends Rating
 
     public function run()
     {
-
         return $this->render($this->viewFile, [
             'widgetId' => $this->getId(),
             'userValue' =>$this->userValue,

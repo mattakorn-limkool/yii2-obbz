@@ -259,6 +259,7 @@ class ActiveField extends \yii\widgets\ActiveField
     public function checkboxList($items, $options = [])
     {
         if ($this->inline) {
+
             if (!isset($options['template'])) {
                 $this->template = $this->inlineCheckboxListTemplate;
             } else {

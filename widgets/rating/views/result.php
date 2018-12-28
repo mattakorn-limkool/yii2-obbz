@@ -6,47 +6,7 @@
  */
 ?>
 <style>
-    .rating-result{}
-    .rating-result .score-body{
-        text-align: center;
-    }
-    .rating-result .score-body .score{
-        font-size: 30px;
-    }
-    .rating-result .score-body .score-total{
-        font-size: 25px;
-        color: #bbb;
-    }
-    .rating-result .result-body{
-    }
-    .rating-result .result-body .item{
-        float:left;
-    }
-    .rating-result .result-body .item .star-label{
-        float: left;
-        width: 50px;
-        line-height: 21px;
-        height: 19px;
-        font-size: 16px;
-        text-align: right;
-        margin-right: 7px;
-    }
-    .rating-result .result-body .item .star-label .fa-star{
-        color: #fde16d;
-        -webkit-text-stroke: 1px #777;
-    }
-    .rating-result .result-body .item .progress-size{
-        width:180px;
-        float:left;
-    }
-    .rating-result .result-body .item .progress{
-        height:12px;
-        margin:8px 0;
-    }
-    .rating-result .result-body .item .amount{
-        float:right;
-        margin-left:10px;
-    }
+
 </style>
 <div id="<?php echo $widgetId ?>" class="rating-result">
     <div class="row">
