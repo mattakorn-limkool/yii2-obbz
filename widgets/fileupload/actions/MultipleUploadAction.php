@@ -13,6 +13,7 @@ use obbz\yii2\widgets\fileupload\behaviors\MultipleUploadBehavior;
 use yii\base\Action;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
@@ -20,38 +21,46 @@ class MultipleUploadAction extends Action
 {
 
     public $modelClass;
-    public $field;
+    public $deleteUrl;
     public $scenario = null;
+
+    // advanced config
+    public $memeryLimit = '512M';
 
 
     public function init(){
         if($this->modelClass == null){
             throw new InvalidConfigException('Please define $modelClass');
         }
-        if($this->field == null){
-            throw new InvalidConfigException('Please define $field');
+
+
+        if($this->deleteUrl == null){
+            throw new InvalidConfigException('Please define $deleteUrl');
         }
 
 
         parent::init();
     }
     /**
+     * @param $field - field for upload model
      * @param null $id - id of model
      */
-    public function run($id = null){
+    public function run($field, $id = null){
         $folderPath = isset($id) ? $id : \Yii::$app->session->id;
         /** @var CoreBaseActiveRecord $model */
         $model = new $this->modelClass;
 
         if($this->scenario){
             $model->setScenario($this->scenario);
+
         }
 
-        $uploadFile = UploadedFile::getInstance($model, $this->field);
+
+        $model->$field = UploadedFile::getInstance($model, $field);
 
         if(!$model->validate()){
-            $message = $model->getFirstError($this->field);
 
+            $message = $model->getFirstError($field);
             return Json::encode([
                 'files'=>[
                     [
@@ -60,44 +69,51 @@ class MultipleUploadAction extends Action
                 ]
             ]);
         }
+//        ObbzYii::debug($model->$field);
 
-        $directory = $model->getMultipleUploadPath($this->field, $id);
-        $urlDirectory = $model->getMultipleUploadUrl($this->field, $id);
+        $directory = $model->getMultipleUploadPath($field, $folderPath);
+        $urlDirectory = $model->getMultipleUploadUrl($field, $folderPath);
 
-        if ($uploadFile) { // on upload
+        $deleteUrlConf = $this->deleteUrl;
+        $deleteUrlConf['field'] = $field;
+        $deleteUrlConf['id'] = $folderPath;
+
+        if ($model->$field) { // on upload
+
             if (!is_dir($directory)) {
                 FileHelper::createDirectory($directory);
             }
 
             $uid = uniqid(time(), true);
-            $fileName = $uid . '.' . $uploadFile->extension;
+            $fileName = $uid . '.' . $model->$field->extension;
             $filePath = $directory . $fileName;
 
 
-            if ($uploadFile->saveAs($filePath)) {
+            if ($model->$field->saveAs($filePath)) {
                 $path =  $urlDirectory . $fileName;
                 // todo - make thumbnail via behavior config
                 // now generate 1 thumbnail via rules config
-                $imageConfig = $this->getImageConfig($model);
+                $imageConfig = $this->getImageConfig($model, $field);
                 if($imageConfig){
                     // resize image
                     $width = $imageConfig['width'];
                     $image = Image::getImagine()->open($filePath);
                     $ratio = $image->getSize()->getWidth() / $image->getSize()->getHeight();
                     $height = ceil($width / $ratio);
-                    ini_set('memory_limit', '512M');
+                    ini_set('memory_limit', $this->memeryLimit);
                     Image::thumbnail($filePath, $width, $height)->save($filePath, ['quality' => 100]);
                 }
-
+                $deleteUrlConf['name'] = $fileName;
+                $deleteUrl = Url::to($deleteUrlConf);
                 // end resize
                 return Json::encode([
                     'files' => [
                         [
                             'name' => $fileName,
-                            'size' => $uploadFile->size,
+                            'size' => $model->$field->size,
                             'url' => $path,
                             'thumbnailUrl' => $path,
-                            'deleteUrl' => 'image-delete?name=' . $fileName . '&id=' . $id,
+                            'deleteUrl' => $deleteUrl,
                             'deleteType' => 'POST',
                         ],
                     ],
@@ -110,12 +126,14 @@ class MultipleUploadAction extends Action
                 foreach($foundImages as $fileName){
                     if(!in_array($fileName,array(".",".."))){
                         $path =  $urlDirectory . $fileName;
+                        $deleteUrlConf['name'] = $fileName;
+                        $deleteUrl = Url::to($deleteUrlConf);
                         $files[] = [
                             'name' => $fileName,
-//                            'size' => $uploadFile->size,
+//                            'size' => $model->$field->size,
                             'url' => $path,
                             'thumbnailUrl' => $path,
-                            'deleteUrl' => 'image-delete?name=' . $fileName . '&id=' . $id,
+                            'deleteUrl' => $deleteUrl,
                             'deleteType' => 'POST',
                         ];
                     }
@@ -128,15 +146,18 @@ class MultipleUploadAction extends Action
 
     }
 
-    public function getImageConfig($model){
+    public function getImageConfig($model, $field){
         $modelBehaviors = $model->behaviors();
         foreach($modelBehaviors as $behavior){
 
             if(isset($behavior['class']) && $behavior['class'] == MultipleUploadBehavior::class){
-                if(isset($behavior['attribute']) && $behavior['attribute'] == $this->field){
+
+                if(isset($behavior['attributes']) && $behavior['attributes'] == $field){
                     return ArrayHelper::getValue($behavior, 'thumbs.thumb');
                 }
             }
         }
     }
+
+
 }

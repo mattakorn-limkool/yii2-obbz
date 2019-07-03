@@ -14,21 +14,24 @@ use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 class DeleteFileAction extends Action
 {
     public $modelClass;
-    public $field;
+    public $deleteUrl;
 
     public function init(){
         if($this->modelClass == null){
             throw new InvalidConfigException('Please define $modelClass');
         }
-        if($this->field == null){
-            throw new InvalidConfigException('Please define $field');
+
+        if($this->deleteUrl == null){
+            $this->deleteUrl = ['/'. $this->controller->id . '/' . $this->id];
         }
+
         parent::init();
     }
 
@@ -37,28 +40,38 @@ class DeleteFileAction extends Action
      * @param null $id
      * @return string
      */
-    public function run($name, $id = null){
-        $folderPath = !empty($id) ? $id : Yii::$app->session->id;
+    public function run($name, $field, $id = null){
+
+        $folderPath = !empty($id) ? $id : \Yii::$app->session->id;
         /** @var CoreBaseActiveRecord $model */
         $model = new $this->modelClass;
 
-        $directory = $model->getMultipleUploadPath($this->field, $id);
+        $directory = $model->getMultipleUploadPath($field, $folderPath);
+        $urlDirectory = $model->getMultipleUploadUrl($field, $folderPath);
         if (is_file($directory . DIRECTORY_SEPARATOR . $name)) {
             unlink($directory . DIRECTORY_SEPARATOR . $name);
         }
 
         $files = FileHelper::findFiles($directory);
         $output = [];
+
+
         foreach ($files as $file) {
             $fileName = basename($file);
-            $path = \Yii::getAlias('@uploadUrl'). DIRECTORY_SEPARATOR .
-                $model->tableName() . $folderPath . DIRECTORY_SEPARATOR . $fileName;
+
+            $path =  $urlDirectory . $fileName;
+
+            $deleteUrlConf = $this->deleteUrl;
+            $deleteUrlConf['name'] = $fileName;
+            $deleteUrlConf['field'] = $field;
+            $deleteUrlConf['id'] = $folderPath;
+            $deleteUrl = Url::to($deleteUrlConf);
             $output['files'][] = [
                 'name' => $fileName,
                 'size' => filesize($file),
                 'url' => $path,
                 'thumbnailUrl' => $path,
-                'deleteUrl' => 'image-delete?name=' . $fileName . '&id=' . $id,
+                'deleteUrl' => $deleteUrl,
                 'deleteType' => 'POST',
             ];
         }

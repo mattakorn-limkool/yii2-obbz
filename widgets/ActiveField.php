@@ -85,7 +85,7 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public $enableLabel = true;
 
-    public $widgetTemplate = "{label}\n{input}\n{hint}\n{error}";
+    public $widgetTemplate = "{label}\n{beginWrapper}\n{input}\n{error}\n{endWrapper}\n{hint}";
     public $captchaTemplate = "{label}\n<div class=\"row\">{input}</div>\n{hint}\n{error}";
 
 

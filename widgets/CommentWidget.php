@@ -12,6 +12,7 @@ use yii\base\Exception;
 use yii\base\Widget;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 class CommentWidget extends Widget
@@ -99,6 +100,16 @@ class CommentWidget extends Widget
             }
         }
 
+        $this->additionalQuery($query, $model, $modelClass);
+
         return $query->orderBy($this->orderBy);
     }
+
+    /**
+     * @param $query ActiveQuery
+     * @param $model ActiveRecord
+     * @param $modelClass string
+     */
+    protected function additionalQuery(&$query, $model, $modelClass){}
+
 }

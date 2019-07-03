@@ -1,6 +1,9 @@
 <?php
 namespace obbz\yii2\widgets\fileupload\behaviors;
+use obbz\yii2\utils\ObbzYii;
 use yii\base\Behavior;
+use yii\db\BaseActiveRecord;
+use yii\helpers\FileHelper;
 
 /**
  * @author: Mattakorn Limkool
@@ -8,16 +11,28 @@ use yii\base\Behavior;
  */
 class MultipleUploadBehavior extends Behavior
 {
-    public $thumbs;
-
+//    public $thumbs;
+    public $attributes;
 
     public function init(){
-        if($this->thumbs == null){
-            throw new InvalidConfigException('Please define $thumbs');
+        if($this->attributes == null){
+            throw new InvalidConfigException('Please define $attributes');
         }
 
 
         parent::init();
+    }
+
+    public function events()
+    {
+        return [
+//            BaseActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
+//            BaseActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
+//            BaseActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
+            BaseActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
+            BaseActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
+//            BaseActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
+        ];
     }
 
     public function getFirstImageUrl($field){
@@ -59,5 +74,34 @@ class MultipleUploadBehavior extends Behavior
         $this->owner->tableName() . '/' . $field .'/'
         . $id . '/' ;
     }
+
+    /**
+     * @param array $fields clear all upload file by session when empty
+     */
+    public function resetSessionFiles($fields = []){
+        if(empty($fields)){
+            $fields = array_keys($this->attributes);
+        }
+        foreach($fields as $field){
+            $sessionDirectory = $this->getMultipleUploadPath($field, \Yii::$app->session->id);
+            if(is_dir($sessionDirectory)){ // on new record
+                FileHelper::removeDirectory($sessionDirectory);
+
+            }
+        }
+
+    }
+
+    public function afterSave()
+    {
+        foreach($this->attributes as $attribute => $config){
+            $sessionDirectory = $this->getMultipleUploadPath($attribute, \Yii::$app->session->id);
+            if(file_exists($sessionDirectory)){ // on new record
+                $newDirectory = $this->getMultipleUploadPath($attribute, $this->owner->id);
+                rename($sessionDirectory, $newDirectory);
+            }
+        }
+    }
+
 
 }

@@ -229,7 +229,7 @@ class Generator extends \yii\gii\generators\model\Generator
 
             // specific for core table
             if($column === 'key_name'){
-                $hashConditions[] = "'{$column}' => \$this->{$column},";
+                $hashConditions[] = "\$t.'.{$column}' => \$this->{$column},";
             }else{
                 switch ($type) {
                     case Schema::TYPE_SMALLINT:

@@ -17,8 +17,11 @@ class CommentAction extends Action
 {
     public $modelClass;
     public $modelId;
+    public $scenario;
     public $successText = 'Your comment has been added.';
     public $flashOnSuccess = true;
+    public $flashOnError = true;
+    public $redirectUrl;
 
     public function run($id)
     {
@@ -28,6 +31,9 @@ class CommentAction extends Action
         $this->modelId = $id;
 
         $model = $this->newModel();
+        if($this->scenario){
+            $model->setScenario($this->scenario);
+        }
 
         if($model->load(ObbzYii::post())){
             //no authen use controller access control instead
@@ -39,9 +45,13 @@ class CommentAction extends Action
                     ObbzYii::setFlashSuccess(\Yii::t('obbz',$this->successText));
                 }
             }else{
-                ObbzYii::setFlashError($model->getFirstErrors());
+                if($this->flashOnError){
+                    ObbzYii::setFlashError($model->getFirstErrors());
+                }
+
             }
-            $this->controller->redirect(ObbzYii::referrerUrl());
+            $redirectUrl = isset($this->redirectUrl) ? $this->redirectUrl : ObbzYii::getReturnUrl();
+            $this->controller->redirect($redirectUrl);
         }
 
 //        return $this->controller->redirect($this->redirectUrl);
