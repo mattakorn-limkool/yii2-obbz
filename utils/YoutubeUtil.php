@@ -20,6 +20,11 @@ class YoutubeUtil
     const ASPECT_RETIO_16_9 = 'embed-responsive-16by9';
     const ASPECT_RETIO_4_3 = 'embed-responsive-4by3';
     const ASPECT_RETIO_1_1 = 'embed-responsive-1by1';
+
+    const THUMB_QUALITY_LOW = 'sddefault.jpg';
+    const THUMB_QUALITY_MEDIUM = 'mqdefault.jpg';
+    const THUMB_QUALITY_HIGH = 'hqdefault.jpg';
+    const THUMB_QUALITY_MAX = 'maxresdefault.jpg';
     /**
      * Get only Id from youtube
      *
@@ -84,5 +89,11 @@ class YoutubeUtil
             $result .= " " . $value;
         }
         return $result;
+    }
+
+    /** for youtube thumbnail */
+    public static function getDefaultThumbnail($youtubeLink, $quality = self::THUMB_QUALITY_MEDIUM){
+        $id = self::getIdByUrl($youtubeLink);
+        return "http://img.youtube.com/vi/{$id}/{$quality}";
     }
 }
