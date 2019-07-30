@@ -9,18 +9,21 @@ namespace obbz\yii2\utils;
 use yii\base\Component;
 
 class YoutubeUtilConfig extends Component
-{// for bootstrap
+{
+    // default config
+    public $autoplay = false;
+    public $allowFullscreen = true;
+    public $allowAutoplay = true;
+
+    // for bootstrap
     const ASPECT_RETIO_21_9 = 'embed-responsive-21by9';
     const ASPECT_RETIO_16_9 = 'embed-responsive-16by9';
     const ASPECT_RETIO_4_3 = 'embed-responsive-4by3';
     const ASPECT_RETIO_1_1 = 'embed-responsive-1by1';
 
-    public $autoplay = false;
-    public $allowFullscreen = true;
-    public $allowAutoplay = true;
-
     public $bootstrapContainerClass = 'embed-responsive';
     public $bootstrapContainerRatio = self:: ASPECT_RETIO_16_9;
+
 }
 
 /**
