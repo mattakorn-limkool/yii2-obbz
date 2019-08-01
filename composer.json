@@ -54,7 +54,7 @@
         "yii2mod/yii2-sweet-alert": "*",
 		"parsilver/thailand-provinces-php" : "*",
         "aksafan/yii2-fcm-both-api": "*",
-        "endroid/qr-code": "2.5",
+        "endroid/qr-code": "^2.5",
         "php": ">=5.3.0"
     },
 	"require-dev": {
