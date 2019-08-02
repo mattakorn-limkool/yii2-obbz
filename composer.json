@@ -45,6 +45,7 @@
 		"cybercog/yii2-google-analytics": "*",
 		"omnilight/yii2-shopping-cart": "*",
         "moonlandsoft/yii2-phpexcel": "*",
+		"phpoffice/phpexcel" : "^1.8.1",
 		"wbraganca/yii2-dynamicform": "*",
         "kongoon/yii2-paypal": "dev-master",
         "scotthuangzl/yii2-google-chart": "dev-master",
@@ -54,7 +55,6 @@
         "yii2mod/yii2-sweet-alert": "*",
 		"parsilver/thailand-provinces-php" : "*",
         "aksafan/yii2-fcm-both-api": "*",
-        "endroid/qr-code": "^2.5",
         "php": ">=5.3.0"
     },
 	"require-dev": {
