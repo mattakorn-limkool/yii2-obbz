@@ -201,16 +201,19 @@ class CoreActiveRecord extends CoreBaseActiveRecord
     }
 
     /**
-     * @param $model CoreActiveRecord
+     * @param $showHtml bool
      * @return string
      */
     public function displayPublishStatus($showHtml = true){
         $list = CoreDataList::statusPublish();
         $label =  ArrayHelper::getValue($list, $this->disabled);
-        $status = $this->hasPublished() ? \Yii::t('obbz', 'Published') : \Yii::t('obbz', 'Unpublished');
+        $status = $this->hasPublished() ? 'published' : 'unpublished';
         return $showHtml ? Html::tag('span' , $label, ['class'=>'core-grid-status-' .  $status ]): $label;
     }
 
+    /**
+     * @return array
+     */
     public function getCoreAttributes(){
         return self::attributes();
     }

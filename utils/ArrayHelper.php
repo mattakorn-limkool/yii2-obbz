@@ -13,6 +13,19 @@ use yii\widgets\ListView;
 class ArrayHelper extends \yii\helpers\ArrayHelper
 {
     /**
+     * data -   [
+     *              ['id'=>1, 'title'=>'a'],
+     *              ['id'=>2, 'title'=>'b'],
+     *              ['id'=>3, 'title'=>'a'],
+     *          ]
+     * field - title
+     * value - a
+     *
+     * result - [
+     *              ['id'=>1, 'title'=>'a'],
+     *              ['id'=>3, 'title'=>'a'],
+     *          ]
+     *
      * @param Model[] $data - array of Model
      * @param string $field - attribute name for search
      * @param int|string $value - value for need to equal
@@ -33,6 +46,15 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
     }
 
     /**
+     * data -   [
+     *              ['id'=>1, 'title'=>'a'],
+     *              ['id'=>2, 'title'=>'b'],
+     *              ['id'=>3, 'title'=>'c'],
+     *          ]
+     * field - title
+     *
+     * result - ['a', 'b', 'c']
+     *
      * @param Model[] $data - array of Model
      * @param string $field - attribute name for search
      * @return array of field value
@@ -46,6 +68,7 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
     }
 
     /**
+     * - get item number by dataProvider widget
      * @param $widget ListView
      * @param $currentIndex
      * @return mixed
@@ -56,6 +79,11 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
     }
 
     /**
+     * glue - :
+     * array - ['1'=>'a', '2'=>'b', '3'=>'c']
+     *
+     * result - 1:2:3
+     *
      * @param $glue
      * @param $array of model for implode
      * @return string
@@ -63,6 +91,34 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
     public static function implodeByKey($glue, array $array){
         $arrayImplode = array_keys($array);
         return implode($glue, $arrayImplode);
+    }
+
+    /**
+     * models - [
+     *              ['id'=>1, 'title'=>'a'],
+     *              ['id'=>2, 'title'=>'b'],
+     *              ['id'=>3, 'title'=>'c'],
+     *          ]
+     * field - id
+     *
+     * result - [
+     *              1=>['id'=>1, 'title'=>'a'],
+     *              2=>['id'=>2, 'title'=>'b'],
+     *              3=>['id'=>3, 'title'=>'c'],
+     *          ]
+     *
+     *
+     * @param Model[] $models
+     * @param string $field
+     * @return Model[]
+     */
+    public static function indexedModelsByField($models, $field){
+        $result = [];
+        foreach($models as $model){
+
+            $result[$model->$field] = $model;
+        }
+        return $result;
     }
 
 }
