@@ -215,9 +215,10 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             }
             #endregion
             $type = ArrayHelper::getValue($fieldsConf, 'inputType', self::AUTODATE_TYPE_DATE);
+
             if(!empty($this->$field)){
-                $scenarios = ArrayHelper::getValue($fieldsConf, 'scenarios', $this->scenarioCU());
-                if($this->isScenario($scenarios)){
+//                $scenarios = ArrayHelper::getValue($fieldsConf, 'scenarios', $this->scenarioCU());
+//                if($this->isScenario($scenarios)){
                     if($type == self::AUTODATE_TYPE_DATE){
                         $this->$field =  ObbzYii::formatter()->asDate($this->$field);
                     }else if($type == self::AUTODATE_TYPE_DATETIME){
@@ -225,7 +226,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
                     }else if($type == self::AUTODATE_TYPE_TIME){
                         $this->$field =  ObbzYii::formatter()->asTime($this->$field);
                     }
-                }
+//                }
             }
 
         }
