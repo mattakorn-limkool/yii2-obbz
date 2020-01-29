@@ -200,23 +200,27 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         }
     }
     public function afterSave($insert, $changedAttributes){
-        $this->autoDate2input();
+        $this->autoDate2input($changedAttributes);
         parent::afterSave($insert, $changedAttributes);
     }
 
-
-    public function autoDate2input(){
+    /**
+     * @param null $fields - need to convert field (null is convert all attribute)
+     * @throws ErrorException
+     */
+    public function autoDate2input($fields = null){
         foreach($this->autoDateFields as $fieldsConf){
 
             #region validate
             $field = ArrayHelper::getValue($fieldsConf, 'field');
-            if(!isset($field)){
-                throw new ErrorException('Must be set field of AutoDateFields items');
-            }
-            #endregion
-            $type = ArrayHelper::getValue($fieldsConf, 'inputType', self::AUTODATE_TYPE_DATE);
+            if($fields === null or in_array($field, $fields)){
+                if(!isset($field)){
+                    throw new ErrorException('Must be set field of AutoDateFields items');
+                }
+                #endregion
+                $type = ArrayHelper::getValue($fieldsConf, 'inputType', self::AUTODATE_TYPE_DATE);
 
-            if(!empty($this->$field)){
+                if(!empty($this->$field)){
 //                $scenarios = ArrayHelper::getValue($fieldsConf, 'scenarios', $this->scenarioCU());
 //                if($this->isScenario($scenarios)){
                     if($type == self::AUTODATE_TYPE_DATE){
@@ -227,7 +231,9 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
                         $this->$field =  ObbzYii::formatter()->asTime($this->$field);
                     }
 //                }
+                }
             }
+
 
         }
     }
