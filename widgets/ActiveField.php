@@ -493,7 +493,7 @@ class ActiveField extends \yii\widgets\ActiveField
         $dateFormat = ObbzYii::formatter()->dateFormat;
         return $this->widget(DatePicker::class, array_merge([
             'type' => DatePicker::TYPE_COMPONENT_APPEND,
-            'options'=> $this->inputOptions,
+            'options'=> array_merge($this->inputOptions, ["autocomplete"=>"off"]),
             'pluginOptions' => [
                 'autoclose' => true,
                 'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),
@@ -505,7 +505,7 @@ class ActiveField extends \yii\widgets\ActiveField
         $dateFormat = ObbzYii::formatter()->timeFormat;
         return parent::widget(TimePicker::class, array_merge([
             'name' => $this->attribute,
-            'options'=> $this->inputOptions,
+            'options'=> array_merge($this->inputOptions, ["autocomplete"=>"off"]),
             'pluginOptions' => [
                 'showMeridian' => false,
 //                'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($dateFormat),
