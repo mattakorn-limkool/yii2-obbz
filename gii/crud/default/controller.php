@@ -39,18 +39,35 @@ use yii\data\ActiveDataProvider;
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use obbz\yii2\utils\ObbzYii;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
  */
 class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->baseControllerClass) . "\n" ?>
 {
+    public $modelClass = '<?= $generator->modelClass ?>';
+
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                    'rules' => [
+//                        [  // not require authenticate action index
+//                          'actions' => ['index'],
+//                          'allow' => true,
+//                        ],
+                        [  // require authenticate of all action
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -69,6 +86,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php if (!empty($generator->searchModelClass)): ?>
         $searchModel = new <?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        ObbzYii::setReturnUrl();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -105,14 +123,17 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionCreate()
     {
         $model = new <?= $modelClass ?>();
+        $model->setScenario($model::SCENARIO_CREATE);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', <?= $urlParams ?>]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if ($model->load(ObbzYii::post())) {
+            if($model->save()){
+                ObbzYii::setFlashSuccess(\Yii::t('app', 'Record has been created successfully'));
+                return $this->redirect(ObbzYii::getReturnUrl());
+            }
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -124,28 +145,20 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionUpdate(<?= $actionParams ?>)
     {
         $model = $this->findModel(<?= $actionParams ?>);
+        $model->setScenario(<?= $modelClass ?>::SCENARIO_UPDATE);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', <?= $urlParams ?>]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($model->load(ObbzYii::post())) {
+            if($model->save()){
+                ObbzYii::setFlashSuccess(\Yii::t('app', 'Record has been updated successfully'));
+                return $this->redirect(ObbzYii::getReturnUrl());
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
-    /**
-     * Deletes an existing <?= $modelClass ?> model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
-     * @return mixed
-     */
-    public function actionDelete(<?= $actionParams ?>)
-    {
-        $this->findModel(<?= $actionParams ?>)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the <?= $modelClass ?> model based on its primary key value.
@@ -167,10 +180,18 @@ if (count($pks) === 1) {
     $condition = '[' . implode(', ', $condition) . ']';
 }
 ?>
-        if (($model = <?= $modelClass ?>::findOne(<?= $condition ?>)) !== null) {
+        if (($model = <?= $modelClass ?>::find()->published()->pk(<?= $condition ?>)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+<?php if(!empty($generator->refererField)): ?>
+    public function mainPageUrl(<?php echo $refererVar['actionParams'] ?> = null){
+        if(!isset(<?php echo $refererVar['actionParams'] ?>)){
+        <?php echo $refererVar['actionParams'] ?> = ObbzYii::get('<?php echo $generator->refererField; ?>');
+        }
+        return ['index','<?php echo $generator->refererField; ?>'=><?php echo $refererVar['actionParams'] ?>];
+    }
+<?php endif; ?>
 }

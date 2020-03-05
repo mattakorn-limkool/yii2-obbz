@@ -27,6 +27,7 @@ namespace <?= StringHelper::dirname(ltrim($generator->searchModelClass, '\\')) ?
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use obbz\yii2\utils\ObbzYii;
 use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
 
 /**
@@ -40,9 +41,9 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function rules()
     {
-        return [
-            <?= implode(",\n            ", $rules) ?>,
-        ];
+        return array_merge(parent::rules(),[
+            //[['field'], 'safe'],
+        ]);
     }
 
     /**
@@ -55,7 +56,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied on Frontend
      *
      * @param array $params
      *
@@ -63,15 +64,19 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
      */
     public function search($params)
     {
-        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
+        $t = <?= $modelClass ?>::tableName();
+        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->published()->defaultOrder();
 
         // add conditions that should always apply here
+        $this->load($params);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=>false,
+            'pagination'=>['defaultPageSize'=>Yii::$app->params['default.pageSize']]
         ]);
 
-        $this->load($params);
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -80,7 +85,42 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         }
 
         // grid filtering conditions
-        <?= implode("\n        ", $searchConditions) ?>
+        $this->defaultQueryFilter($query);
+
+        return $dataProvider;
+    }
+	
+	/**
+     * Creates data provider instance with search query applied on Backend
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function beSearch($params)
+    {
+        $t = <?= $modelClass ?>::tableName();
+        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->active()->defaultOrder();
+
+        // add conditions that should always apply here
+        $this->load($params);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=>false,
+            'pagination'=>['defaultPageSize'=>Yii::$app->params['default.pageSize']]
+        ]);
+
+
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $this->defaultQueryFilter($query);
 
         return $dataProvider;
     }
