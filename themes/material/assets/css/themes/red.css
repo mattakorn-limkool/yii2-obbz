@@ -1,15 +1,17 @@
-
+[data-current-skin="red"] {
+    background-color: #ed2a28;
+}
 .btn-primary{
     background: #fff !important;
-    color: #ffa829 !important;
+    color: #ed2a28 !important;
 
 }
 .btn-float:not(.bgm-white):not(.bgm-gray):not(.btn-danger) > i {
-    color: #ffa829;
+    color: #ed2a28;
 }
 
 .btn-success {
-    background: #ffa829 !important;
+    background: #ed2a28 !important;
 }
 .btn-warning {
     color: #ffffff;
@@ -17,21 +19,21 @@
     border-color: #ff6e29;
 }
 a, a:hover{
-    color: #ffa829;
+    color: #ed2a28;
 }
 .tab-nav:not([data-tab-color]) > li > a:after {
-    background: #ffa829;
+    background: #ed2a28;
 }
 .fg-line:not([class*=has-]):after {
-    background: #ffa829;
+    background: #ed2a28;
 }
 .checkbox .input-helper::after {
-    border-bottom: 2px solid #ffa829 !important;
-    border-left: 2px solid #ffa829 !important;
+    border-bottom: 2px solid #ed2a28 !important;
+    border-left: 2px solid #ed2a28 !important;
 }
 body.login-content::before {
     height: 100%;
-    background: #ffa829;
+    background: #ed2a28;
 }
 
 
