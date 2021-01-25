@@ -64,6 +64,7 @@ class Html extends \yii\helpers\Html
         }
     }
 
+
     public static function socialUrl($username, $url = '', $urlEmptyName = 'Url'){
         if(empty($url) && empty($username)){
             return '';
@@ -78,4 +79,47 @@ class Html extends \yii\helpers\Html
             return self::a($username, $url, ['target'=>'_blank']);
         }
     }
+
+    /**
+     * Generates list of hidden input tags for the given model attribute when the attribute's value is an array.
+     *
+     * @param Model $model
+     * @param string $attribute
+     * @param array $options
+     * @return string
+     */
+    public static function activeHiddenInputList($model, $attribute, $options = [])
+    {
+        $str = '';
+        if(isset($model->$attribute)){
+            $flattenedList = static::getflatInputNames($attribute, $model->$attribute);
+            foreach ($flattenedList as $flattenAttribute) {
+                $str.= static::activeHiddenInput($model, $flattenAttribute, $options);
+            }
+        }
+
+        return $str;
+    }
+
+    /**
+     * @param string $name
+     * @param array $values
+     * @return array
+     */
+    private static function getflatInputNames($name, array $values)
+    {
+        $flattened = [];
+
+        foreach ($values as $key => $val) {
+            $nameWithKey = $name . '[' . $key . ']';
+            if (is_array($val)) {
+                $flattened += static::getflatInputNames($nameWithKey, $val);
+            } else {
+                $flattened[] = $nameWithKey;
+            }
+        }
+        return $flattened;
+    }
+
+
 }
