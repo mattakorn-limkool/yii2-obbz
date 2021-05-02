@@ -121,4 +121,20 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
         return $result;
     }
 
+    /**
+     * convert tag value eg. "abc,cdf,ghi"  to able to using with select items array
+     *
+     * @param $tagValue
+     * @param string $seperator
+     * @return array
+     */
+    public static function tagValue2DropdownItems($tagValue, $tagSeperator = ","){
+        $exp = explode($tagSeperator, $tagValue);
+        $options = [];
+        foreach($exp as $value){
+            $options[$value] = $value;
+        }
+        return $options;
+    }
+
 }

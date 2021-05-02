@@ -254,6 +254,9 @@ class UploadImageBehavior extends UploadBehavior
      */
     protected function getThumbFileName($filename, $profile = 'thumb')
     {
+        if($profile == 'original'){
+            return $filename;
+        }
         return $profile . '-' . $filename;
     }
 
