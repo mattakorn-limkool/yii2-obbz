@@ -26,15 +26,15 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
      *              ['id'=>3, 'title'=>'a'],
      *          ]
      *
-     * @param Model[] $data - array of Model
+     * @param ActiveRecord[] $models - array of Model
      * @param string $field - attribute name for search
      * @param int|string $value - value for need to equal
      * @param bool $reIndex - need to re index of result
-     * @return array of Model
+     * @return ActiveRecord[]
      */
-    public static function modelFilterEqual($data, $field, $value, $reIndex = true){
+    public static function modelFilterEqual($models, $field, $value, $reIndex = true){
         $result = [];
-        foreach($data as $key => $model){
+        foreach($models as $key => $model){
             if($model->$field == $value){
                 if($reIndex)
                     $result[] = $model;
@@ -43,6 +43,32 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
             }
         }
         return $result;
+    }
+
+
+    /**
+     * @param ActiveRecord[] $models
+     * @param int $limit
+     * @param string $startTimeField
+     * @param string $endTimeField
+     * @return ActiveRecord[]
+     */
+    public static function modelFilterByPeriodTime($models, $limit = null, $startTimeField = 'start_time', $endTimeField = 'end_time'){
+        $resultModels = $models;
+        $curDate = ObbzYii::formatter()->asDbDatetime();
+
+        foreach($models as $key => $model){
+            if(isset($model->$startTimeField) && $model->$startTimeField > $curDate){
+                unset($resultModels[$key]);
+            }
+            if(isset($model->$endTimeField) && $model->$endTimeField < $curDate){
+                unset($resultModels[$key]);
+            }
+        }
+        if($limit > 0){
+            $resultModels = array_slice($resultModels, 0, $limit);
+        }
+        return $resultModels;
     }
 
     /**

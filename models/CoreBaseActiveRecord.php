@@ -49,14 +49,14 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     }
 
     /**
-     * Example.  [
+     * @var array
+     * eg.  [
      *              [
      *                 'field' => 'start_date',
      *                 'inputType' => 'date',
      *                 'dbType' => 'datetime',
      *              ]
      *           ]
-     * @var array
      */
     public $autoDateFields = [];
 
@@ -79,20 +79,6 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         return in_array($this->scenario, $arrayScenario);
     }
 
-//    public function scenarios(){
-//        $scenarios = parent::scenarios();
-//        $scenarios[self::SCENARIO_SEARCH] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_CREATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_UPDATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_DELETE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_SEARCH] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_CREATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_UPDATE] = $scenarios['default'];
-//        $scenarios[self::SCENARIO_BE_DELETE] = $scenarios['default'];
-//        return $scenarios;
-//    }
-
-//    public $translateAttributesOptions = [];
 
     public function init(){
 
@@ -107,13 +93,6 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         return $className::CACHE_PREFIX . $key;
     }
 
-//    public function rules()
-//    {
-//        return [
-////            [['disabled', 'deleted'], 'default', 'value' => 0],
-////            [['sorting'], 'default', 'value' => 99999],
-//        ];
-//    }
 
     /**
      * @param $attribute
@@ -284,14 +263,14 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     }
 
     public function clearDefaultCacheApi(){
-        $className = self::class;
-        ObbzYii::cache()->delete(self::getCacheApiByKey($className::CACHE_PUBLISHED_ALL));
-        ObbzYii::cache()->delete(self::getCacheApiByKey($className::CACHE_ACTIVE_ALL));
+//        $className = self::class;
+        ObbzYii::cache()->delete(self::getCacheApiByKey($this::CACHE_PUBLISHED_ALL));
+        ObbzYii::cache()->delete(self::getCacheApiByKey($this::CACHE_ACTIVE_ALL));
     }
 
     public function getCacheApiByKey($key){
-        $className = self::class;
-        return $className::CACHE_PREFIX_API . $key;
+//        $className = self::class;
+        return $this::CACHE_PREFIX_API . $key;
     }
 
     public static function supportedTranslationTable($modelClass){
@@ -331,4 +310,8 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 
         return $model;
     }
+
+
+
+
 }

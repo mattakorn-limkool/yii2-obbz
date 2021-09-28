@@ -9,6 +9,7 @@ class CoreSorting extends CoreBaseAction
 {
     public $modelClass;
     public $orderAttribute = 'sorting';
+//    public $scenario = CoreActiveRecord::SCENARIO_BE_UPDATE;
 
     public function run()
     {
@@ -17,11 +18,12 @@ class CoreSorting extends CoreBaseAction
             foreach (\Yii::$app->request->post('sorting') as $order => $id) {
                 /** @var CoreActiveRecord $model */
                 $model =  $this->findModel($id);
+//                $model->setScenario($this->scenario);
                 if ($model === null) {
                     throw new BadRequestHttpException();
                 }
                 $model->{$this->orderAttribute} = $order;
-                $model->update(false, [$this->orderAttribute]);
+                $model->save(false, [$this->orderAttribute]);
             }
             $transaction->commit();
         } catch (\Exception $e) {

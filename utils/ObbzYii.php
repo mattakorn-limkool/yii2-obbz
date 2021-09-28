@@ -177,15 +177,20 @@ class ObbzYii
         }else{
             $className = \yii\helpers\StringHelper::basename(get_class($form));
         }
+        $tail = '';
 
-        $tail = '?';
-        if (strpos($urlString, '?') !== false) {
-            $tail = '&';
+        if(!empty($params)){
+            $tail = '?';
+            if (strpos($urlString, '?') !== false) {
+                $tail = '&';
+            }
+
+            foreach($params as $key => $value){
+                $tail .= $className . '[' . $key . ']=' . $value . '&';
+            }
+            $tail= rtrim($tail,"&");
+
         }
-        foreach($params as $key => $value){
-            $tail .= $className . '[' . $key . ']=' . $value . '&';
-        }
-        $tail= rtrim($tail,"&");
 
 
         return $urlString.$tail;
