@@ -17,6 +17,7 @@ class EnhancedActiveQuery extends ActiveQuery{
     private $whereAttributes = [];
 
     /**
+     * @deprecated move to CoreActiveQuery
      * find one if not found create new model
      * @param null $initModelConfig
      * @param Connection|null $db the DB connection used to create the DB command.
@@ -40,6 +41,7 @@ class EnhancedActiveQuery extends ActiveQuery{
 
 
     /**
+     * @deprecated move to CoreActiveQuery
      * auto grap filter condition to set attributes value of new model
      * @param $where
      */

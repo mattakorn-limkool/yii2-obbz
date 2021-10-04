@@ -10,14 +10,15 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use obbz\yii2\themes\material\widgets\ActiveForm;
+use obbz\yii2\utils\ObbzYii;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form obbz\yii2\themes\material\widgets\ActiveForm */
 ?>
-
-<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
+<div id="core-filter" class="row core-filter">
+	<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
 
     <?= "<?php " ?>$form = ActiveForm::begin([
         'action' => ['index'],
@@ -26,24 +27,37 @@ use yii\widgets\ActiveForm;
         'options' => [
             'data-pjax' => 1
         ],
+		'layout' => 'inline'
 <?php endif; ?>
     ]); ?>
 
 <?php
 $count = 0;
+$showAttributes = ['title', 'detail'];
+$noFilterAttributes = ['image', 'sorting', 'modify_user_id', 'deleted_user_id'];
+/** not implement other field yet (created_time, modify_time, deleted_time, create_user_id)   */
 foreach ($generator->getColumnNames() as $attribute) {
-    if (++$count < 6) {
-        echo "    <?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
-    } else {
-        echo "    <?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+	
+    if (in_array($attribute, $showAttributes)) {
+		echo "	<div class=\"col-sm-3\">\n";
+        echo "    <?php echo " . $generator->generateActiveSearchField($attribute) . " ?>\n";
+		echo "	</div>\n\n";
     }
+    else if(in_array($attribute, $noFilterAttributes)){} // by pass
+    else {
+		echo "	<!--<div class=\"col-sm-3\">\n";
+        echo "    <?php /* echo " . $generator->generateActiveSearchField($attribute) . " */?>\n";
+		echo "	</div>-->\n\n";
+    }
+	
 }
 ?>
-    <div class="form-group">
-        <?= "<?= " ?>Html::submitButton(<?= $generator->generateString('Search') ?>, ['class' => 'btn btn-primary']) ?>
-        <?= "<?= " ?>Html::resetButton(<?= $generator->generateString('Reset') ?>, ['class' => 'btn btn-default']) ?>
-    </div>
+		<div class="col-sm-2">
+			<?= "<?php echo " ?>Html::submitButton('<i class="fa fa-search"></i> ' . <?= $generator->generateString('Search') ?>, ['class' => 'btn btn-primary btn-block']) ?>
+			<?= "<?php // echo " ?>Html::resetButton(<?= $generator->generateString('Reset') ?>, ['class' => 'btn btn-default']) ?>
+		</div>
 
     <?= "<?php " ?>ActiveForm::end(); ?>
 
+	</div>
 </div>

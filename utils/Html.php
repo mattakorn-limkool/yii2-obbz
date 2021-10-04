@@ -43,6 +43,15 @@ class Html extends \yii\helpers\Html
      *                                       ]
      *                          ]
      * @param $wrapper
+     *
+     *
+             public function displayStatus(){
+                return Html::wrapListValue($this->status, self::statusList(), [
+                    self::STATUS_APPROVED => ['css'=>'text-success'],
+                    self::STATUS_WAITING => ['css'=>'text-warning'],
+                ]);
+            }
+     *
      */
     public static function wrapListValue(
                      $valueKey, $mappingList,

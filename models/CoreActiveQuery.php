@@ -14,9 +14,21 @@ use obbz\yii2\utils\ObbzYii;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 class CoreActiveQuery extends ActiveQuery
 {
+    /**
+     * for handle fail request when data is empty
+     * @param $data
+     * @throws NotFoundHttpException
+     */
+    public function handleFailRequest($data){
+        if(empty($data)){
+            throw new NotFoundHttpException(\Yii::t('app',"The requested page does not exist."));
+        }
+    }
+
     #region util todo - reslove this way issues https://github.com/yiisoft/yii2/issues/7263
     public function baseField($field){
         $modelClass = $this->modelClass;
@@ -27,6 +39,65 @@ class CoreActiveQuery extends ActiveQuery
 
     #region util find
 
+    /**
+     * find request or fail if not found data
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function oneOrFail(){
+        $data = $this->one();
+        $this->handleFailRequest($data);
+        return $data;
+    }
+
+
+    /**
+     * find one if not found create new model
+     * @param null $initModelConfig
+     * @param Connection|null $db the DB connection used to create the DB command.
+     * @return ActiveRecord
+     */
+    public function oneOrCreate($initModelConfig = null, $replaceCondition = true, $db = null){
+        $modelClass = $this->modelClass;
+//        ObbzYii::debug($this);
+        if($model = $this->one($db)){
+            return $model;
+        }else{
+            $model = new $modelClass($initModelConfig);
+            if(isset($this->where) && $replaceCondition){
+                $this->whereAttributes = [];
+                $this->whereToAttributes($this->where);
+                $model->attributes = $this->whereAttributes;
+            }
+            return $model;
+        }
+    }
+
+
+    /**
+     * auto grap filter condition to set attributes value of new model
+     * @param $where
+     */
+    private function whereToAttributes($where){
+        if(isset($where[0])){
+            $operator = array_shift($where);
+            foreach($where as $cond){
+                if(is_array($cond)){
+                    $this->whereToAttributes($cond);
+                }else{
+                    $this->whereAttributes[$where[0]] = $where[1];
+                }
+            }
+
+        }else{
+            foreach($where as $key=>$val){
+                $this->whereAttributes[$key] = $val;
+            }
+
+        }
+
+    }
+
+
 
     /**
      * find by primary key and returns a single row of result.
@@ -35,6 +106,17 @@ class CoreActiveQuery extends ActiveQuery
      */
     public function pk($id){
         return $this->andWhere([$this->baseField('id') =>$id])->one();
+    }
+
+    /**
+     * find request or fail if not found data
+     * @param $db
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function pkOrFail($id){
+        $data = $this->pk($id);
+        $this->handleFailRequest($data);
+        return $data;
     }
 
     /**
@@ -56,6 +138,8 @@ class CoreActiveQuery extends ActiveQuery
         $modelClass = $this->modelClass;
         return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->all();
     }
+
+
 
     /**
      * find one with traslation content

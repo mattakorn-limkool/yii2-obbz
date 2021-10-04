@@ -134,8 +134,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionView(<?= $actionParams ?>)
     {
+        $model = $this->findModel(<?= $actionParams ?>);
         return $this->render('view', [
-            'model' => $this->findModel(<?= $actionParams ?>),
+            'model' => $model,
         ]);
     }
 
@@ -173,6 +174,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 		$model->setScenario(<?= $modelClass ?>::SCENARIO_BE_UPDATE);
+        $model->autoDate2input();
 
         if ($model->load(ObbzYii::post())) {
             if($model->save()){

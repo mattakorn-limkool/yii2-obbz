@@ -56,7 +56,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
     }
 
     /**
-     * Creates data provider instance with search query applied on Frontend
+     * Creates data provider instance with search query
      *
      * @param array $params
      *
@@ -89,39 +89,5 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
 
         return $dataProvider;
     }
-	
-	/**
-     * Creates data provider instance with search query applied on Backend
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function beSearch($params)
-    {
-        $t = <?= $modelClass ?>::tableName();
-        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->active()->defaultOrder();
 
-        // add conditions that should always apply here
-        $this->load($params);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort'=>false,
-            'pagination'=>['defaultPageSize'=>Yii::$app->params['default.pageSize']]
-        ]);
-
-
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
-        // grid filtering conditions
-        $this->defaultQueryFilter($query);
-
-        return $dataProvider;
-    }
 }

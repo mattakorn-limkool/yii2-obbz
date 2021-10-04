@@ -23,8 +23,25 @@ use obbz\yii2\utils\ObbzYii;
 
 class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'Base' . "\n" ?>
 {
+    const DEFAULT_THUMBS = [
+        'thumb'=> ['width'=>300]
+    ];
 
-    public function rules(){
+    public $autoDateFields = [
+//        ['field' =>'created_time', 'inputType'=>self::AUTODATE_TYPE_DATETIME, 'scenarios'=>[self::SCENARIO_BE_CREATE, self::SCENARIO_BE_UPDATE]],
+//        ['field' =>'modify_time', 'inputType'=>self::AUTODATE_TYPE_DATETIME, 'scenarios'=>[self::SCENARIO_BE_CREATE, self::SCENARIO_BE_UPDATE]],
+    ];
+
+//    public function scenarioCreate(){
+//        return array_merge(parent::scenarioCreate(), []);
+//    }
+//
+//    public function scenarioUpdate(){
+//        return array_merge(parent::scenarioUpdate(), []);
+//    }
+
+
+public function rules(){
         return array_merge(parent::rules(),[
 			['image', 'image', 'extensions' => 'jpg, jpeg',
                 'maxSize' => \Yii::$app->params['upload.maxSize'],
@@ -36,9 +53,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
 	public function behaviors(){
         return array_merge(parent::behaviors(),[
-			'uploadImage' => $this->defaultImgBehavior('image', [
-                    'thumb'=> ['width'=>300]
-                ], ['scenarios' => $this->scenarioCU()]) ,
+			'uploadImage' => $this->defaultImgBehavior('image', self::DEFAULT_THUMBS, ['scenarios' => $this->scenarioCU()]) ,
 //            'translateable' => [
 //                'class' => \obbz\yii2\behaviors\TranslationBehavior::class,
 //                'translationAttributes' => ['title','detail'],
@@ -50,7 +65,8 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
     public function attributeLabels(){
         return array_merge(parent::attributeLabels(),[]);
     }
-	
+
+
 <?php foreach ($relations as $name => $relation): ?>
 
     /**
@@ -61,7 +77,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
         <?= $relation[0] . "\n" ?>
     }
 <?php endforeach; ?>
-//	public function beforeValidate() {
+//	 public function beforeValidate() {
 //        if(parent::beforeValidate()) {
 //            // your code here
 //            return true;
@@ -70,14 +86,12 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 //        }
 //    }
 
-//    public function afterValidate()
-//    {
+//    public function afterValidate(){
 //        // your code here
 //        parent::afterValidate();
 //    }
 
-//    public function beforeSave($insert)
-//    {
+//    public function beforeSave($insert){
 //        if (parent::beforeSave($insert)) {
 //           // your code here
 //            return true;
@@ -86,14 +100,12 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 //        }
 //    }
 
-//    public function afterSave($insert, $changedAttributes)
-//    {
+//    public function afterSave($insert, $changedAttributes){
 //        // your code here
 //        parent::afterSave($insert, $changedAttributes);
 //    }
 
-//    public function afterFind()
-//    {
+//    public function afterFind(){
 //        parent::afterFind();
 //        // your code here
 //

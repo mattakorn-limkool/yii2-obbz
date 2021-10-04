@@ -24,6 +24,9 @@ $urlParams = $generator->generateUrlParams();
 $actionParams = $generator->generateActionParams();
 $actionParamComments = $generator->generateActionParamComments();
 
+/** referer field */
+$refererVar = $generator->getRefererVar();
+
 echo "<?php\n";
 ?>
 
@@ -38,17 +41,23 @@ use yii\data\ActiveDataProvider;
 <?php endif; ?>
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use obbz\yii2\utils\ObbzYii;
+use backend\components;
+use common\components\Roles;
+use obbz\yii2\actions\CoreTranslate;
+<?php if(!empty($generator->refererModel)): ?>
+use <?= ltrim($generator->refererModel, '\\') ?>;
+<?php endif; ?>
+
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
  */
 class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->baseControllerClass) . "\n" ?>
 {
-    public $modelClass = '<?= $generator->modelClass ?>';
-
+	 public $modelClass = '<?= $generator->modelClass ?>';
     /**
      * @inheritdoc
      */
@@ -57,16 +66,16 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         return [
             'access' => [
                 'class' => AccessControl::class,
-                    'rules' => [
-//                        [  // not require authenticate action index
-//                          'actions' => ['index'],
-//                          'allow' => true,
-//                        ],
-                        [  // require authenticate of all action
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
+                'rules' => [
+                    [  // not require authenticate action index
+                        'actions' => ['index', 'view'],
+                        'allow' => true,
                     ],
+                    [  // require authenticate of all action
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -77,20 +86,31 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         ];
     }
 
+	public function actions()
+    {
+        $parent = parent::actions();
+
+        return array_merge($parent, [
+
+        ]);
+    }
+
     /**
      * Lists all <?= $modelClass ?> models.
+     * <?php echo $refererVar['actionParamsComment'] . "\n" ?>
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(<?php echo $refererVar['actionParams'] ?>)
     {
 <?php if (!empty($generator->searchModelClass)): ?>
         $searchModel = new <?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>();
+        <?php echo $refererVar['indexMoreParam1'] . "\n"; ?>
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        ObbzYii::setReturnUrl();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            <?php echo $refererVar['icMoreParam2']. "\n"; ?>
         ]);
 <?php else: ?>
         $dataProvider = new ActiveDataProvider([
@@ -110,29 +130,33 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionView(<?= $actionParams ?>)
     {
+        $model = $this->findModel(<?= $actionParams ?>);
         return $this->render('view', [
-            'model' => $this->findModel(<?= $actionParams ?>),
+            'model' => $model,
         ]);
     }
 
     /**
      * Creates a new <?= $modelClass ?> model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     * <?php echo $refererVar['actionParamsComment'] . "\n" ?>
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate(<?php echo $refererVar['actionParams'] ?>)
     {
         $model = new <?= $modelClass ?>();
-        $model->setScenario($model::SCENARIO_CREATE);
+        <?php echo $refererVar['createMoreParam1'] . "\n"; ?>
+		$model->setScenario(<?= $modelClass ?>::SCENARIO_BE_CREATE);
 
         if ($model->load(ObbzYii::post())) {
             if($model->save()){
                 ObbzYii::setFlashSuccess(\Yii::t('app', 'Record has been created successfully'));
-                return $this->redirect(ObbzYii::getReturnUrl());
+                return $this->redirect($this->mainPageUrl(<?php echo $refererVar['actionParams'] ?>));
             }
         }
         return $this->render('create', [
             'model' => $model,
+            <?php echo $refererVar['icMoreParam2']. "\n"; ?>
         ]);
     }
 
@@ -145,12 +169,12 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionUpdate(<?= $actionParams ?>)
     {
         $model = $this->findModel(<?= $actionParams ?>);
-        $model->setScenario(<?= $modelClass ?>::SCENARIO_UPDATE);
+		$model->setScenario(<?= $modelClass ?>::SCENARIO_BE_UPDATE);
 
         if ($model->load(ObbzYii::post())) {
             if($model->save()){
                 ObbzYii::setFlashSuccess(\Yii::t('app', 'Record has been updated successfully'));
-                return $this->redirect(ObbzYii::getReturnUrl());
+                return $this->redirect($this->mainPageUrl(<?php echo $refererVar['updateMoreParam1']; ?>));
             }
         }
 
@@ -159,7 +183,22 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         ]);
     }
 
+<?php if(!empty($generator->refererField)): ?>
+    /**
+    * @param $id
+    * @return <?php $refererVar['modelClass'] ?>
+    * @throws NotFoundHttpException
+    */
 
+    protected function find<?php echo ucfirst($generator->getRefererVariablize()) ?>($id)
+    {
+        if (($model = <?php echo $refererVar['modelClass'] ?>::find()->published()->pk($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('Payment method not found');
+        }
+    }
+<?php endif; ?>
     /**
      * Finds the <?= $modelClass ?> model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -189,7 +228,7 @@ if (count($pks) === 1) {
 <?php if(!empty($generator->refererField)): ?>
     public function mainPageUrl(<?php echo $refererVar['actionParams'] ?> = null){
         if(!isset(<?php echo $refererVar['actionParams'] ?>)){
-        <?php echo $refererVar['actionParams'] ?> = ObbzYii::get('<?php echo $generator->refererField; ?>');
+            <?php echo $refererVar['actionParams'] ?> = ObbzYii::get('<?php echo $generator->refererField; ?>');
         }
         return ['index','<?php echo $generator->refererField; ?>'=><?php echo $refererVar['actionParams'] ?>];
     }

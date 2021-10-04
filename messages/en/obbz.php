@@ -31,4 +31,5 @@ return [
     'Warning!!' => '',
     'You are using an outdated version of Internet Explorer, please upgrade' => '',
     'to any of the following web browsers to access this website.' => '',
+    '{field} size must be greater than {width}x{height}' => '',
 ];

@@ -31,4 +31,5 @@ return [
     'Warning!!' => 'ข้อควรระวัง',
     'You are using an outdated version of Internet Explorer, please upgrade' => 'คุณใช้เว็บบราวเซอร์เวอร์ชันต่ำกว่ากำหนด กรุณาอัพเดทเวอร์ชัน',
     'to any of the following web browsers to access this website.' => 'โดยคุณสามารถเลือกเว็บบราวเซอร์ที่ต้องการได้จากลิงค์ด้านล่างดังต่อไปนี้',
+    '{field} size must be greater than {width}x{height}' => '{field} ต้องมีขนาด {width}x{height} px',
 ];
