@@ -15,7 +15,6 @@
         "yiisoft/yii2": "*",
         "yiisoft/yii2-bootstrap": "*",
 		"yiisoft/yii2-imagine": "~2.1.0",
-		"kartik-v/yii2-krajee-base": "dev-master",
         "kartik-v/yii2-builder": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-helpers": "*",
@@ -27,7 +26,6 @@
 		"kartik-v/yii2-widget-select2": "@dev",
         "kartik-v/yii2-widget-rating": "*",
         "kartik-v/yii2-mpdf": "dev-master",
-		"kartik-v/yii2-editors": "dev-master",
         "obbz/yii2-vote": "*",
         "zircote/swagger-php": "^2.0",
         "bower-asset/swagger-ui": "2.1.4",
@@ -58,6 +56,7 @@
 		"parsilver/thailand-provinces-php" : "*",
         "aksafan/yii2-fcm-both-api": "*",
 		"yiisoft/yii2-bootstrap4": "~2.0.6",
+		"yiidoc/yii2-redactor": "*",
         "php": ">=5.3.0"
     },
 	"require-dev": {
