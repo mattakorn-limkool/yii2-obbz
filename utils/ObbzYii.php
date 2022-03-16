@@ -338,7 +338,7 @@ class ObbzYii
             }
 
             \Yii::$app->response->format = Response::FORMAT_RAW;
-            if (strstr($_SERVER["HTTP_USER_AGENT"], "MSIE") == false) {
+            if (isset($_SERVER["HTTP_USER_AGENT"]) && strstr($_SERVER["HTTP_USER_AGENT"], "MSIE") == false) {
                 header("Cache-Control: no-cache");
                 header("Pragma: no-cache");
             } else {

@@ -489,13 +489,6 @@ class ActiveField extends \yii\widgets\ActiveField
         ], $config));
     }
 
-    public function rteCustom($config = []){
-
-//        return $this->widget(Summernote::class, array_merge([
-//
-//        ], $config));
-    }
-
     public function datePicker($config=[]){
         $dateFormat = ObbzYii::formatter()->dateFormat;
         return $this->widget(DatePicker::class, array_merge([

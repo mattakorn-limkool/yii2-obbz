@@ -161,43 +161,6 @@ use yii\i18n\Formatter;
  * 		'getOnlySheet' => 'sheet1', // you can set this property if you want to get the specified sheet from the excel data with multiple worksheet.
  * 	]);
  *
- * ~~~
- *
- * Result example from the code on the top :
- *
- * ~~~
- *
- * // only one sheet or specified sheet.
- *
- * Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2));
- *
- * // data with multiple worksheet
- *
- * Array([Sheet1] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2)),
- * [Sheet2] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2)));
- *
- * // data with multiple file and specified sheet or only one worksheet
- *
- * Array([file1] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2)),
- * [file2] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2)));
- *
- * // data with multiple file and multiple worksheet
- *
- * Array([file1] => Array([Sheet1] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2)),
- * [Sheet2] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2))),
- * [file2] => Array([Sheet1] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2)),
- * [Sheet2] => Array([0] => Array([name] => Anam, [email] => moh.khoirul.anaam@gmail.com, [framework interest] => Yii2),
- * [1] => Array([name] => Example, [email] => example@bluehesoft.com, [framework interest] => Yii2))));
- *
- * ~~~
  *
  * @property string $mode is an export mode or import mode. valid value are 'export' and 'import'
  * @property boolean $isMultipleSheet for set the export excel with multiple sheet.
@@ -223,9 +186,6 @@ use yii\i18n\Formatter;
  * This can be either an instance of [[Formatter]] or an configuration array for creating the [[Formatter]]
  * instance. If this property is not set, the "formatter" application component will be used.
  *
- * @author Moh Khoirul Anam <moh.khoirul.anaam@gmail.com>
- * @copyright 2014
- * @since 1
  */
 class Excel extends \yii\base\Widget {
 
@@ -348,6 +308,8 @@ class Excel extends \yii\base\Widget {
      * instance. If this property is not set, the "formatter" application component will be used.
      */
     public $formatter;
+
+    public $additionalStyleAttribute;
 
     /**
      * (non-PHPdoc)
@@ -550,6 +512,11 @@ class Excel extends \yii\base\Widget {
                 $activeSheet->setCellValue($col . $row, $column_value);
                 if (isset($column['style'])) {
                     $this->executeStyle($activeSheet, $col, $row, $column['style']);
+                }
+
+                $additionalStyleAttribute = $this->additionalStyleAttribute;
+                if(isset($model->$additionalStyleAttribute)){
+                    $this->executeStyle($activeSheet, $col, $row, $model->$additionalStyleAttribute);
                 }
 
 //                if($this->autoSize){
