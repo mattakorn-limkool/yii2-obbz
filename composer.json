@@ -50,7 +50,6 @@
         "scotthuangzl/yii2-google-chart": "dev-master",
         "linslin/yii2-curl" : "*",
         "consik/yii2-websocket": "^1.0",
-		"yiisoft/yii2-mongodb": "~2.1.0",
         "yii2mod/yii2-sweet-alert": "*",
 		"parsilver/thailand-provinces-php" : "*",
         "aksafan/yii2-fcm-both-api": "*",
