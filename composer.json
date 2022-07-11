@@ -28,7 +28,6 @@
         "kartik-v/yii2-mpdf": "dev-master",
         "obbz/yii2-vote": "*",
         "zircote/swagger-php": "^2.0",
-        "bower-asset/swagger-ui": "2.1.4",
         "kotchuprik/yii2-sortable-widgets": "*",
         "rmrevin/yii2-fontawesome": "~2.17",
         "2amigos/yii2-ckeditor-widget": "^2.0",
