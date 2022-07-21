@@ -3,6 +3,7 @@
 
 namespace obbz\yii2\gii\model;
 
+use obbz\yii2\utils\ObbzYii;
 use Yii;
 use yii\gii\CodeFile;
 use yii\db\Schema;
@@ -210,6 +211,7 @@ class Generator extends \yii\gii\generators\model\Generator
     {
         $db = $this->getDbConnection();
         $columns = [];
+        $columnsEnum = [];
         if (($table = $db->getTableSchema($this->tableName)) === false) {
             $class = $this->modelClass;
             /* @var $model \yii\base\Model */
@@ -220,6 +222,7 @@ class Generator extends \yii\gii\generators\model\Generator
         } else {
             foreach ($table->columns as $column) {
                 $columns[$column->name] = $column->type;
+                $columnsEnum[$column->name] = $column->enumValues;
             }
         }
 
@@ -227,8 +230,9 @@ class Generator extends \yii\gii\generators\model\Generator
         $hashConditions = [];
         foreach ($columns as $column => $type) {
 
-            // specific for core table
-            if($column === 'key_name'){
+            // specific for enum values
+            if(is_array($columnsEnum[$column])){
+
                 $hashConditions[] = "\$t.'.{$column}' => \$this->{$column},";
             }else{
                 switch ($type) {
@@ -244,6 +248,8 @@ class Generator extends \yii\gii\generators\model\Generator
                     case Schema::TYPE_TIME:
                     case Schema::TYPE_DATETIME:
                     case Schema::TYPE_TIMESTAMP:
+                    case 'enum':
+
                         $hashConditions[] = "\$t.'.{$column}' => \$this->{$column},";
                         break;
                     default:
