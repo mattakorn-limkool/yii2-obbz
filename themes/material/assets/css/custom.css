@@ -589,6 +589,18 @@ a.disabled {
     padding: 8px 40px !important;
 }
 
+.growl-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    font-size: 31px;
+    padding: 0;
+    margin: 0 10px;
+    line-height: 27px;
+}
+
 @media(min-width:768px){
     .form-inline select.form-group {
         display: block;
