@@ -21,5 +21,6 @@ return [
 //        ['name' => 'links'],
 //        ['name' => 'others'],
     ],
-    'removeButtons' => 'Smiley,Iframe'
+    'removeButtons' => 'Smiley,Iframe',
+    'extraPlugins' => 'youtube, justify',
 ];

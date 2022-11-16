@@ -6,6 +6,7 @@
 
 namespace obbz\yii2\widgets\fileupload\actions;
 
+use Imagine\Image\ManipulatorInterface;
 use obbz\yii2\models\CoreBaseActiveRecord;
 use obbz\yii2\utils\ArrayHelper;
 use obbz\yii2\utils\ObbzYii;
@@ -21,8 +22,9 @@ class MultipleUploadAction extends Action
 {
 
     public $modelClass;
-    public $deleteUrl;
+    public $deleteUrl = ['image-delete'];
     public $scenario = null;
+    public $defaultThumb = null;
 
     // advanced config
     public $memeryLimit = '512M';
@@ -52,7 +54,6 @@ class MultipleUploadAction extends Action
 
         if($this->scenario){
             $model->setScenario($this->scenario);
-
         }
 
 
@@ -91,20 +92,20 @@ class MultipleUploadAction extends Action
 
             if ($model->$field->saveAs($filePath)) {
                 $path =  $urlDirectory . $fileName;
-                // todo - make thumbnail via behavior config
-                // now generate 1 thumbnail via rules config
                 $imageConfig = $this->getImageConfig($model, $field);
+
                 if($imageConfig){
-                    // resize image
-                    $width = $imageConfig['width'];
-                    $image = Image::getImagine()->open($filePath);
-                    $ratio = $image->getSize()->getWidth() / $image->getSize()->getHeight();
-                    $height = ceil($width / $ratio);
-                    ini_set('memory_limit', $this->memeryLimit);
-                    Image::thumbnail($filePath, $width, $height)->save($filePath, ['quality' => 100]);
+                    foreach($imageConfig as $thumbName => $thumbConf){
+                        $thumbPath = $directory  . $thumbName ;
+                        if(!is_dir($thumbPath)){
+                            FileHelper::createDirectory($thumbPath);
+                        }
+                        $this->generateImageThumb($thumbConf, $filePath, $thumbPath . '/'. $fileName);
+                    }
                 }
                 $deleteUrlConf['name'] = $fileName;
                 $deleteUrl = Url::to($deleteUrlConf);
+
                 // end resize
                 return Json::encode([
                     'files' => [
@@ -121,11 +122,19 @@ class MultipleUploadAction extends Action
             }
         }else{ // on init
             if(!empty($id)){
-                $foundImages = scandir($directory);
+                $subDirectory = $directory;
+                $subUrl = $urlDirectory;
+                if(isset($this->defaultThumb)){
+                    $subDirectory .=  $this->defaultThumb . DIRECTORY_SEPARATOR;
+                    $subUrl .=  $this->defaultThumb . '/' ;
+                }
+
+                $foundImages = scandir($subDirectory);
+
                 $files = [];
                 foreach($foundImages as $fileName){
-                    if(!in_array($fileName,array(".",".."))){
-                        $path =  $urlDirectory . $fileName;
+                    if(!in_array($fileName,array(".","..")) && !is_dir($subDirectory. $fileName)){
+                        $path =  $subUrl . $fileName;
                         $deleteUrlConf['name'] = $fileName;
                         $deleteUrl = Url::to($deleteUrlConf);
                         $files[] = [
@@ -149,14 +158,39 @@ class MultipleUploadAction extends Action
     public function getImageConfig($model, $field){
         $modelBehaviors = $model->behaviors();
         foreach($modelBehaviors as $behavior){
-
             if(isset($behavior['class']) && $behavior['class'] == MultipleUploadBehavior::class){
-
-                if(isset($behavior['attributes']) && $behavior['attributes'] == $field){
-                    return ArrayHelper::getValue($behavior, 'thumbs.thumb');
+                $conf = ArrayHelper::getValue($behavior, 'attributes.'. $field .'.thumbs');
+                if(isset($conf)){
+                    return $conf;
                 }
             }
         }
+    }
+
+    protected function generateImageThumb($config, $path, $thumbPath)
+    {
+
+        $width = ArrayHelper::getValue($config, 'width');
+        $height = ArrayHelper::getValue($config, 'height');
+        $quality = ArrayHelper::getValue($config, 'quality', 100);
+        $mode = ArrayHelper::getValue($config, 'mode', ManipulatorInterface::THUMBNAIL_OUTBOUND);
+        $bg_color = ArrayHelper::getValue($config, 'bg_color', 'FFF');
+
+        if (!$width || !$height) {
+            $image = Image::getImagine()->open($path);
+            $ratio = $image->getSize()->getWidth() / $image->getSize()->getHeight();
+            if ($width) {
+                $height = ceil($width / $ratio);
+            } else {
+                $width = ceil($height * $ratio);
+            }
+        }
+        // Fix error "PHP GD Allowed memory size exhausted".
+        $defaulMemLimit = ini_get ('memory_limit');
+        ini_set('memory_limit', $this->memeryLimit);
+        Image::$thumbnailBackgroundColor = $bg_color;
+        Image::thumbnail($path, $width, $height, $mode)->save($thumbPath, ['quality' => $quality]);
+        ini_set ('memory_limit',$defaulMemLimit);
     }
 
 

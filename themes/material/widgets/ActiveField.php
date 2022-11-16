@@ -559,9 +559,11 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $this->template = $this->dateTimePickerTemplate;
         $this->options = ['class' => 'form-group fg-padding fg-padding-dropdown'];
         $datetimeFormat = ObbzYii::formatter()->datetimeFormat;
+//        ObbzYii::debug( $datetimeFormat);
         return parent::widget(DateTimePicker::class, array_merge([
             'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
             'options'=> array_merge($this->inputOptions, ["autocomplete"=>"off"]),
+//            'convertFormat' => true,
             'pluginOptions' => [
                 'autoclose' => true,
                 'format' => ObbzYii::formatter()->convertDateYiiToBsDatepicker($datetimeFormat),

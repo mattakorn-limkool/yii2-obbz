@@ -17,11 +17,14 @@ use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
+use obbz\yii2\widgets\fileupload\behaviors\MultipleUploadBehavior;
 
 class DeleteFileAction extends Action
 {
     public $modelClass;
-    public $deleteUrl;
+    public $deleteUrl = null;
+    public $scenario = null;
+    public $defaultThumb = null;
 
     public function init(){
         if($this->modelClass == null){
@@ -46,15 +49,33 @@ class DeleteFileAction extends Action
         /** @var CoreBaseActiveRecord $model */
         $model = new $this->modelClass;
 
+        if($this->scenario){
+            $model->setScenario($this->scenario);
+        }
+
+        // remove original image
         $directory = $model->getMultipleUploadPath($field, $folderPath);
         $urlDirectory = $model->getMultipleUploadUrl($field, $folderPath);
         if (is_file($directory . DIRECTORY_SEPARATOR . $name)) {
             unlink($directory . DIRECTORY_SEPARATOR . $name);
         }
 
+        // remove thumbs image
+        $imageConfig = $this->getImageConfig($model, $field);
+
+        if($imageConfig){
+            foreach($imageConfig as $thumbName => $thumbConf){
+                $thumbPath = $directory  . $thumbName . DIRECTORY_SEPARATOR . $name ;
+                if(is_file($thumbPath)){
+                    unlink($thumbPath);
+                }
+            }
+        }
+
+        // retrive current data after delete image
+
         $files = FileHelper::findFiles($directory);
         $output = [];
-
 
         foreach ($files as $file) {
             $fileName = basename($file);
@@ -77,6 +98,18 @@ class DeleteFileAction extends Action
         }
         return Json::encode($output);
 
+    }
+
+    public function getImageConfig($model, $field){
+        $modelBehaviors = $model->behaviors();
+        foreach($modelBehaviors as $behavior){
+            if(isset($behavior['class']) && $behavior['class'] == MultipleUploadBehavior::class){
+                $conf = ArrayHelper::getValue($behavior, 'attributes.'. $field .'.thumbs');
+                if(isset($conf)){
+                    return $conf;
+                }
+            }
+        }
     }
 
 }

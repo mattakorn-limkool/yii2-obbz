@@ -8,7 +8,7 @@
  * @link http://www.2amigos.us/
  */
 return [
-    'height' => 200,
+    'height' => 400,
     'toolbarGroups' => [
 //        ['name' => 'document', 'groups' => ['mode', 'document', 'doctools']],
         ['name' => 'mode'],
@@ -30,4 +30,11 @@ return [
 
     ],
     'removeButtons' => 'Copy,Cut,CreateDiv,CopyFormatting',
+    'extraPlugins' => 'youtube, justify',
+    'wordcount' => [
+        'showParagraphs' => false,
+        'showWordCount' => false,
+        'showCharCount' => true,
+    ],
+    'filebrowserUploadMethod'  => "form"
 ];

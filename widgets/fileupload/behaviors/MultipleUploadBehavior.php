@@ -35,8 +35,8 @@ class MultipleUploadBehavior extends Behavior
         ];
     }
 
-    public function getFirstImageUrl($field){
-        $images = $this->getAllImageUrl($field);
+    public function getFirstImageUrl($field, $thumb=null){
+        $images = $this->getAllImageUrl($field, $thumb);
         if(isset($images[0])){
             return $images[0];
         }else{
@@ -44,16 +44,15 @@ class MultipleUploadBehavior extends Behavior
         }
     }
 
-    public function getAllImageUrl($field){
-        $directory = $this->getMultipleUploadPath($field, $this->owner->id);
-        $urlDirectory = $this->getMultipleUploadUrl($field, $this->owner->id);
-
+    public function getAllImageUrl($field, $thumb = null){
+        $directory = $this->getMultipleUploadPath($field, $this->owner->id, $thumb);
+        $urlDirectory = $this->getMultipleUploadUrl($field, $this->owner->id, $thumb);
 
         $files = [];
         if(file_exists($directory)){
             $images = scandir($directory);
             foreach($images as $fileName){
-                if(!in_array($fileName,array(".",".."))){
+                if(!in_array($fileName,array(".","..")) && !is_dir($directory . $fileName)){
                     $files[] = $urlDirectory . $fileName;
                 }
             }
@@ -63,16 +62,26 @@ class MultipleUploadBehavior extends Behavior
 
     }
 
-    public function getMultipleUploadPath($field, $id){
-        return \Yii::getAlias('@uploadPath') . DIRECTORY_SEPARATOR .
+    public function getMultipleUploadPath($field, $id, $thumb=null){
+        $path =  \Yii::getAlias('@uploadPath') . DIRECTORY_SEPARATOR .
         $this->owner->tableName() . DIRECTORY_SEPARATOR . $field . DIRECTORY_SEPARATOR
         . $id. DIRECTORY_SEPARATOR;
+
+        if($thumb){
+            $path .= $thumb . DIRECTORY_SEPARATOR;
+        }
+        return $path;
     }
 
-    public function getMultipleUploadUrl($field, $id){
-        return \Yii::getAlias('@uploadUrl'). '/' .
+    public function getMultipleUploadUrl($field, $id, $thumb=null){
+        $url =  \Yii::getAlias('@uploadUrl'). '/' .
         $this->owner->tableName() . '/' . $field .'/'
         . $id . '/' ;
+
+        if($thumb){
+            $url .= $thumb . '/';
+        }
+        return $url;
     }
 
     /**

@@ -20,6 +20,7 @@ class Generator extends \yii\gii\generators\model\Generator
     public $queryNs = 'common\models\query';
     public $queryBaseClass = 'obbz\yii2\models\CoreActiveQuery';
     public $baseClass = 'obbz\yii2\models\CoreBaseActiveRecord';
+    public $messageCategory = null;
 
     /**
      * @inheritdoc
