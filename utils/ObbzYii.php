@@ -359,7 +359,11 @@ class ObbzYii
     }
 
     public static function getIpAddress(){
-        return \Yii::$app->request->userIP;
+        if(isset($_SERVER["HTTP_CF_CONNECTING_IP"])){
+            return $_SERVER["HTTP_CF_CONNECTING_IP"];
+        }else{
+            return \Yii::$app->request->userIP;
+        }
     }
 
     /**
@@ -642,6 +646,24 @@ class ObbzYii
     public static function hideDebugToolsBar($view){
         if (class_exists('yii\debug\Module')) {
             $view->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
+    }
+
+    public static function getCloudflareHttpRequests(){
+        if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+            $result = [];
+            $cloudflareParams = [
+                'HTTP_CF_CONNECTING_IP', // real visitor ip address
+                'HTTP_CF_IPCOUNTRY', // country of visitor
+                'HTTP_CF_VISITOR', // this can help you know if its http or https
+                'HTTP_CF_RAY', // header traces a website request through Cloudflare's network
+            ];
+            foreach($cloudflareParams as $key){
+                $result[$key] = ArrayHelper::getValue($_SERVER, $key);
+            }
+            return $result;
+        }else{
+            return null;
         }
     }
 
