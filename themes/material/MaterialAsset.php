@@ -2,6 +2,7 @@
 
 namespace obbz\yii2\themes\material;
 
+use yii\helpers\ArrayHelper;
 use yii\web\AssetBundle;
 
 /**
@@ -10,10 +11,12 @@ use yii\web\AssetBundle;
 class MaterialAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/obbz/yii2/themes/material/assets';
-    const THEME = "default";
+    public $theme = 'blue';
 //    public $disableMainTitle = true;
 
     public function init(){
+        $this->theme = ArrayHelper::getValue(\Yii::$app->params, 'skin', "blue");
+
         $this->css = [
             //### theme ###
 //        'vendors/bower_components/fullcalendar/dist/fullcalendar.min.css',
@@ -25,7 +28,7 @@ class MaterialAsset extends AssetBundle
 //        'vendors/bootgrid/jquery.bootgrid.min.css',
             'css/app.css',
             'css/custom.css',
-            'css/themes/'. static::THEME . '.css',
+            'css/themes/'. $this->theme . '.css',
 //        'css/app.min.1.css',
 //        'css/app.min.2.css',
 
