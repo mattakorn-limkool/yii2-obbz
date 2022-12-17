@@ -442,6 +442,24 @@ class ObbzYii
         return \Yii::$app->cache;
     }
 
+    /**
+     * get cached data and auto store data to cache by key and anonymous function
+     * @param $cacheKey
+     * @param $function
+     * @param null $duration
+     * @return cached data
+     */
+    public static function getAutoCache($cacheKey, $function , $duration = null){
+        $data = self::cache()->get($cacheKey);
+        if($data === false){
+            $data = $function();
+            self::cache()->set($cacheKey, $data, $duration);
+            return $data;
+        }else{
+            return $data;
+        }
+    }
+
 
     /**
      * get current user and mapping to db
