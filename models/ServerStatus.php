@@ -9,6 +9,7 @@ namespace obbz\yii2\models;
 
 use obbz\yii2\utils\ObbzYii;
 use yii\base\Model;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
 class ServerStatus extends Model
@@ -84,7 +85,7 @@ class ServerStatus extends Model
             if($storage['cache'] && $cache && ObbzYii::cache()->get($cacheKey)){
                 $storages[$key]['size'] = ObbzYii::cache()->get($cacheKey);
             }else{
-                $storages[$key]['size'] = $this->allFolderSize($storage['path']);
+                $storages[$key]['size'] = $this->allStorageSize($storage['path']);
                 if($storage['cache']){
                     ObbzYii::cache()->set($cacheKey,  $storage['size'], $storage['cache']);
                 }
@@ -103,7 +104,7 @@ class ServerStatus extends Model
 
     }
 
-    public function allFolderSize($dirs){
+    public function allStorageSize($dirs){
         if(is_array($dirs)){
             $size = 0;
             foreach($dirs as $dir){
@@ -117,23 +118,39 @@ class ServerStatus extends Model
 
     public function folderSize($dir)
     {
-        if(is_file($dir) || is_dir($dir)){
-            $countSize = 0;
-            $count = 0;
-            $dirArray = scandir($dir);
-            foreach($dirArray as $key=>$filename){
-                if($filename!=".." && $filename!="."){
-                    if(is_dir($dir."/".$filename)){
-                        $newFoldersize = $this->folderSize($dir."/".$filename);
-                        $countSize = $countSize+ $newFoldersize;
-                    }else if(is_file($dir."/".$filename)){
-                        $countSize = $countSize + filesize($dir."/".$filename);
-                        $count++;
+        $isDb = substr($dir, 0, 3);
+        if($isDb == 'db:'){ // calculate db size
+            $db = substr($dir, 3);
+            $row = \Yii::$app->getDb()->createCommand('
+              SELECT table_schema "database", SUM(data_length + index_length)  "size"
+              FROM information_schema.tables
+              WHERE table_schema = "'. $db .'"
+              GROUP BY table_schema')->queryOne();
+            if(count($row) > 0){
+                return $row['size'];
+            }
+            return 0;
+
+        }else{ // calculate folder size
+            if(is_file($dir) || is_dir($dir)){
+                $countSize = 0;
+                $count = 0;
+                $dirArray = scandir($dir);
+                foreach($dirArray as $key=>$filename){
+                    if($filename!=".." && $filename!="."){
+                        if(is_dir($dir."/".$filename)){
+                            $newFoldersize = $this->folderSize($dir."/".$filename);
+                            $countSize = $countSize+ $newFoldersize;
+                        }else if(is_file($dir."/".$filename)){
+                            $countSize = $countSize + filesize($dir."/".$filename);
+                            $count++;
+                        }
                     }
                 }
+                return $countSize;
             }
-            return $countSize;
         }
+
         return 0;
 
     }

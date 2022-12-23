@@ -7,7 +7,7 @@ use obbz\yii2\utils\ObbzYii;
  * @var $model \obbz\yii2\models\ServerStatus
  */
 
-$this->title =   \Yii::t('obbz', 'Server Status');
+$this->title =   \Yii::t('obbz', 'Server Status') . ' ('. Yii::$app->name .')';
 $storageBar = $model->storageSizeProgressBar();
 $bandwidthBar = $model->bandwidthProgressBar();
 ?>
@@ -54,7 +54,6 @@ $bandwidthBar = $model->bandwidthProgressBar();
                 <ul class="clist clist-angle">
                     <?php foreach($model->getStroages() as $storage): ?>
                         <li class="<?php echo $storage['show'] ? '': 'hidden'; ?>"
-
                             >
                             <b><?php echo $storage['name'] ?></b>: <?php echo ObbzYii::formatter()->asShortSize( $storage['size']) ?>
                         </li>
