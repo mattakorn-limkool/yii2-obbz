@@ -52,7 +52,7 @@ $bandwidthBar = $model->bandwidthProgressBar();
 
 
                 <ul class="clist clist-angle">
-                    <?php foreach($model->getStroages() as $storage): ?>
+                    <?php foreach($model->getStorages() as $storage): ?>
                         <li class="<?php echo $storage['show'] ? '': 'hidden'; ?>"
                             >
                             <b><?php echo $storage['name'] ?></b>: <?php echo ObbzYii::formatter()->asShortSize( $storage['size']) ?>
@@ -96,9 +96,6 @@ $bandwidthBar = $model->bandwidthProgressBar();
 
                         </div>
                     <?php endif; ?>
-
-
-
                 </div>
             <?php endif; ?>
 

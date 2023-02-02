@@ -67,19 +67,19 @@ class ServerStatus extends Model
 
     #region Storages
 
-    public function getStroages(){
+    public function getStorages(){
         $this->storages['database']['path'] = \Yii::$app->params['dbPath'];
         $this->storages['backup']['path'] = \Yii::$app->params['backupPath'];
         return $this->storages;
     }
 
-    public function setStroages($storages){
+    public function setStorages($storages){
         $this->storages = $storages;
     }
 
     public function prepareCurrentStorage($cache){
 
-        $storages = $this->getStroages();
+        $storages = $this->getStorages();
         foreach($storages as $key => $storage){
             $cacheKey = 'storage.' . $key . '.size';
             if($storage['cache'] && $cache && ObbzYii::cache()->get($cacheKey)){
@@ -100,7 +100,7 @@ class ServerStatus extends Model
             $this->overMaxStorageSize = $this->currentStorageSize - $this->maxStorageSize;
         }
 
-        $this->setStroages($storages);
+        $this->setStorages($storages);
 
     }
 

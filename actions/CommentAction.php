@@ -30,7 +30,9 @@ class CommentAction extends Action
         }
         $this->modelId = $id;
 
-        $model = $this->newModel();
+        $modelClass = $this->modelClass;
+        $model = $modelClass::newModel($this->modelId);
+//        $model = $this->newModel();
         if($this->scenario){
             $model->setScenario($this->scenario);
         }
@@ -57,15 +59,6 @@ class CommentAction extends Action
 //        return $this->controller->redirect($this->redirectUrl);
     }
 
-    /**
-     * @return Comment
-     */
-    protected function newModel(){
-        /** @var Comment $model */
-        $model = new $this->modelClass;
-        $model->setScenario($model::SCENARIO_CREATE);
-        $model->model_id = $this->modelId;
-        return $model;
-    }
+
 
 }
