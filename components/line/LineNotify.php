@@ -53,7 +53,11 @@ class LineNotify extends Component
             )
         );
         $context = stream_context_create($headerOptions);
-        $result = file_get_contents(self::LINE_API, false, $context);
+        $result = @file_get_contents(self::LINE_API, false, $context);
+        if($result == false){
+            return false;
+        }
+
         $res = json_decode($result);
         return $res;
     }

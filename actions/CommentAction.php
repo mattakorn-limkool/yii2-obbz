@@ -42,6 +42,7 @@ class CommentAction extends Action
 
             $model->key_name = $model::getSectionKey();
             $model->ip_address = ObbzYii::getIpAddress();
+            $this->beforeSave($model);
             if($model->save()){
                 if($this->flashOnSuccess){
                     ObbzYii::setFlashSuccess(\Yii::t('obbz',$this->successText));
@@ -52,11 +53,18 @@ class CommentAction extends Action
                 }
 
             }
+            $this->afterSave($model);
             $redirectUrl = isset($this->redirectUrl) ? $this->redirectUrl : ObbzYii::getReturnUrl();
             $this->controller->redirect($redirectUrl);
         }
 
 //        return $this->controller->redirect($this->redirectUrl);
+    }
+
+    public function beforeSave($model){
+    }
+
+    public function afterSave($model){
     }
 
 

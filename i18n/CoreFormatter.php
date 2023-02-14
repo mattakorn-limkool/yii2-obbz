@@ -168,16 +168,21 @@ class CoreFormatter extends Formatter
      * @param string $separator
      * @return string
      */
-    function asDateThai($date, $format = "short", $separator = " "){
+    function asDateThai($date, $format = "short", $separator = " ", $isAD = false){
         if($format == "short"){
             $tmpDate = date("d m Y", strtotime($date));
             $factor = explode(" ", $tmpDate);
-            $factor[2] += 543;
+            if(!$isAD){
+                $factor[2] += 543;
+            }
+
         }else{ // medium & long
             \Yii::$app->formatter->locale = 'th-TH';
             $tmpDate = ObbzYii::formatter()->asDate($date, $format);
             $factor = explode(" ", $tmpDate);
-            $factor[2] += 543;
+            if(!$isAD){
+                $factor[2] += 543;
+            }
         }
 
         return implode($separator, $factor);

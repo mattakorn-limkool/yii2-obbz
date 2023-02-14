@@ -31,7 +31,7 @@ class AdsTouchAction extends Action
      */
     public $modelMap;
 
-    public function run($url, $model, $id)
+    public function run($url, $model, $id, $area=null)
     {
         if($this->modelMap == null){
             throw new InvalidConfigException('Please define $modelMap');
@@ -49,7 +49,7 @@ class AdsTouchAction extends Action
             throw new NotFoundHttpException("Object not found: $id");
         }
 
-        $model->addTouchCount();
+        $model->addTouchCount(null, $area);
         $url = urldecode($url);
         return $this->controller->redirect($url);
     }
