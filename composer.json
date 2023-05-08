@@ -53,7 +53,6 @@
         "yii2mod/yii2-sweet-alert": "*",
 		"parsilver/thailand-provinces-php" : "*",
         "aksafan/yii2-fcm-both-api": "*",
-		"yiisoft/yii2-bootstrap4": "~2.0.6",
         "yiisoft/yii2-bootstrap5": "*",
         "symfony/polyfill-php70": "*",
         "simplesoftwareio/simple-qrcode": "2.0.0",
