@@ -14,7 +14,7 @@
     "require": {
         "yiisoft/yii2": "*",
         "yiisoft/yii2-bootstrap": "*",
-		"yiisoft/yii2-imagine": "*",
+		"yiisoft/yii2-imagine": "2.2.0",
         "kartik-v/yii2-builder": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-helpers": "*",
@@ -55,6 +55,8 @@
         "aksafan/yii2-fcm-both-api": "*",
 		"yiisoft/yii2-bootstrap4": "~2.0.6",
         "yiisoft/yii2-bootstrap5": "*",
+        "symfony/polyfill-php70": "*",
+        "simplesoftwareio/simple-qrcode": "2.0.0",
 		"yiisoft/yii2-queue": "*",
         "php": ">=5.3.0"
     },
