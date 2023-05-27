@@ -14,6 +14,7 @@ $languageLabel = isset(\Yii::$app->params['languages'][$language]) ? \Yii::$app-
 $this->title =   \Yii::t('obbz', 'Translate to ') . $languageLabel;
 ?>
 
+
 <div class="card branch-update">
     <div class="card-header ch-alt">
         <h2><?php echo Html::encode($this->title) ?></h2>
@@ -34,24 +35,24 @@ $this->title =   \Yii::t('obbz', 'Translate to ') . $languageLabel;
                     $options = isset($attributesOptions[$attribute]['options']) ? $attributesOptions[$attribute]['options'] : [];
                     switch($attributesOptions[$attribute]['type']){
                         case CoreTranslate::INPUT_TYPE_TEXT :
-                            echo $form->field($translateModel, $attribute)->textInput($options);
+                            echo $form->field($translateModel, "[$language]".$attribute)->textInput($options);
                             break;
                         case CoreTranslate::INPUT_TYPE_RTE :
-                            echo $form->field($translateModel, $attribute)->rte($options);
+                            echo $form->field($translateModel, "[$language]".$attribute)->rte($options);
                             break;
                         case CoreTranslate::INPUT_TYPE_IMAGE :
                             $thumb = \yii\helpers\ArrayHelper::getValue($options, 'imageOptions.thumb', 'thumb');
                             $showImageHint = \yii\helpers\ArrayHelper::getValue($options, 'imageOptions.showImageHint');
-                            $inputDisplay =  $form->field($translateModel, $attribute)->imgInput('thumb', $options);
+                            $inputDisplay =  $form->field($translateModel, "[$language]".$attribute)->imgInput($thumb, $options);
                             if($showImageHint)
                                 $inputDisplay->imgHint();
                             echo $inputDisplay;
                             break;
                         case CoreTranslate::INPUT_TYPE_FILE :
-                            echo $form->field($translateModel, $attribute)->fileInput($options);
+                            echo $form->field($translateModel, "[$language]".$attribute)->fileInput($options);
                             break;
                         default:
-                            echo $form->field($translateModel, $attribute)->textarea($options);
+                            echo $form->field($translateModel, "[$language]".$attribute)->textarea($options);
                             break;
                     }
 

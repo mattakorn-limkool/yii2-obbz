@@ -14,13 +14,13 @@ use yii\db\ActiveRecord;
 
 class TranslationBehavior extends TranslateableBehavior
 {
-    public function afterValidate()
-    {
-        // todo - check below when update model
+//    public function afterValidate()
+//    {
+//        // todo - check below when update model
 //        if (!Model::validateMultiple($this->owner->{$this->translationRelation})) {
 //            $this->owner->addError($this->translationRelation);
 //        }
-    }
+//    }
 
     /**
      * @deprecated using CoreBaseActiveRecord instead for more perfomance when query.
@@ -50,6 +50,27 @@ class TranslationBehavior extends TranslateableBehavior
         }
 
     }
+
+    /**
+     * save translate for core model support language + language_pid only
+     * @param $language
+     * @param $languagePid
+     */
+    public function saveTranslate($language, $languagePid){
+        $this->owner->language = $language;
+        $this->owner->language_pid = $languagePid;
+        return $this->owner->save();
+    }
+
+    public function replaceOriginWhenEmpty($originModel){
+        foreach($this->translationAttributes as $attribute){
+
+            if(empty($this->owner->$attribute)){
+                $this->owner->$attribute = $originModel->$attribute;
+            }
+        }
+    }
+
 
 
 

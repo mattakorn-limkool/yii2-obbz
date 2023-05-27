@@ -9,12 +9,15 @@ namespace obbz\yii2\actions;
 
 use obbz\yii2\models\CoreActiveRecord;
 use obbz\yii2\utils\ObbzYii;
+use obbz\yii2\utils\UploadedFile;
 
 class CoreTranslate extends CoreBaseAction
 {
     const INPUT_TYPE_TEXT = 'textInput';
     const INPUT_TYPE_TEXT_AREA = 'textarea';
     const INPUT_TYPE_RTE = 'cke';
+    const INPUT_TYPE_IMAGE = 'image';
+    const INPUT_TYPE_FILE = 'file';
 
     public $successText = 'Save translation successfully';
     public $errorText = 'Can not save translation, please try again';
@@ -24,6 +27,10 @@ class CoreTranslate extends CoreBaseAction
     public $layout = 'blank';
     public $translationAttributes = []; // for custom translation attributes via controller
     public $attributesOptions = [];
+    public $scenarios = [
+        'create' => 'translate_create',
+        'update' => 'translate_update',
+    ];
 
     private function initAttributesOptions($model){
         $attributes = $this->getTranslationAttributes($model);
@@ -54,18 +61,36 @@ class CoreTranslate extends CoreBaseAction
 
         /** @var CoreActiveRecord $model */
         $model = $this->findModel($id);
-        $translateModel = clone $model;
-        $this->initAttributesOptions($model);
+        $translateModel = $model->getTranslation($language);
+        $this->initAttributesOptions($translateModel);
+//        ObbzYii::debug($translateModel);
+        if($translateModel->isNewRecord){
+            $translateModel->setScenario($this->scenarios['create']);
+        }else{
+            $translateModel->setScenario($this->scenarios['update']);
+        }
+//        ObbzYii::debug($translateModel->scenario);
 
-        if (ObbzYii::post()) {
+//        $translateModel = clone $model;
+
+
+        if ($translateModel->load(ObbzYii::post())) {
+//            ObbzYii::debug(UploadedFile::getInstance($translateModel, 'image'));
             // set translate value to model
-            foreach (ObbzYii::post(\yii\helpers\StringHelper::basename($this->modelClass), []) as $lang => $data) {
-                foreach ($data as $attribute => $translation) {
-                    $model->translate($lang)->$attribute = $translation;
-                }
-            }
+//            foreach (ObbzYii::post(\yii\helpers\StringHelper::basename($this->modelClass), []) as $lang => $data) {
+//                $langModel = $model->translate($lang);
+//                $langModel->setScenario('translate_create');
+//                foreach ($data as $attribute => $translation) {
+////                    ObbzYii::debug(UploadedFile::getInstance($translateModel, '[en]image'));
+//
+//                    $langModel->$attribute = $translation;
+////                    $model->translate($lang)->$attribute = $translation;
+//                }
+//            }
 
-            if($model->save()){
+
+
+            if($translateModel->saveTranslate($language, $id)){
                 $message = \Yii::t('obbz', $this->successText);
             }else{
                 $message = \Yii::t('obbz', $this->errorText);
@@ -73,7 +98,8 @@ class CoreTranslate extends CoreBaseAction
             }
         }
 
-        $translateModel->replaceTranslation($language);
+        $translateModel->replaceOriginWhenEmpty($model);
+//        ObbzYii::debug($translateModel);
         $translationAttributes = $this->getTranslationAttributes($model);
 
         return $this->controller->render($this->view,[

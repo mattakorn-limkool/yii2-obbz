@@ -26,6 +26,8 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     const SCENARIO_BE_CREATE = "be_create";
     const SCENARIO_BE_UPDATE = "be_update";
     const SCENARIO_BE_DELETE = "be_delete";
+    const SCENARIO_TRANSLATE_CREATE = "translate_create";
+    const SCENARIO_TRANSLATE_UPDATE = "translate_update";
 
     const AUTODATE_TYPE_DATE = 'date';
     const AUTODATE_TYPE_DATETIME = 'datetime';
@@ -75,10 +77,20 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     public function scenarioDelete(){
         return [self::SCENARIO_DELETE, self::SCENARIO_BE_DELETE];
     }
+    public function scenarioTranslate(){
+        return [self::SCENARIO_TRANSLATE_CREATE, self::SCENARIO_TRANSLATE_UPDATE];
+    }
     public function isScenario($arrayScenario){
         return in_array($this->scenario, $arrayScenario);
     }
 
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_TRANSLATE_CREATE => $this->fields(),
+            self::SCENARIO_TRANSLATE_UPDATE => $this->fields(),
+        ];
+    }
 
     public function init(){
 
