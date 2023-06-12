@@ -15,6 +15,7 @@ echo "<?php\n";
 
 namespace <?= $generator->ns ?>;
 
+use obbz\yii2\utils\ArrayHelper;
 use obbz\yii2\utils\ObbzYii;
 /**
 <?php if (!empty($relations)): ?>
@@ -42,10 +43,12 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
 
 public function rules(){
+        $thumbWidth = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.width');
+        $thumbHeight = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.height');
         return array_merge(parent::rules(),[
 			['image', 'image', 'extensions' => 'jpg, jpeg',
                 'maxSize' => \Yii::$app->params['upload.maxSize'],
-                //'minHeight' => 300, 'minWidth'=> 300,
+                //'minWidth'=> $thumbWidth, 'minHeight' => $thumbHeight,
                 'on'=>$this->scenarioCU()],
             //[['field'], 'required', 'on'=>$this->scenarioCU()],
         ]);

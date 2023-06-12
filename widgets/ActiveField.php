@@ -479,14 +479,17 @@ class ActiveField extends \yii\widgets\ActiveField
     }
 
     public function rte($config = []){
-
-        return $this->widget(CoreCKEditor::class, array_merge([
+        $defaultConf = [
             'options' => ['rows' => 6],
             'preset' => ObbzYii::user()->can(\common\components\Roles::THE_CREATOR) ? 'full' : 'basic',
             'clientOptions' => [
                 'filebrowserUploadUrl' => Url::to(['/site/ckeditor-upload-img'])
             ]
-        ], $config));
+        ];
+        $paramsConf = ArrayHelper::getValue(ObbzYii::app()->params, 'ckeDefaultConf', []);
+        $defaultConf = array_merge($defaultConf, $paramsConf);
+
+        return $this->widget(CoreCKEditor::class, array_merge($defaultConf, $config));
     }
 
     public function datePicker($config=[]){

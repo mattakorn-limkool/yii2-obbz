@@ -7,8 +7,10 @@ namespace obbz\yii2\widgets\grid;
 
 
 use obbz\yii2\models\CoreActiveRecord;
+use obbz\yii2\utils\ObbzYii;
 use yii\base\ErrorException;
 use yii\grid\ActionColumn;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use Yii;
 use yii\helpers\Url;
@@ -36,6 +38,12 @@ class CoreActionColumn extends ActionColumn
 
     protected function initDefaultButtons()
     {
+        $faVersion = ArrayHelper::getValue(Yii::$app->params, 'fontawesomeVersion', 4.7);
+        if($faVersion >= 5 && $faVersion < 6){ // for v.5
+            $this->defaultButtonsIcons['publish'] = 'eye';
+            $this->defaultButtonsIcons['unpublish'] = 'eye-slash';
+            $this->defaultButtonsIcons['update'] = 'pen';
+        }
 
         $this->initDefaultButton('view', isset($this->defaultButtonsIcons['view']) ? $this->defaultButtonsIcons['view']  : 'search' );
         $this->initDefaultButton('publish', isset($this->defaultButtonsIcons['publish']) ? $this->defaultButtonsIcons['publish']  : 'check');

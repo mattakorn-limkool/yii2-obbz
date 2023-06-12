@@ -62,3 +62,16 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 		]) ?>
 	  </div>
 </div>
+
+<?= "<?php " ?>
+
+$this->registerJs( <<<JS
+
+JS
+    , \yii\web\View::POS_HEAD);
+
+
+$this->registerJs( <<<JS
+
+JS
+); ?>

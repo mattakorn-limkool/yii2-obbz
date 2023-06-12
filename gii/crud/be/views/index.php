@@ -120,6 +120,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 					[
 						'class' => CoreActionColumn::class,
 						'enableHeaderAction'  => false,
+						'template' => '{publish}{unpublish} {update}',
 						//'template' => '{publish}{unpublish} {update} {delete}',
 						/*'buttons'=>[
 							'custom' => function ($url, $model, $key) {
@@ -151,3 +152,17 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 		</div>
 	</div>
 </div>
+
+
+<?= "<?php " ?>
+
+$this->registerJs( <<<JS
+
+JS
+	, \yii\web\View::POS_HEAD);
+
+
+$this->registerJs( <<<JS
+
+JS
+); ?>

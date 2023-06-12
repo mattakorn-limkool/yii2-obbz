@@ -3854,6 +3854,7 @@ tbody.collapse.in {
   list-style: none;
   font-size: 13px;
   text-align: left;
+  z-index: 5000;
   background-color: #ffffff;
   border: 1px solid transparent;
   border-radius: 2px;
@@ -8927,6 +8928,7 @@ body:not(.sw-toggled) #sidebar {
   transition: background-color;
   -webkit-transition-duration: 300ms;
   transition-duration: 300ms;
+  z-index: 10;
 }
 .dropdown-menu.dropdown-menu-lg {
   width: 300px;
@@ -8985,6 +8987,7 @@ body:not(.sw-toggled) #sidebar {
   -moz-transform-origin: top left;
   -ms-transform-origin: top left;
   transform-origin: top left;
+  /* z-index: 5; */
 }
 .dropup .dropdown-menu:not([data-animation]).pull-right,
 .dropup .dropdown-menu:not([data-animation]).dropdown-menu-right {
@@ -9009,6 +9012,7 @@ body:not(.sw-toggled) #sidebar {
   transform: scale(1);
   opacity: 1;
   filter: alpha(opacity=100);
+  z-index: 500;
 }
 .dropdown-header {
   padding: 3px 17px;
@@ -11359,7 +11363,7 @@ html:not(.ie9) .select:before {
   background-repeat: no-repeat;
   background-image: url("../img/select.png");
   pointer-events: none;
-  z-index: 5;
+  z-index: 1;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   html:not(.ie9) .select:before {
@@ -11405,7 +11409,7 @@ html:not(.ie9) .select.fg-line:before {
 .fg-line:not(.disabled):after,
 .fg-line:not(.readonly):after {
   position: absolute;
-  z-index: 3;
+  z-index: 1;
   bottom: 0;
   left: 0;
   height: 2px;

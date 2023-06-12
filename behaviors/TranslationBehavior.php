@@ -23,7 +23,6 @@ class TranslationBehavior extends TranslateableBehavior
 //    }
 
     /**
-     * @deprecated using CoreBaseActiveRecord instead for more perfomance when query.
      * Shortcut easy using for showing data
      * Returns default the translation owner model for default language.
      * be carefully if call this method that will be replace all attribute to owner model
@@ -48,7 +47,7 @@ class TranslationBehavior extends TranslateableBehavior
                 }
             }
         }
-
+        return $this->owner;
     }
 
     /**

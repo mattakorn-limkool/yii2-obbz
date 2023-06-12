@@ -86,10 +86,24 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 
     public function scenarios()
     {
-        return [
-            self::SCENARIO_TRANSLATE_CREATE => $this->fields(),
-            self::SCENARIO_TRANSLATE_UPDATE => $this->fields(),
-        ];
+        if(self::tableName() == "{{%core_active_record}}"){
+            return parent::scenarios();
+        }else{
+            $allAttrs = $this->attributes();
+            return array_merge(parent::scenarios(), [
+                self::SCENARIO_SEARCH => $allAttrs,
+                self::SCENARIO_CREATE => $allAttrs,
+                self::SCENARIO_UPDATE => $allAttrs,
+                self::SCENARIO_DELETE => $allAttrs,
+                self::SCENARIO_BE_SEARCH => $allAttrs,
+                self::SCENARIO_BE_CREATE => $allAttrs,
+                self::SCENARIO_BE_UPDATE => $allAttrs,
+                self::SCENARIO_BE_DELETE => $allAttrs,
+                self::SCENARIO_TRANSLATE_CREATE => $allAttrs,
+                self::SCENARIO_TRANSLATE_UPDATE => $allAttrs,
+            ]);
+        }
+
     }
 
     public function init(){

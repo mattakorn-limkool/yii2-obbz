@@ -1,11 +1,17 @@
 <?php
 namespace obbz\yii2\widgets;
 
+use Illuminate\Support\Arr;
+use obbz\yii2\utils\ArrayHelper;
+use obbz\yii2\utils\ObbzYii;
 use \Yii;
 
 class TranslationTool extends \yii\base\Widget
 {
     public $model;
+    public $translateLanguages;
+
+    private $_languages;
 
     public function run(){
         if(empty($this->model)){
@@ -13,11 +19,22 @@ class TranslationTool extends \yii\base\Widget
             return;
         }
 
-        if(!empty(\Yii::$app->params['languages'])){
-            $translateLanguages = \Yii::$app->params['languages'];
-            // remove default language
-            unset($translateLanguages[\Yii::$app->params['defaultLanguage']]);
+        if($this->translateLanguages && is_array($this->translateLanguages) && isset($this->translateLanguages[0])){
+            $callable = ArrayHelper::getValue($this->translateLanguages, '0');
+            $args = ArrayHelper::getValue($this->translateLanguages, '1', []);
+            $this->_languages = call_user_func_array($callable, $args);
+        }else{
+
+            $this->_languages = ArrayHelper::getValue( \Yii::$app->params, 'languages', []);
+            unset($this->_languages[\Yii::$app->params['defaultLanguage']]);
+
         }
+
+
+//        $translateLanguages = $this->translationLanguages();
+//        // remove default language
+//        unset($translateLanguages[\Yii::$app->params['defaultLanguage']]);
+
 
         if($this->model->getBehavior('translateable')){
             $result = '
@@ -26,7 +43,7 @@ class TranslationTool extends \yii\base\Widget
                     data-toggle="dropdown" aria-expanded="false">
                     <i class="zmdi zmdi-refresh"></i> Translate to</button><ul class="dropdown-menu" role="menu">';
 
-                foreach($translateLanguages as $key=>$value){
+                foreach($this->_languages as $key=>$value){
                     $result .= '<li><a
                    href="'. \yii\helpers\Url::to(["translate", 'id'=>$this->model->id, 'language'=>$key]) .'"
                    class="translate-btn">'. $value .'</a></li>';
@@ -47,5 +64,9 @@ class TranslationTool extends \yii\base\Widget
 
         return '';
     }
+
+//    public function translationLanguages(){
+//        return ArrayHelper::getValue( \Yii::$app->params, 'languages', []);
+//    }
 
 }

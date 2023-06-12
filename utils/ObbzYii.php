@@ -625,7 +625,11 @@ class ObbzYii
     }
 
 
-
+    /**
+     * return the variable need to debug and break app
+     * @param $data
+     * @param bool|true $end
+     */
     public static function debug($data, $end = true){
         echo "<pre>" . print_r($data, true) . "</pre>";
         if($end)
@@ -633,6 +637,7 @@ class ObbzYii
     }
 
     /**
+     * return the models need to debug and break app
      * @param $models ActiveRecord[]
      * @param bool|true $end
      */
@@ -659,6 +664,7 @@ class ObbzYii
     }
 
     /**
+     * force hide debug toolbar
      * @param $view View
      */
     public static function hideDebugToolsBar($view){
@@ -667,6 +673,10 @@ class ObbzYii
         }
     }
 
+    /**
+     * supported  get extra http from cloudflare
+     * @return array|null
+     */
     public static function getCloudflareHttpRequests(){
         if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
             $result = [];
@@ -684,5 +694,8 @@ class ObbzYii
             return null;
         }
     }
+
+
+
 
 }

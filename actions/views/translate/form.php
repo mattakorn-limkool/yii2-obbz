@@ -32,6 +32,7 @@ $this->title =   \Yii::t('obbz', 'Translate to ') . $languageLabel;
                 <?php foreach($translationAttributes as $attribute): ?>
                     <?php
                     $options = isset($attributesOptions[$attribute]['options']) ? $attributesOptions[$attribute]['options'] : [];
+
                     switch($attributesOptions[$attribute]['type']){
                         case CoreTranslate::INPUT_TYPE_TEXT :
                             echo $form->field($translateModel, $attribute)->textInput($options);

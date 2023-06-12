@@ -6,6 +6,7 @@
 
 namespace obbz\yii2\behaviors;
 
+use obbz\yii2\utils\ObbzYii;
 use yii\base\Behavior;
 
 class VisitCounterBehavior extends Behavior
