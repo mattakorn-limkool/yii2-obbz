@@ -1,7 +1,9 @@
 <?php
 namespace obbz\yii2\widgets\fileupload;
 use dosamigos\fileupload\FileUploadUI;
+use obbz\yii2\utils\ArrayHelper;
 use obbz\yii2\utils\ObbzYii;
+use yii\helpers\Json;
 use yii\helpers\Url;
 
 /**
@@ -25,9 +27,11 @@ class FileUploadMultiple extends FileUploadUI
     public $galleryTemplateView = 'file/gallery';
 
     public $clientOptions = [
-        'maxFileSize' => 2000000,
+        'maxFileSize' => null,
         'autoUpload'=>true,
     ];
+
+
 
     public function init(){
         parent::init();
@@ -40,6 +44,7 @@ class FileUploadMultiple extends FileUploadUI
         }
 
         $this->clientOptions['url'] = Url::to($this->url);
+        $this->clientOptions['maxFileSize'] = isset($this->clientOptions['maxFileSize']) ? :\Yii::$app->params['upload.maxSize'];
 
     }
 
@@ -47,7 +52,43 @@ class FileUploadMultiple extends FileUploadUI
     {
         $view = $this->getView();
         FileUploadAssets::register($view);
-        parent::registerClientScript();
+
+        if ($this->gallery) {
+            GalleryAsset::register($view);
+        }
+
+        FileUploadUIAsset::register($view);
+
+        $options = Json::encode($this->clientOptions);
+        $id = $this->options['id'];
+
+        $js[] = ";jQuery('#$id').fileupload($options);";
+        if (!empty($this->clientEvents)) {
+            foreach ($this->clientEvents as $event => $handler) {
+                $js[] = "jQuery('#$id').on('$event', $handler);";
+            }
+        }
+        $view->registerJs(implode("\n", $js));
+
+        if ($this->load) {
+            $view->registerJs("
+                $('#$id').addClass('fileupload-processing');
+                $.ajax({
+                    url: $('#$id').fileupload('option', 'url'),
+                    dataType: 'json',
+                    context: $('#$id')[0]
+                }).always(function () {
+                    $(this).removeClass('fileupload-processing');
+                }).done(function (result) {
+                    $(this).fileupload('option', 'done').call(this, $.Event('done'), {result: result});
+                });
+            ");
+        }
+
+
+//        parent::registerClientScript();
     }
+
+
 
 }

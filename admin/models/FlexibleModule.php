@@ -1,32 +1,39 @@
 <?php
-/** Obbz core model */
-/* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\model\Generator */
-/* @var $tableName string full table name */
-/* @var $className string class name */
-/* @var $queryClassName string query class name */
-/* @var $tableSchema yii\db\TableSchema */
-/* @var $labels string[] list of attribute labels (name => label) */
-/* @var $rules string[] list of validation rules */
-/* @var $relations array list of relations (name => relation declaration) */
 
-echo "<?php\n";
-?>
+namespace obbz\yii2\admin\models;
 
-namespace <?= $generator->ns ?>;
-
+use common\models\FlexibleModuleItem;
 use obbz\yii2\utils\ArrayHelper;
+use obbz\yii2\utils\Html;
 use obbz\yii2\utils\ObbzYii;
+use obbz\yii2\widgets\fileupload\behaviors\MultipleUploadDbBehavior;
+
 /**
-<?php if (!empty($relations)): ?>
+ * @var FlexibleModuleItem[] $items
+*/
 
-<?php foreach ($relations as $name => $relation): ?>* @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?><?php endforeach; ?><?php endif; ?>*/
-
-class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'Base' . "\n" ?>
+class FlexibleModule extends \obbz\yii2\admin\models\base\FlexibleModuleBase
 {
+    const KEY_IMAGE_SLIDE = 'image_slide';
+    const KEY_IMAGE_GALLERY = 'image_gallery';
+    const KEY_YOUTUBE_GALLERY = 'youtube_gallery';
+
+    const SCENARIO_UPLOAD_IMAGE = "upload_image";
+
+    public $columnPatterns = [
+        'col-lg-12' => 'Full Width Column',
+        'col-lg-6' => '2 Columns',
+        'col-lg-4 col-sm-6' => '3 Columns',
+        'col-lg-3 col-md-4' => '4 Columns',
+    ];
+
+    public $markerCssClass = 'flexible-module';
+    public $uploadItems;
+
     const DEFAULT_THUMBS = [
         'thumb'=> ['width'=>300]
     ];
+
 
     public $autoDateFields = [
 //        ['field' =>'created_time', 'inputType'=>self::AUTODATE_TYPE_DATETIME, 'scenarios'=>[self::SCENARIO_BE_CREATE, self::SCENARIO_BE_UPDATE]],
@@ -51,6 +58,9 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
                 //'minWidth'=> $thumbWidth, 'minHeight' => $thumbHeight,
                 'on'=>$this->scenarioCU()],
             //[['field'], 'required', 'on'=>$this->scenarioCU()],
+
+            [['uploadItems'], 'image', 'extensions' => 'jpg, jpeg',
+                'maxSize' => \Yii::$app->params['upload.maxSize'],'on'=>[self::SCENARIO_UPLOAD_IMAGE]],
         ]);
     }
 
@@ -62,24 +72,58 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 //                'translationAttributes' => ['title','detail'],
 //            ],
 			// other behavior
+            'multipleUploadImages' => [
+                'class' => MultipleUploadDbBehavior::class,
+                'itemModelClass' => FlexibleModuleItem::class,
+            ],
+
         ]);
     }
 
     public function attributeLabels(){
-        return array_merge(parent::attributeLabels(),[]);
+        return array_merge(parent::attributeLabels(),[
+            'key_name' => 'Module Type',
+            'column_pattern' => 'Column',
+            'title' => 'Name',
+        ]);
+    }
+
+    public static function getKeyList(){
+        return [
+            self::KEY_IMAGE_SLIDE => 'Images Slide',
+            self::KEY_IMAGE_GALLERY => 'Images Gallery',
+            self::KEY_YOUTUBE_GALLERY => 'Youtube List',
+        ];
+    }
+
+    public function getRteMarker(){
+        $result = '';
+        if($this->id){
+
+            $options = [
+                'class' => $this->markerCssClass,
+                'data-flexmodule-id'=>$this->id,
+                'frameborder' => 0,
+                'src' => \yii\helpers\Url::to(['ck-view', 'id'=>$this->id], true)
+            ];
+
+            $result = Html::tag('iframe', '', $options);
+//            $title = ArrayHelper::getValue(self::getKeyList(), $this->key_name, '') .
+//                ' : ' . ArrayHelper::getValue($this->columnPatterns, $this->column_pattern, '');
+//
+//            if($this->title){
+//                $title .= ' : ' . $this->title;
+//            }
+//            $content  = Html::tag('div', $title, ['class'=>'title']);
+//            $result = Html::tag('div', $content, $options);
+        }
+
+        return $result;
     }
 
 
-<?php foreach ($relations as $name => $relation): ?>
 
-    /**
-    * @return \yii\db\ActiveQuery
-    */
-    public function get<?= $name ?>()
-    {
-        <?= $relation[0] . "\n" ?>
-    }
-<?php endforeach; ?>
+
 //	 public function beforeValidate() {
 //        if(parent::beforeValidate()) {
 //            // your code here

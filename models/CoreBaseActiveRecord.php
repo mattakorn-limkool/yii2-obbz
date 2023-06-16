@@ -90,17 +90,18 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             return parent::scenarios();
         }else{
             $allAttrs = $this->attributes();
+            $safeAttrs = \obbz\yii2\utils\ArrayHelper::removeValue($allAttrs, 'id');
             return array_merge(parent::scenarios(), [
-                self::SCENARIO_SEARCH => $allAttrs,
-                self::SCENARIO_CREATE => $allAttrs,
-                self::SCENARIO_UPDATE => $allAttrs,
-                self::SCENARIO_DELETE => $allAttrs,
-                self::SCENARIO_BE_SEARCH => $allAttrs,
-                self::SCENARIO_BE_CREATE => $allAttrs,
-                self::SCENARIO_BE_UPDATE => $allAttrs,
-                self::SCENARIO_BE_DELETE => $allAttrs,
-                self::SCENARIO_TRANSLATE_CREATE => $allAttrs,
-                self::SCENARIO_TRANSLATE_UPDATE => $allAttrs,
+//                self::SCENARIO_SEARCH => $allAttrs,
+//                self::SCENARIO_CREATE => $allAttrs,
+//                self::SCENARIO_UPDATE => $allAttrs,
+//                self::SCENARIO_DELETE => $allAttrs,
+//                self::SCENARIO_BE_SEARCH => $allAttrs,
+//                self::SCENARIO_BE_CREATE => $allAttrs,
+//                self::SCENARIO_BE_UPDATE => $allAttrs,
+//                self::SCENARIO_BE_DELETE => $allAttrs,
+                self::SCENARIO_TRANSLATE_CREATE => $safeAttrs,
+                self::SCENARIO_TRANSLATE_UPDATE => $safeAttrs,
             ]);
         }
 

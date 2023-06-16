@@ -30,7 +30,7 @@ class CoreActionColumn extends ActionColumn
     public $defaultButtonsIcons = [
         'view' => 'search',
         'publish' => 'check',
-        'unpublish' => 'close',
+        'unpublish' => 'times',
         'update' => 'pencil',
         'delete' => 'trash',
     ];

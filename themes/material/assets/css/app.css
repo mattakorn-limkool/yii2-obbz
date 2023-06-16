@@ -8876,7 +8876,7 @@ h6 small,
 }
 .sub-menu ul > li ul {
   font-size: 12px;
-  margin: 10px 0;
+  margin: 10px 10px;
   background-color: #f7f7f7;
 }
 .sub-menu.active > ul {

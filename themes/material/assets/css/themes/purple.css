@@ -1,0 +1,26 @@
+[data-current-skin="purple"] {
+    background-color: #6A1F7C;
+}
+.btn-primary {
+    background-color: #6A1F7C !important;
+    border-color: #6A1F7C !important;
+}
+
+.btn-float:not(.bgm-white):not(.bgm-gray):not(.btn-danger) > i {
+    color: #6A1F7C;
+}
+
+.btn-success {
+    background-color: #206822 !important;
+}
+.btn-action-delete, .btn-action-delete:hover, .btn-action-delete:focus, .btn-action-delete-selected, .btn-action-delete-selected:hover, .btn-action-delete-selected:focus {
+    background-color: #dd382d !important;
+}
+a, a:focus, a:hover {
+    color: #9866a7;
+}
+
+
+body.login-content::before {
+    background: #6A1F7C;
+}

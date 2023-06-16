@@ -21,7 +21,7 @@ $updateUrl = \yii\helpers\Url::current(['key'=>$model->section, 'lang'=>'']);
 		</div>
 
 		<div class="card-body card-padding">
-			<div class="room-type-form row">
+			<div class="translate-form row">
 
 				<div class="col-md-12">
 

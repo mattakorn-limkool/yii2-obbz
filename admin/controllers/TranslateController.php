@@ -32,7 +32,6 @@ class TranslateController extends Controller
 
     public function actionIndex()
     {
-        ObbzYii::debug(\Yii::$app);
         return $this->render('index');
     }
 
@@ -68,18 +67,4 @@ class TranslateController extends Controller
         ]);
     }
 
-
-//    protected function loadMessageModels($key, $lang)
-//    {
-//        /** @var PhpMessageSource $msgSource */
-//        $msgSource = $this->_i18nObj->getMessageSource($key);
-//        return TranslateModel::getModels($msgSource->adminLoadMessages($key, $lang));
-//    }
-//
-//    protected function saveMessageModels($key, $lang, $messages)
-//    {
-//        /** @var PhpMessageSource $msgSource */
-//        $msgSource = $this->_i18nObj->getMessageSource($key);
-//        return TranslateModel::getModels($msgSource->adminSaveMessage($key, $lang, $messages));
-//    }
 }

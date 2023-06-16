@@ -11,7 +11,7 @@
             <div class="button-tools">
             {% if (!i) { %}
                <button class="btn btn-danger cancel" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-                   <i class="fa fa-times"></i>
+                    <i class="fa fa-times"></i>
                 </button>
             {% } %}
             </div>

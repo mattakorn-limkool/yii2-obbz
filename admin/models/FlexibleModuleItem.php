@@ -1,31 +1,22 @@
 <?php
-/** Obbz core model */
-/* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\model\Generator */
-/* @var $tableName string full table name */
-/* @var $className string class name */
-/* @var $queryClassName string query class name */
-/* @var $tableSchema yii\db\TableSchema */
-/* @var $labels string[] list of attribute labels (name => label) */
-/* @var $rules string[] list of validation rules */
-/* @var $relations array list of relations (name => relation declaration) */
 
-echo "<?php\n";
-?>
-
-namespace <?= $generator->ns ?>;
+namespace obbz\yii2\admin\models;
 
 use obbz\yii2\utils\ArrayHelper;
 use obbz\yii2\utils\ObbzYii;
 /**
-<?php if (!empty($relations)): ?>
+*/
 
-<?php foreach ($relations as $name => $relation): ?>* @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?><?php endforeach; ?><?php endif; ?>*/
-
-class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'Base' . "\n" ?>
+class FlexibleModuleItem extends \obbz\yii2\admin\models\base\FlexibleModuleItemBase
 {
+
+//    const SCENARIO_UPLOAD_IMAGE = "upload_image";
+
     const DEFAULT_THUMBS = [
-        'thumb'=> ['width'=>300]
+        'thumb'=> ['width'=>150, 'quanlity'=>100],
+        'xs'=> ['width'=>300, 'quanlity'=>100],
+        'md'=> ['width'=>600, 'quanlity'=>100],
+        'lg'=> ['width'=>1200, 'quanlity'=>100],
     ];
 
     public $autoDateFields = [
@@ -70,16 +61,6 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
     }
 
 
-<?php foreach ($relations as $name => $relation): ?>
-
-    /**
-    * @return \yii\db\ActiveQuery
-    */
-    public function get<?= $name ?>()
-    {
-        <?= $relation[0] . "\n" ?>
-    }
-<?php endforeach; ?>
 //	 public function beforeValidate() {
 //        if(parent::beforeValidate()) {
 //            // your code here
