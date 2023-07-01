@@ -53,9 +53,8 @@
 		"parsilver/thailand-provinces-php" : "*",
         "aksafan/yii2-fcm-both-api": "*",
 		"yiisoft/yii2-bootstrap4": "~2.0.6",
-        "yiisoft/yii2-bootstrap5": "*",
 		"yiisoft/yii2-queue": "*",
-        "php": ">=5.3.0"
+        "php": ">=7.0.3"
     },
 	"require-dev": {
 		"fabpot/php-cs-fixer": "^1.11"
