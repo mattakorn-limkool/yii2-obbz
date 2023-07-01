@@ -11,6 +11,9 @@ class TranslationTool extends \yii\base\Widget
     public $model;
     public $translateLanguages;
 
+    // todo - showTranslatedIcon
+    public $showTranslatedIcon = true;
+
     private $_languages;
 
     public function run(){
@@ -36,30 +39,35 @@ class TranslationTool extends \yii\base\Widget
 //        unset($translateLanguages[\Yii::$app->params['defaultLanguage']]);
 
 
-        if($this->model->getBehavior('translateable')){
-            $result = '
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle waves-effect"
-                    data-toggle="dropdown" aria-expanded="false">
-                    <i class="zmdi zmdi-refresh"></i> Translate to</button><ul class="dropdown-menu" role="menu">';
+        if($translateable = $this->model->getBehavior('translateable')){
+            $translateAttrs = ArrayHelper::getValue($translateable, 'translationAttributes');
+            if($this->_languages && !empty($translateAttrs)){
+                $key_name = ArrayHelper::getValue($this->model, 'key_name');
+                $result = '
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle waves-effect"
+                                data-toggle="dropdown" aria-expanded="false">
+                                <i class="zmdi zmdi-refresh"></i> Translate to</button><ul class="dropdown-menu" role="menu">';
 
                 foreach($this->_languages as $key=>$value){
                     $result .= '<li><a
-                   href="'. \yii\helpers\Url::to(["translate", 'id'=>$this->model->id, 'language'=>$key]) .'"
+                   href="'. \yii\helpers\Url::to(["translate", 'id'=>$this->model->id, 'language'=>$key, 'key'=>$key_name]) .'"
                    class="translate-btn">'. $value .'</a></li>';
                 }
 
-            $result .= '</ul></div>';
+                $result .= '</ul></div>';
 
 
-            $result .= \newerton\fancybox\FancyBox::widget([
-                'target' => 'a.translate-btn',
-                'config'=>[
-                    'type'=>'iframe',
-                    'width' => '80%',
-                ]
-            ]);
-            return $result;
+                $result .= \newerton\fancybox\FancyBox::widget([
+                    'target' => 'a.translate-btn',
+                    'config'=>[
+                        'type'=>'iframe',
+                        'width' => '80%',
+                    ]
+                ]);
+                return $result;
+            }
+
         }
 
         return '';

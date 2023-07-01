@@ -165,6 +165,24 @@ class CoreActionColumn extends ActionColumn
         return Html::a($icon, $url, $options);
     }
 
+    public static function generateFeButton($url, $title, $iconName, $action='', $options = []){
+        if($action == '')
+            $action = str_replace(' ', '-', strtolower($title));
+
+        $options = array_merge([
+            'title' => $title,
+            'data-toggle' => 'tooltip',
+            'aria-label' => $title,
+            'data-pjax' => '0',
+            'class'=>'btn btn-icon btn-icon-small btn-action-' . $action,
+            'visible'=>'false',
+            'target'=>'_blank',
+        ], $options);
+        $icon = Html::tag('span', '', ['class' => "fa fa-$iconName"]);
+        return Html::a($icon, $url, $options);
+    }
+
+
     public function createUrl($action, $model, $key, $index)
     {
         if (is_callable($this->urlCreator)) {

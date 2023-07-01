@@ -89,19 +89,19 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
         if(self::tableName() == "{{%core_active_record}}"){
             return parent::scenarios();
         }else{
-            $allAttrs = $this->attributes();
-            $safeAttrs = \obbz\yii2\utils\ArrayHelper::removeValue($allAttrs, 'id');
+            $attrs = $this->attributes();
+            \obbz\yii2\utils\ArrayHelper::removeValue($attrs, 'id');
             return array_merge(parent::scenarios(), [
-//                self::SCENARIO_SEARCH => $allAttrs,
-//                self::SCENARIO_CREATE => $allAttrs,
-//                self::SCENARIO_UPDATE => $allAttrs,
-//                self::SCENARIO_DELETE => $allAttrs,
-//                self::SCENARIO_BE_SEARCH => $allAttrs,
-//                self::SCENARIO_BE_CREATE => $allAttrs,
-//                self::SCENARIO_BE_UPDATE => $allAttrs,
-//                self::SCENARIO_BE_DELETE => $allAttrs,
-                self::SCENARIO_TRANSLATE_CREATE => $safeAttrs,
-                self::SCENARIO_TRANSLATE_UPDATE => $safeAttrs,
+//                self::SCENARIO_SEARCH => $attrs,
+//                self::SCENARIO_CREATE => $attrs,
+//                self::SCENARIO_UPDATE => $attrs,
+//                self::SCENARIO_DELETE => $attrs,
+//                self::SCENARIO_BE_SEARCH => $attrs,
+//                self::SCENARIO_BE_CREATE => $attrs,
+//                self::SCENARIO_BE_UPDATE => $attrs,
+//                self::SCENARIO_BE_DELETE => $attrs,
+                self::SCENARIO_TRANSLATE_CREATE => $attrs,
+                self::SCENARIO_TRANSLATE_UPDATE => $attrs,
             ]);
         }
 
@@ -194,6 +194,10 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
             'url' => $url,
         ],$options);
     }
+
+//    public function getThumb(){
+//
+//    }
 
     public function beforeSave($insert)
     {

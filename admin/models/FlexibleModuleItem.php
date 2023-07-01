@@ -12,11 +12,18 @@ class FlexibleModuleItem extends \obbz\yii2\admin\models\base\FlexibleModuleItem
 
 //    const SCENARIO_UPLOAD_IMAGE = "upload_image";
 
-    const DEFAULT_THUMBS = [
-        'thumb'=> ['width'=>150, 'quanlity'=>100],
-        'xs'=> ['width'=>300, 'quanlity'=>100],
-        'md'=> ['width'=>600, 'quanlity'=>100],
-        'lg'=> ['width'=>1200, 'quanlity'=>100],
+    public $defaultThumbs = [
+        'thumb'=> ['width'=>200, 'quanlity'=>100],
+        'xs'=> ['width'=>400, 'quanlity'=>100],
+        'md'=> ['width'=>800, 'quanlity'=>100],
+        'lg'=> ['width'=>1600, 'quanlity'=>100],
+    ];
+
+    public $columnThumbConf = [
+        FlexibleModule::COL_1 => 'lg',
+        FlexibleModule::COL_2 => 'md',
+        FlexibleModule::COL_3 => 'xs',
+        FlexibleModule::COL_4 => 'xs',
     ];
 
     public $autoDateFields = [
@@ -34,10 +41,10 @@ class FlexibleModuleItem extends \obbz\yii2\admin\models\base\FlexibleModuleItem
 
 
     public function rules(){
-        $thumbWidth = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.width');
-        $thumbHeight = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.height');
+        $thumbWidth = ArrayHelper::getValue($this->defaultThumbs, 'thumb.width');
+        $thumbHeight = ArrayHelper::getValue($this->defaultThumbs, 'thumb.height');
         return array_merge(parent::rules(),[
-			['image', 'image', 'extensions' => 'jpg, jpeg',
+			['image', 'image', 'extensions' => 'jpg, jpeg, webp',
                 'maxSize' => \Yii::$app->params['upload.maxSize'],
                 //'minWidth'=> $thumbWidth, 'minHeight' => $thumbHeight,
                 'on'=>$this->scenarioCU()],
@@ -47,7 +54,7 @@ class FlexibleModuleItem extends \obbz\yii2\admin\models\base\FlexibleModuleItem
 
 	public function behaviors(){
         return array_merge(parent::behaviors(),[
-			'uploadImage' => $this->defaultImgBehavior('image', self::DEFAULT_THUMBS, ['scenarios' => $this->scenarioCU()]) ,
+			'uploadImage' => $this->defaultImgBehavior('image', $this->defaultThumbs, ['scenarios' => $this->scenarioCU()]) ,
 //            'translateable' => [
 //                'class' => \obbz\yii2\behaviors\TranslationBehavior::class,
 //                'translationAttributes' => ['title','detail'],
@@ -58,6 +65,18 @@ class FlexibleModuleItem extends \obbz\yii2\admin\models\base\FlexibleModuleItem
 
     public function attributeLabels(){
         return array_merge(parent::attributeLabels(),[]);
+    }
+
+    public function getThumbByColumn($columnName = null){
+        if(!isset($columnName)){
+            // todo - get parent model
+        }
+        $thumb = ArrayHelper::getValue($this->columnThumbConf, $columnName);
+        return $this->getThumbUploadUrl('image', $thumb);
+    }
+
+    public function getFullThumb(){
+        return $this->getThumbUploadUrl('image', 'lg');
     }
 
 

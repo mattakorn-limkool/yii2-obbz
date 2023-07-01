@@ -9,8 +9,12 @@
 namespace obbz\yii2\models;
 
 use common\models\User;
+use obbz\yii2\behaviors\SluggableBehavior;
+use obbz\yii2\behaviors\VisitCounterBehavior;
 use obbz\yii2\utils\ObbzYii;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\helpers\Html;
 
 
@@ -40,6 +44,9 @@ class CoreActiveRecord extends CoreBaseActiveRecord
 {
     public $statusPublish;
 
+
+    private $_autoCloneFiles = [];
+
     /**
      * default rules for core model
      * @return array
@@ -47,16 +54,27 @@ class CoreActiveRecord extends CoreBaseActiveRecord
 
     public function behaviors()
     {
-        return [
+        $behaviors = [
             // for sortable grid
             'sortable' => [
                 'class' => \kotchuprik\sortable\behaviors\Sortable::class,
                 'query' => self::find(),
                 'orderAttribute'=>'sorting',
             ],
-
-
         ];
+        if(self::tableName() == "{{%core_active_record}}"){
+            return parent::behaviors();
+        }else{
+            if($this->hasAttribute('slug')){
+                $behaviors['slug'] = SluggableBehavior::class;
+            }
+            if($this->hasAttribute('view_count')){
+                $behaviors['visitCounter'] = VisitCounterBehavior::class;
+            }
+        }
+
+
+        return $behaviors;
     }
     public function attributeLabels(){
         return [
@@ -92,6 +110,11 @@ class CoreActiveRecord extends CoreBaseActiveRecord
         }else{
             return false;
         }
+    }
+
+    public function afterDelete(){
+        parent::afterDelete();
+        $this->removeAutoCloneFolder();
     }
 
 
@@ -250,6 +273,102 @@ class CoreActiveRecord extends CoreBaseActiveRecord
         return $this->hasMany(self::calledClass(), ['language_pid' => 'id']);
     }
 
+    /**
+     * @param $class
+     * @param $link
+     * @return CoreActiveQuery
+     */
+    public function hasOneCore($class, $link){
+        $activeQuery = $this->hasOne($class, $link);
+        if(ObbzYii::isFrontend()){
+            $activeQuery->fe();
+        }else if(ObbzYii::isBackend()){
+            $activeQuery->be();
+        }
 
+        return $activeQuery;
+    }
+
+    /**
+     * @param $class
+     * @param $link
+     * @return \yii\db\ActiveQuery
+     */
+    public function hasManyCore($class, $link){
+        $activeQuery = $this->hasMany($class, $link);
+        if(ObbzYii::isFrontend()){
+            $activeQuery->fe();
+        }else if(ObbzYii::isBackend()){
+            $activeQuery->be();
+        }
+
+        $activeQuery->defaultOrder();
+
+        return $activeQuery;
+    }
+
+    #### AUTO Clone files
+
+
+    public function pushAutoCloneFile($fromPath, $defaulFolder = 'data'){
+        $cloneFile = [
+            'file' => $fromPath,
+            'folder' => $defaulFolder,
+        ];
+        $this->_autoCloneFiles[] = $cloneFile;
+        return $cloneFile;
+    }
+
+    public function processAutoCloneFiles($ignoreCannotCopy = false){
+        if($this->isNewRecord)
+            throw new MethodNotAllowedException('Plese create model before');
+
+        $newFiles = [];
+        foreach($this->_autoCloneFiles as $key=>$cloneFile){
+            $newFiles[] = $this->processAutoCloneFile($cloneFile['file'], $cloneFile['folder'], $ignoreCannotCopy);
+        }
+
+        return $newFiles;
+    }
+
+    /**
+     * @param $cloneFile - path file need to clone
+     * @param $folder - folder to save file on model
+     * @throws InvalidArgumentException
+     * @throws \ErrorException
+     * @throws \yii\base\Exception
+     */
+    public function processAutoCloneFile($fromPath, $defaulFolder = 'data', $ignoreCannotCopy = false){
+        $path = \Yii::getAlias('@uploadPath/'. $this->uploadFolder .'/' . $this->id . '/' . $defaulFolder);
+        $url =  \Yii::getAlias('@uploadUrl/'. $this->uploadFolder .'/' . $this->id . '/' .  $defaulFolder);
+        if (is_string($path) && FileHelper::createDirectory($path)) {
+            $info = pathinfo($fromPath);
+            $newFileName =  uniqid()  . '.' . $info['extension'] ;
+            $newFile = $path . '/'. $newFileName;
+            $newUrl = $url . '/' . $newFileName;
+//                ObbzYii::debug($cloneFile['file']);
+            if($ignoreCannotCopy){
+                @copy($fromPath, $newFile);
+            }else{
+                if(!copy($fromPath, $newFile)){
+                    throw new \ErrorException('Cannot copy file ' . $fromPath);
+                }
+            }
+
+            return $newUrl;
+        } else {
+            throw new InvalidArgumentException(
+                "Directory specified in 'path' attribute doesn't exist or cannot be created."
+            );
+        }
+    }
+
+    public function removeAutoCloneFolder($defaultFolder = 'data'){
+        $path = \Yii::getAlias('@uploadPath/'. $this->uploadFolder .'/' . $this->id . '/' . $defaultFolder);
+        return FileHelper::removeDirectory($path);
+    }
+
+
+    #### end AUTO Clone files
 }
 

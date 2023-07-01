@@ -24,7 +24,7 @@ use obbz\yii2\utils\ObbzYii;
 
 class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'Base' . "\n" ?>
 {
-    const DEFAULT_THUMBS = [
+    public $defaultThumbs = [
         'thumb'=> ['width'=>300]
     ];
 
@@ -43,10 +43,10 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
 
     public function rules(){
-        $thumbWidth = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.width');
-        $thumbHeight = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.height');
+        $thumbWidth = ArrayHelper::getValue($this->defaultThumbs, 'thumb.width');
+        $thumbHeight = ArrayHelper::getValue($this->defaultThumbs, 'thumb.height');
         return array_merge(parent::rules(),[
-			['image', 'image', 'extensions' => 'jpg, jpeg',
+			['image', 'image', 'extensions' => 'jpg, jpeg, webp',
                 'maxSize' => \Yii::$app->params['upload.maxSize'],
                 //'minWidth'=> $thumbWidth, 'minHeight' => $thumbHeight,
                 'on'=>$this->scenarioCU()],
@@ -56,7 +56,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
 	public function behaviors(){
         return array_merge(parent::behaviors(),[
-			'uploadImage' => $this->defaultImgBehavior('image', self::DEFAULT_THUMBS, ['scenarios' => $this->scenarioCU()]) ,
+			'uploadImage' => $this->defaultImgBehavior('image', $this->defaultThumbs, ['scenarios' => $this->scenarioCU()]) ,
 //            'translateable' => [
 //                'class' => \obbz\yii2\behaviors\TranslationBehavior::class,
 //                'translationAttributes' => ['title','detail'],

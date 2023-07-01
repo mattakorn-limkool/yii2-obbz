@@ -24,3 +24,17 @@ a, a:focus, a:hover {
 body.login-content::before {
     background: #6A1F7C;
 }
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 3;
+    color: #ffffff;
+    background-color: #6A1F7C;
+    border-color: #ffffff;
+    cursor: default;
+}
+
+.alert-warning {
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #333;
+}

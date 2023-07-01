@@ -54,7 +54,7 @@ class CoreTranslate extends CoreBaseAction
 
     public function run($id, $language)
     {
-
+//        ObbzYii::debug($this->controller->modelClass);
         $this->controller->layout = $this->layout;
         $message = '';
         $hasError = false;
@@ -99,8 +99,9 @@ class CoreTranslate extends CoreBaseAction
         }
 
         $translateModel->replaceOriginWhenEmpty($model);
-//        ObbzYii::debug($translateModel);
+//        ObbzYii::debug($model);
         $translationAttributes = $this->getTranslationAttributes($model);
+
 
         return $this->controller->render($this->view,[
             'model' => $model,
@@ -128,6 +129,7 @@ class CoreTranslate extends CoreBaseAction
         }
 
     }
+
 
 
 

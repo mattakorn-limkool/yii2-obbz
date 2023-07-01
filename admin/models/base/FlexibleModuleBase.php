@@ -15,6 +15,8 @@ use obbz\yii2\utils\ObbzYii;
     * @property string $detail
     * @property string $config
     * @property string $column_pattern
+    * @property string $section
+    * @property string $ref_model_id
     * @property string $image
     * @property integer $sorting
     * @property boolean $disabled
@@ -28,6 +30,11 @@ use obbz\yii2\utils\ObbzYii;
     * @property string $key_name
     * @property string $language
     * @property integer $language_pid
+    * @property string $custom_1
+    * @property string $custom_2
+    * @property string $custom_3
+    * @property string $custom_4
+    * @property string $custom_5
 */
 class FlexibleModuleBase extends \obbz\yii2\models\CoreActiveRecord
 {
@@ -45,11 +52,11 @@ class FlexibleModuleBase extends \obbz\yii2\models\CoreActiveRecord
     public function rules()
     {
         return array_merge(parent::rules(),[
-            [['detail', 'config', 'key_name'], 'string'],
-            [['sorting', 'create_user_id', 'modify_user_id', 'deleted_user_id', 'language_pid'], 'integer'],
+            [['detail', 'config', 'key_name', 'custom_1', 'custom_2', 'custom_3', 'custom_4', 'custom_5'], 'string'],
+            [['ref_model_id', 'sorting', 'create_user_id', 'modify_user_id', 'deleted_user_id', 'language_pid'], 'integer'],
             [['disabled', 'deleted'], 'boolean'],
             [['created_time', 'modify_time', 'deleted_time'], 'safe'],
-            [['title'], 'string', 'max' => 150],
+            [['title', 'section'], 'string', 'max' => 150],
             [['column_pattern'], 'string', 'max' => 100],
             [['language'], 'string', 'max' => 10],
         ]);
@@ -77,6 +84,7 @@ class FlexibleModuleBase extends \obbz\yii2\models\CoreActiveRecord
 
         $query->andFilterWhere([
             $t.'.id' => $this->id,
+            $t.'.ref_model_id' => $this->ref_model_id,
             $t.'.sorting' => $this->sorting,
             $t.'.disabled' => $this->disabled,
             $t.'.deleted' => $this->deleted,
@@ -94,8 +102,14 @@ class FlexibleModuleBase extends \obbz\yii2\models\CoreActiveRecord
             ->andFilterWhere(['like', $t.'.detail', $this->detail])
             ->andFilterWhere(['like', $t.'.config', $this->config])
             ->andFilterWhere(['like', $t.'.column_pattern', $this->column_pattern])
+            ->andFilterWhere(['like', $t.'.section', $this->section])
             ->andFilterWhere(['like', $t.'.image', $this->image])
-            ->andFilterWhere(['like', $t.'.language', $this->language]);
+            ->andFilterWhere(['like', $t.'.language', $this->language])
+            ->andFilterWhere(['like', $t.'.custom_1', $this->custom_1])
+            ->andFilterWhere(['like', $t.'.custom_2', $this->custom_2])
+            ->andFilterWhere(['like', $t.'.custom_3', $this->custom_3])
+            ->andFilterWhere(['like', $t.'.custom_4', $this->custom_4])
+            ->andFilterWhere(['like', $t.'.custom_5', $this->custom_5]);
 	}
     public function attributeLabels(){
         return array_merge(parent::attributeLabels(),[
@@ -104,6 +118,8 @@ class FlexibleModuleBase extends \obbz\yii2\models\CoreActiveRecord
                 'detail' => \Yii::t('model/flexible-module', 'Detail'),
                 'config' => \Yii::t('model/flexible-module', 'Config'),
                 'column_pattern' => \Yii::t('model/flexible-module', 'Column Pattern'),
+                'section' => \Yii::t('model/flexible-module', 'Section'),
+                'ref_model_id' => \Yii::t('model/flexible-module', 'Ref Model ID'),
                 'image' => \Yii::t('model/flexible-module', 'Image'),
                 'sorting' => \Yii::t('model/flexible-module', 'Sorting'),
                 'disabled' => \Yii::t('model/flexible-module', 'Disabled'),
@@ -117,6 +133,11 @@ class FlexibleModuleBase extends \obbz\yii2\models\CoreActiveRecord
                 'key_name' => \Yii::t('model/flexible-module', 'Key Name'),
                 'language' => \Yii::t('model/flexible-module', 'Language'),
                 'language_pid' => \Yii::t('model/flexible-module', 'Language Pid'),
+                'custom_1' => \Yii::t('model/flexible-module', 'Custom 1'),
+                'custom_2' => \Yii::t('model/flexible-module', 'Custom 2'),
+                'custom_3' => \Yii::t('model/flexible-module', 'Custom 3'),
+                'custom_4' => \Yii::t('model/flexible-module', 'Custom 4'),
+                'custom_5' => \Yii::t('model/flexible-module', 'Custom 5'),
         ]);
     }
     public function afterSave($insert, $changedAttributes)

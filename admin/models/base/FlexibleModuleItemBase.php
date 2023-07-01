@@ -13,7 +13,9 @@ use obbz\yii2\utils\ObbzYii;
     * @property string $id
     * @property string $user_session
     * @property integer $flexible_module_id
+    * @property string $ref_model_id
     * @property string $title
+    * @property string $sub_title
     * @property string $detail
     * @property string $link
     * @property string $embed_link
@@ -48,11 +50,11 @@ class FlexibleModuleItemBase extends \obbz\yii2\models\CoreActiveRecord
     public function rules()
     {
         return array_merge(parent::rules(),[
-            [['flexible_module_id', 'file_size', 'sorting', 'create_user_id', 'modify_user_id', 'deleted_user_id', 'language_pid'], 'integer'],
+            [['flexible_module_id', 'ref_model_id', 'file_size', 'sorting', 'create_user_id', 'modify_user_id', 'deleted_user_id', 'language_pid'], 'integer'],
             [['detail', 'key_name'], 'string'],
             [['disabled', 'deleted'], 'boolean'],
             [['created_time', 'modify_time', 'deleted_time'], 'safe'],
-            [['user_session', 'title'], 'string', 'max' => 150],
+            [['user_session', 'title', 'sub_title'], 'string', 'max' => 150],
             [['link', 'embed_link'], 'string', 'max' => 200],
             [['language'], 'string', 'max' => 10],
         ]);
@@ -81,6 +83,7 @@ class FlexibleModuleItemBase extends \obbz\yii2\models\CoreActiveRecord
         $query->andFilterWhere([
             $t.'.id' => $this->id,
             $t.'.flexible_module_id' => $this->flexible_module_id,
+            $t.'.ref_model_id' => $this->ref_model_id,
             $t.'.file_size' => $this->file_size,
             $t.'.sorting' => $this->sorting,
             $t.'.disabled' => $this->disabled,
@@ -97,6 +100,7 @@ class FlexibleModuleItemBase extends \obbz\yii2\models\CoreActiveRecord
 
         $query->andFilterWhere(['like', $t.'.user_session', $this->user_session])
             ->andFilterWhere(['like', $t.'.title', $this->title])
+            ->andFilterWhere(['like', $t.'.sub_title', $this->sub_title])
             ->andFilterWhere(['like', $t.'.detail', $this->detail])
             ->andFilterWhere(['like', $t.'.link', $this->link])
             ->andFilterWhere(['like', $t.'.embed_link', $this->embed_link])
@@ -108,7 +112,9 @@ class FlexibleModuleItemBase extends \obbz\yii2\models\CoreActiveRecord
                 'id' => \Yii::t('model/flexible-module-item', 'ID'),
                 'user_session' => \Yii::t('model/flexible-module-item', 'User Session'),
                 'flexible_module_id' => \Yii::t('model/flexible-module-item', 'Flexible Module ID'),
+                'ref_model_id' => \Yii::t('model/flexible-module-item', 'Ref Model ID'),
                 'title' => \Yii::t('model/flexible-module-item', 'Title'),
+                'sub_title' => \Yii::t('model/flexible-module-item', 'Sub Title'),
                 'detail' => \Yii::t('model/flexible-module-item', 'Detail'),
                 'link' => \Yii::t('model/flexible-module-item', 'Link'),
                 'embed_link' => \Yii::t('model/flexible-module-item', 'Embed Link'),

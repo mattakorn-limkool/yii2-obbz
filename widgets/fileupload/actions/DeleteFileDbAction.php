@@ -23,13 +23,19 @@ use obbz\yii2\widgets\fileupload\behaviors\MultipleUploadBehavior;
 class DeleteFileDbAction extends Action
 {
     public $modelItemClass;
+    public $itemRefField;
     public $deleteUrl = null;
     public $scenario = null;
     public $defaultThumb = null;
 
+
     public function init(){
         if($this->modelItemClass == null){
             throw new InvalidConfigException('Please define $modelItemClass');
+        }
+
+        if($this->itemRefField == null){
+            throw new InvalidConfigException('Please define $itemRefField');
         }
 
         if($this->deleteUrl == null){
@@ -46,6 +52,7 @@ class DeleteFileDbAction extends Action
      */
     public function run($item_id){
         $output = [];
+        $itemRefField = $this->itemRefField;
         /** @var FlexibleModuleItem $model */
         $modelClass = $this->modelItemClass;
         $model = $modelClass::find()->pk($item_id);
@@ -54,11 +61,11 @@ class DeleteFileDbAction extends Action
             if($this->scenario){
                 $model->setScenario($this->scenario);
             }
-            $id = $model->flexible_module_id;
+            $id = $model->$itemRefField;
             $model->delete();
 
             /** @var FlexibleModuleItem[] $models */
-            $models = $modelClass::find()->andWhere(['flexible_module_id'=>$id])->all();
+            $models = $modelClass::find()->andWhere([$itemRefField=>$id])->all();
 
 
             foreach ($models as $item) {

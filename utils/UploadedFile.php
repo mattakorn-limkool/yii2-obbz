@@ -14,22 +14,32 @@ class UploadedFile extends \yii\web\UploadedFile
     private static $_files;
     private static $isBase64 = false;
     private static $isUrl = false;
+    private static $isLocalPath = false;
 
     #region get by url
 
     /**
+     * get instance by url
      * @param $url
      * @return static
      */
-    public static function getInstanceByUrl($url){
+    public static function getInstanceByUrl($url, $ignoreError = false){
         self::$isUrl = true;
-        $result = self::loadUrlFile($url);
+        $result = self::loadUrlFile($url, $ignoreError );
         return new static($result);
     }
 
-    private static function loadUrlFile($url)
+    private static function loadUrlFile($url, $ignoreError = false)
     {
-        $fileSource = file_get_contents($url);
+        if($ignoreError){
+            $fileSource = @file_get_contents($url);
+        }else{
+            $fileSource = file_get_contents($url);
+        }
+
+        if($fileSource == false)
+            return ['error'=>1];
+
         $f = finfo_open();
         $mimeType = finfo_buffer($f, $fileSource, FILEINFO_MIME_TYPE);
 
@@ -59,7 +69,7 @@ class UploadedFile extends \yii\web\UploadedFile
     #endregion
 
 
-    #region by base 64
+    #region get by base 64
 
     /**
      * @param $base64file  - base64file string
@@ -108,9 +118,25 @@ class UploadedFile extends \yii\web\UploadedFile
 
     #endregion
 
+    #region get by local path
+
+    /**
+     * @param $url
+     * @return static
+     */
+    public static function getInstanceByPath($localPath, $ignoreError = false){
+        self::$isLocalPath = true;
+        $result = self::loadUrlFile($localPath, $ignoreError);
+        return new static($result);
+    }
+
+
+    #endregion
+
+
     public function saveAs($file, $deleteTempFile = true)
     {
-        if(self::$isBase64 || self::$isUrl){
+        if(self::$isBase64 || self::$isUrl || self::$isLocalPath){
             if(is_file($this->tempName)){
                 if ($deleteTempFile) {
                     return rename($this->tempName, $file);

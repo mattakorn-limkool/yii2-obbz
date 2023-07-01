@@ -13,11 +13,13 @@ use obbz\yii2\utils\Html;
 use obbz\yii2\utils\ObbzYii;
 use yii\base\Model;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRelationTrait;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 
 class CoreActiveQuery extends ActiveQuery
 {
+
     /**
      * for handle fail request when data is empty
      * @param $data
@@ -109,12 +111,61 @@ class CoreActiveQuery extends ActiveQuery
     }
 
     /**
+     * find by primary key and returns a single row of result with translation
+     * @param $db
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function tPk($id){
+        return $this->andWhere([$this->baseField('id') =>$id])->translateOne();
+    }
+
+    /**
      * find request or fail if not found data
      * @param $db
      * @return array|null|\yii\db\ActiveRecord
      */
     public function pkOrFail($id){
         $data = $this->pk($id);
+        $this->handleFailRequest($data);
+        return $data;
+    }
+
+    /**
+     * find by slug and returns a single row of result.
+     * @param $db
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function slug($slug){
+        return $this->andWhere([$this->baseField('slug') =>$slug])->one();
+    }
+
+    /**
+     * find by slug with translate and returns a single row of result with translation
+     * @param $db
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function tSlug($slug){
+        return $this->andWhere([$this->baseField('slug') =>$slug])->translateOne();
+    }
+
+    /**
+     * find request or fail if not found data
+     * @param $db
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function slugOrFail($slug){
+        $data = $this->slug($slug);
+        $this->handleFailRequest($data);
+        return $data;
+    }
+
+    /**
+     * find request or fail if not found data
+     * @param $db
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function tSlugOrFail($slug){
+        $data = $this->tSlug($slug);
         $this->handleFailRequest($data);
         return $data;
     }
@@ -127,6 +178,11 @@ class CoreActiveQuery extends ActiveQuery
     public function key($key){
         $modelClass = $this->modelClass;
         return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->one();
+    }
+
+    public function tKey($key){
+        $modelClass = $this->modelClass;
+        return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->translateOne();
     }
 
     /**
@@ -154,13 +210,19 @@ class CoreActiveQuery extends ActiveQuery
         $doTranslate = \Yii::$app->params['language'] !=  $language;
 
         if($doTranslate){
+
             $modelClass = $this->modelClass;
             $t = $modelClass::tableName();
             $oriQuery = clone $this;
             $oriModel = $oriQuery->one($db);
-            if($oriModel){
-                $translateQuery = clone $this;
+            if($oriModel && $oriModel->hasAttribute('language') && $oriModel->hasAttribute('language_pid')){
+                $thisClass = self::class;
+                $translateQuery = new $thisClass($oriModel);
+//                $translateQuery = clone $this;
+                $translateQuery->where(["{$t}.language"=>$language, "{$t}.language_pid"=>$oriModel->id]);
+//                ObbzYii::debug($translateQuery->createCommand()->rawSql);
                 $translateModel = $translateQuery->where(["{$t}.language"=>$language, "{$t}.language_pid"=>$oriModel->id])->one($db);
+
                 return $modelClass::replaceTranslationWithoutQuery($oriModel, $translateModel);
             }else{
                 return $oriModel;
@@ -170,6 +232,9 @@ class CoreActiveQuery extends ActiveQuery
 //            return $this->all($db);
             return $this->one($db);
         }
+    }
+    public function tOne($language = null, $db = null){
+        return $this->translateOne($language, $db);
     }
 
     /**
@@ -189,14 +254,20 @@ class CoreActiveQuery extends ActiveQuery
             $t = $modelClass::tableName();
             $oriQuery = clone $this;
             $oriModels = $oriQuery->all($db);
-            $ids = \obbz\yii2\utils\ArrayHelper::prepareInQueryArray($oriModels, 'id');
-            $translateQuery = clone $this;
-            $translateModels = $translateQuery->where(["{$t}.language"=>$language, "{$t}.language_pid"=>$ids])->all($db);
+            if($oriModels){
+                $ids = \obbz\yii2\utils\ArrayHelper::prepareInQueryArray($oriModels, 'id');
+                $thisClass = self::class;
+                $oriModel = current($oriModels);
+                $translateQuery =  new $thisClass($oriModel);
+                $translateModels = $translateQuery->where(["{$t}.language"=>$language, "{$t}.language_pid"=>$ids])->all($db);
 
-            return $modelClass::replaceAllTranslationWithoutQuery($oriModels, $translateModels);
-        }else{
-            return $this->all($db);
+                return $modelClass::replaceAllTranslationWithoutQuery($oriModels, $translateModels);
+            }
         }
+        return $this->all($db);
+    }
+    public function tAll($language = null, $db = null){
+        return $this->translateAll($language, $db);
     }
 
     #endregion
@@ -224,6 +295,14 @@ class CoreActiveQuery extends ActiveQuery
     }
 
     /**
+     * shortcut for published and default order
+     * @return $this
+     */
+    public function fe(){
+        return $this->published()->defaultOrder();
+    }
+
+    /**
      * Hide record on Frontend
      * @return $this
      */
@@ -244,6 +323,15 @@ class CoreActiveQuery extends ActiveQuery
         $this->andWhere([$modelClass::tableName().'.deleted'=>0]);
         return $this;
     }
+
+    /**
+     * shortcut for active
+     * @return $this
+     */
+    public function be(){
+        return $this->active();
+    }
+
 
     /**
      * Hide record on Backend
@@ -485,8 +573,39 @@ class CoreActiveQuery extends ActiveQuery
 
     #endregion
 
+    public function deletePeriodById($fromId, $toId = null){
+        $tbName = $this->getPrimaryTableName();
+        $query = $this->where(['>=','id', $fromId]);
+        if($toId){
+            $query->andWhere(['<=','id', $toId]);
+        }
+        $removeItems = $query->all();
+        foreach($removeItems as $removeItem){
+            $removeItem->delete();
+        }
+        $aiId = $fromId;
+        $this->setAutoIncrement($aiId);
+    }
 
+    public function setAutoIncrement($ai){
+        $tbName = $this->getPrimaryTableName();
+        return ObbzYii::app()->db->createCommand("ALTER TABLE $tbName AUTO_INCREMENT = $ai")->execute();
+    }
 
+    // overwrite ActiveRelationTrait
+//    public function findFor($name, $model)
+//    {
+//        if (method_exists($model, 'get' . $name)) {
+//            $method = new \ReflectionMethod($model, 'get' . $name);
+//            $realName = lcfirst(substr($method->getName(), 3));
+//            if ($realName !== $name) {
+//                throw new InvalidArgumentException('Relation names are case sensitive. ' . get_class($model) . " has a relation named \"$realName\" instead of \"$name\".");
+//            }
+//        }
+////        ObbzYii::debug($this);
+////        $this->traitcalc($name, $model);
+//        return $this->multiple ? $this->tAll() : $this->tOne();
+//    }
 
 
 

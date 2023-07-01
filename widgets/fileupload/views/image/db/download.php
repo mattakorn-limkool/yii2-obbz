@@ -1,7 +1,7 @@
 <!-- The template to display files available for download -->
 <script id="template-download" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <div class="col-md-3 template-download fade">
+    <div class="col-xs-4 template-download fade">
         <div class="thumbnail">
             <div class="preview">
                     {% if (file.thumbnailUrl) { %}

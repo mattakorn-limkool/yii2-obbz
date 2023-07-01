@@ -25,57 +25,57 @@ class CoreController extends  \yii\web\Controller
 
             'publish' => [
                 'class' => \obbz\yii2\actions\CorePublish::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'publish-selected' => [
                 'class' => \obbz\yii2\actions\CorePublishSelected::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'unpublish' => [
                 'class' => \obbz\yii2\actions\CoreUnpublish::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'unpublish-selected' => [
                 'class' => \obbz\yii2\actions\CoreUnpublishSelected::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'active' => [
                 'class' => \obbz\yii2\actions\CoreActive::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'active-selected' => [
                 'class' => \obbz\yii2\actions\CoreActiveSelected::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'delete' => [
                 'class' => \obbz\yii2\actions\CoreDelete::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
             'delete-selected' => [
                 'class' => \obbz\yii2\actions\CoreDeleteSelected::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'sorting' => [
                 'class' => \obbz\yii2\actions\CoreSorting::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
                 'redirectUrl' => $this->mainPageUrl()
             ],
 
             'translate' => [
                 'class' => \obbz\yii2\actions\CoreTranslate::class,
-                'modelClass' => $this->modelClass,
+                'modelClass' => $this->getModelClass(),
 //                'redirectUrl' => $this->mainPageUrl()
             ],
         ];
@@ -88,5 +88,9 @@ class CoreController extends  \yii\web\Controller
     public function mainPageUrl(){
 //        return ['index','key'=>ObbzYii::get('key')];
         return ObbzYii::getReturnUrl(['index','key'=>ObbzYii::get('key')]);
+    }
+
+    public function getModelClass(){
+        return $this->modelClass;
     }
 }

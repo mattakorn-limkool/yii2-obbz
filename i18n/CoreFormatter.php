@@ -328,6 +328,23 @@ class CoreFormatter extends Formatter
         return $result;
     }
 
+    public function asStripHtmlTags($html, $onlyWord = true, $allowTag = null){
+        if($onlyWord){
+            $html = trim($html);
+            $html = str_replace('&nbsp;', '', $html);
+        }
+        return strip_tags($html,$allowTag);
+    }
+
+    public function asStripHtmlComment($html){
+
+//        return preg_replace('/<!--(?!\s*(?:\[if [^\]]+]|))(?:(?!-->).)*-->/s', '', $html);
+        $return =  preg_replace('/<!--(.|\s)*?-->/', '', $html, -1, $count);
+//        ObbzYii::debug($count);
+        return $return;
+//        return preg_replace('/<!--(.|\s)*?-->/', '', $html);
+    }
+
     protected function truncateText($value, $length = 200, $tail = "..."){
         if (preg_match('/\p{Thai}/u', $value) === 1) { // for Thai
             $result  = mb_substr($value, 0, $length, 'UTF-8');
@@ -400,6 +417,7 @@ class CoreFormatter extends Formatter
         $format = FormatConverter::convertDateIcuToPhp($this->dateFormat);
         return \DateTime::createFromFormat($format, $value)->getTimestamp();
     }
+
 
     /**
      * @param $datetime

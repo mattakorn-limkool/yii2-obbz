@@ -10,4 +10,5 @@ namespace obbz\yii2\behaviors;
 class SluggableBehavior extends \yii\behaviors\SluggableBehavior
 {
     public $attribute = 'title';
+    public $ensureUnique = true;
 }

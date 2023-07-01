@@ -2,14 +2,15 @@
 
 namespace obbz\yii2\admin\models;
 
-use common\models\FlexibleModuleItem;
+use obbz\yii2\admin\models\FlexibleModuleItem;
 use obbz\yii2\utils\ArrayHelper;
 use obbz\yii2\utils\Html;
 use obbz\yii2\utils\ObbzYii;
 use obbz\yii2\widgets\fileupload\behaviors\MultipleUploadDbBehavior;
 
 /**
- * @var FlexibleModuleItem[] $items
+ * @var FlexibleModuleItem[] $relateItems
+ * @var FlexibleModuleItem[] $relateFeItems
 */
 
 class FlexibleModule extends \obbz\yii2\admin\models\base\FlexibleModuleBase
@@ -18,17 +19,28 @@ class FlexibleModule extends \obbz\yii2\admin\models\base\FlexibleModuleBase
     const KEY_IMAGE_GALLERY = 'image_gallery';
     const KEY_YOUTUBE_GALLERY = 'youtube_gallery';
 
+    const ITEM_REF_FIELD = 'flexible_module_id';
+
+    const MARKER_CSS_CLASS = 'obbz-flexible-module';
+
     const SCENARIO_UPLOAD_IMAGE = "upload_image";
 
+    const COL_1 = 'col-lg-12';
+    const COL_2 = 'col-lg-6';
+    const COL_3 = 'col-lg-4 col-sm-6';
+    const COL_4 = 'col-lg-3 col-md-4';
+
     public $columnPatterns = [
-        'col-lg-12' => 'Full Width Column',
-        'col-lg-6' => '2 Columns',
-        'col-lg-4 col-sm-6' => '3 Columns',
-        'col-lg-3 col-md-4' => '4 Columns',
+        self::COL_1 => 'Full Width Column',
+        self::COL_2 => '2 Columns',
+        self::COL_3 => '3 Columns',
+        self::COL_4 => '4 Columns',
     ];
 
-    public $markerCssClass = 'flexible-module';
+
+
     public $uploadItems;
+    public $editorPath = '/editor/flexible-module';
 
     const DEFAULT_THUMBS = [
         'thumb'=> ['width'=>300]
@@ -53,7 +65,7 @@ class FlexibleModule extends \obbz\yii2\admin\models\base\FlexibleModuleBase
         $thumbWidth = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.width');
         $thumbHeight = ArrayHelper::getValue(self::DEFAULT_THUMBS, 'thumb.height');
         return array_merge(parent::rules(),[
-			['image', 'image', 'extensions' => 'jpg, jpeg',
+			['image', 'image', 'extensions' => 'jpg, jpeg, webp',
                 'maxSize' => \Yii::$app->params['upload.maxSize'],
                 //'minWidth'=> $thumbWidth, 'minHeight' => $thumbHeight,
                 'on'=>$this->scenarioCU()],
@@ -75,6 +87,7 @@ class FlexibleModule extends \obbz\yii2\admin\models\base\FlexibleModuleBase
             'multipleUploadImages' => [
                 'class' => MultipleUploadDbBehavior::class,
                 'itemModelClass' => FlexibleModuleItem::class,
+                'itemRefField' => self::ITEM_REF_FIELD,
             ],
 
         ]);
@@ -96,29 +109,54 @@ class FlexibleModule extends \obbz\yii2\admin\models\base\FlexibleModuleBase
         ];
     }
 
+    /**
+     * @return string RTE ifram for module
+     */
     public function getRteMarker(){
         $result = '';
         if($this->id){
 
             $options = [
-                'class' => $this->markerCssClass,
+                'class' => self::MARKER_CSS_CLASS,
                 'data-flexmodule-id'=>$this->id,
                 'frameborder' => 0,
-                'src' => \yii\helpers\Url::to(['ck-view', 'id'=>$this->id], true)
+                'src' => \yii\helpers\Url::to([$this->editorPath . '/ck-view', 'id'=>$this->id], true)
             ];
 
             $result = Html::tag('iframe', '', $options);
-//            $title = ArrayHelper::getValue(self::getKeyList(), $this->key_name, '') .
-//                ' : ' . ArrayHelper::getValue($this->columnPatterns, $this->column_pattern, '');
-//
-//            if($this->title){
-//                $title .= ' : ' . $this->title;
-//            }
-//            $content  = Html::tag('div', $title, ['class'=>'title']);
-//            $result = Html::tag('div', $content, $options);
         }
 
         return $result;
+    }
+
+    public static function getSubtituteMarkers($html){
+        $pattern = '/<iframe.*class=.'. self::MARKER_CSS_CLASS .'.*<\/iframe>/';
+        preg_match_all($pattern, $html, $matches);
+        return isset($matches[0]) ? $matches[0] : [];
+    }
+
+    public static function getSubtituteModels($html){
+        $pattern = '/data-flexmodule-id="([^"]*)"/';
+        $iframes = self::getSubtituteMarkers($html);
+        $ids = [];
+        foreach($iframes as $iframe){
+            preg_match($pattern, $iframe, $m);
+            if(isset($m[1])){
+                $ids[] = $m[1];
+            }
+        }
+        $query = self::find()->andWhere(['id'=>$ids]);
+        if(!empty($ids)){
+            $query->orderBy(
+                [new \yii\db\Expression('FIELD (id, ' . implode(',', $ids) . ')')]
+            );
+        }
+        return $query->tAll();
+    }
+
+    public static function replaceSubtituteMarkers($html, $replaces){
+        $patterns = self::getSubtituteMarkers($html);
+        return str_replace($patterns, $replaces, $html);
     }
 
 

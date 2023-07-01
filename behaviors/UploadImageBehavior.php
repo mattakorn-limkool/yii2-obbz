@@ -4,7 +4,9 @@ namespace obbz\yii2\behaviors;
 
 use Imagine\Image\ManipulatorInterface;
 use obbz\yii2\utils\ObbzYii;
+use obbz\yii2\utils\UploadedFile;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidParamException;
 use yii\db\BaseActiveRecord;
@@ -84,6 +86,8 @@ class UploadImageBehavior extends UploadBehavior
      * @var string|null
      */
     public $thumbUrl;
+
+    public $thumbOriginalName = 'original';
 
 
     /**
@@ -211,6 +215,17 @@ class UploadImageBehavior extends UploadBehavior
         }
     }
 
+    public function removeThumbs($attribute, $old = false){
+        $profiles = array_keys($this->thumbs);
+        foreach ($profiles as $profile) {
+            $path = $this->getThumbUploadPath($attribute, $profile, $old);
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
+    }
+
+
     /**
      * @param $profile
      * @return string
@@ -237,14 +252,14 @@ class UploadImageBehavior extends UploadBehavior
     protected function delete($attribute, $old = false)
     {
         parent::delete($attribute, $old);
-
-        $profiles = array_keys($this->thumbs);
-        foreach ($profiles as $profile) {
-            $path = $this->getThumbUploadPath($attribute, $profile, $old);
-            if (is_file($path)) {
-                unlink($path);
-            }
-        }
+        $this->removeThumbs($attribute, $old);
+//        $profiles = array_keys($this->thumbs);
+//        foreach ($profiles as $profile) {
+//            $path = $this->getThumbUploadPath($attribute, $profile, $old);
+//            if (is_file($path)) {
+//                unlink($path);
+//            }
+//        }
     }
 
     /**
@@ -254,7 +269,7 @@ class UploadImageBehavior extends UploadBehavior
      */
     protected function getThumbFileName($filename, $profile = 'thumb')
     {
-        if($profile == 'original'){
+        if($profile == $this->thumbOriginalName){
             return $filename;
         }
         return $profile . '-' . $filename;
@@ -269,7 +284,7 @@ class UploadImageBehavior extends UploadBehavior
     {
         $width = ArrayHelper::getValue($config, 'width');
         $height = ArrayHelper::getValue($config, 'height');
-        $quality = ArrayHelper::getValue($config, 'quality', 90);
+        $quality = ArrayHelper::getValue($config, 'quality', 100);
         $mode = ArrayHelper::getValue($config, 'mode', ManipulatorInterface::THUMBNAIL_OUTBOUND);
         $bg_color = ArrayHelper::getValue($config, 'bg_color', 'FFF');
 
@@ -289,4 +304,8 @@ class UploadImageBehavior extends UploadBehavior
         Image::thumbnail($path, $width, $height, $mode)->save($thumbPath, ['quality' => $quality]);
         ini_set ('memory_limit',$defaulMemLimit);
     }
+
+
+
+
 }

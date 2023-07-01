@@ -17,6 +17,7 @@ use yii\helpers\FileHelper;
 class MultipleUploadDbBehavior extends Behavior
 {
     public $itemModelClass;
+    public $itemRefField;
 //    public $attributes;
 
     public function init(){
@@ -24,6 +25,9 @@ class MultipleUploadDbBehavior extends Behavior
             throw new InvalidConfigException('Please define $itemModelClass');
         }
 
+        if($this->itemModelClass == null){
+            throw new InvalidConfigException('Please define $itemRefField');
+        }
 
         parent::init();
     }
@@ -47,17 +51,43 @@ class MultipleUploadDbBehavior extends Behavior
     /**
      * @return FlexibleModuleItem[]
      */
-    public function getRelateItems(){
+    public function getRelateItems($limit = null){
         $itemClass = $this->itemModelClass;
-        return $itemClass::find()->andWhere(['flexible_module_id'=>$this->owner->id])->all();
+        $query = $itemClass::find()->andWhere([$this->itemRefField=>$this->owner->id])->be();
+        if($limit)
+            $query->limit($limit);
+        return $query->all();
     }
+
+    public function getFirstRelateItem(){
+        $itemClass = $this->itemModelClass;
+       return $itemClass::find()->andWhere([$this->itemRefField=>$this->owner->id])->be()->one();
+    }
+
+    /**
+     * @return FlexibleModuleItem[]
+     */
+    public function getFeRelateItems($limit = null){
+        $itemClass = $this->itemModelClass;
+        $query = $itemClass::find()->andWhere([$this->itemRefField=>$this->owner->id])->fe();
+        if($limit)
+            $query->limit($limit);
+        return $query->all();
+    }
+
+    public function getFirstFeRelateItem(){
+        $itemClass = $this->itemModelClass;
+        return $itemClass::find()->andWhere([$this->itemRefField=>$this->owner->id])->fe()->one();
+    }
+
+
 
     public function resetItemsByUserSession($hardReset = true){
         $session = \Yii::$app->session->id;
         /** @var CoreActiveRecord $itemClass */
         $itemClass =  $this->getUploadItemModel();
         if($hardReset){
-            $itemClass::deleteAll(['user_session'=>$session, 'flexible_module_id'=>null]);
+            $itemClass::deleteAll(['user_session'=>$session, $this->itemRefField=>null]);
         }else{
             $items = $this->getNoParentItems();
             foreach($items as $item){
@@ -74,7 +104,7 @@ class MultipleUploadDbBehavior extends Behavior
     public function getNoParentItems(){
         $itemClass = $this->itemModelClass;
         $session = \Yii::$app->session->id;
-        return  $itemClass::findAll(['user_session'=>$session, 'flexible_module_id'=>null]);
+        return  $itemClass::findAll(['user_session'=>$session, $this->itemRefField=>null]);
     }
 
 
@@ -84,38 +114,10 @@ class MultipleUploadDbBehavior extends Behavior
         /** @var CoreActiveRecord $itemClass */
         $itemClass =  $this->getUploadItemModel();
         $itemClass::updateAll(
-            ['flexible_module_id'=>$this->owner->id],
-            ['user_session'=>$session, 'flexible_module_id'=>null]
+            [$this->itemRefField=>$this->owner->id],
+            ['user_session'=>$session, $this->itemRefField=>null]
         );
     }
-//    public function getFirstImageUrl($field, $thumb=null){
-//        $images = $this->getAllImageUrl($field, $thumb);
-//        if(isset($images[0])){
-//            return $images[0];
-//        }else{
-//            return '';
-//        }
-//    }
-//
-//    public function getAllImageUrl($field, $thumb = null){
-//        $directory = $this->getMultipleUploadPath($field, $this->owner->id, $thumb);
-//        $urlDirectory = $this->getMultipleUploadUrl($field, $this->owner->id, $thumb);
-//
-//        $files = [];
-//        if(file_exists($directory)){
-//            $images = scandir($directory);
-//            foreach($images as $fileName){
-//                if(!in_array($fileName,array(".","..")) && !is_dir($directory . $fileName)){
-//                    $files[] = $urlDirectory . $fileName;
-//                }
-//            }
-//        }
-//
-//        return $files;
-//
-//    }
-
-
 
 
 

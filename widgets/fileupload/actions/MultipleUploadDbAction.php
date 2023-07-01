@@ -39,6 +39,8 @@ class MultipleUploadDbAction extends Action
     // advanced config
     public $memeryLimit = '512M';
 
+    protected $itemRefField;
+
 
     public function init(){
         if($this->modelClass == null){
@@ -49,6 +51,8 @@ class MultipleUploadDbAction extends Action
         if($this->deleteUrl == null){
             throw new InvalidConfigException('Please define $deleteUrl');
         }
+
+
 
 
         parent::init();
@@ -64,9 +68,18 @@ class MultipleUploadDbAction extends Action
         /** @var CoreBaseActiveRecord $model */
         $model = new $this->modelClass;
 
+        $behavior = $model->getBehavior('multipleUploadImages');
+        if($behavior->itemRefField == null){
+            throw new InvalidConfigException('Please define $itemRefField on multipleUploadImages behavior');
+        }else{
+            $this->itemRefField = $behavior->itemRefField;
+        }
+
+
         if($this->scenario){
             $model->setScenario($this->scenario);
         }
+
 
 
         $model->$field = UploadedFile::getInstance($model, $field);
@@ -110,7 +123,8 @@ class MultipleUploadDbAction extends Action
             }
 
             if(isset($id)){
-                $itemModel->flexible_module_id = $id;
+                $itemRefField = $this->itemRefField;
+                $itemModel->$itemRefField = $id;
             }else{
                 $itemModel->user_session =  \Yii::$app->session->id;
             }

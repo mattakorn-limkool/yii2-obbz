@@ -1,9 +1,9 @@
 
-if (typeof dosamigos == "undefined" || !dosamigos) {
-    var dosamigos = {};
+if (typeof ObbzCK == "undefined" || !ObbzCK) {
+    var ObbzCK = {};
 }
 
-dosamigos.ckEditorWidget = (function ($) {
+ObbzCK.ckEditorWidget = (function ($) {
 
     var pub = {
         registerOnChangeHandler: function (id) {

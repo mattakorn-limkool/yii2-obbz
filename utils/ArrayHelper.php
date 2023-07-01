@@ -35,7 +35,10 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
     public static function modelFilterEqual($models, $field, $value, $reIndex = true){
         $result = [];
         foreach($models as $key => $model){
-            if($model->$field == $value){
+            if(!$model->hasAttribute($field))
+                return [];
+
+            if( $model->$field == $value){
                 if($reIndex)
                     $result[] = $model;
                 else
@@ -85,12 +88,31 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
      * @param string $field - attribute name for search
      * @return array of field value
      */
-    public static function prepareInQueryArray($data, $field){
+    public static function prepareInQueryArray($data, $field = 'id'){
         $result = [];
         foreach($data as $model){
-            $result[] = $model->$field;
+            $result[] = $model[$field];
         }
         return array_unique($result);
+    }
+
+    /**
+     * data -   [
+     *              ['id'=>1, 'title'=>'a'],
+     *              ['id'=>2, 'title'=>'b'],
+     *              ['id'=>3, 'title'=>'c'],
+     *          ]
+     * field - id
+     *
+     * result - 1,2,3
+     *
+     * @param Model[] $data - array of Model
+     * @param string $field - attribute name for search
+     * @return array of field value
+     */
+    public static function prepareInQueryString($data, $field = 'id'){
+        $inQuery = self::prepareInQueryArray($data, $field);
+        return implode(',', $inQuery);
     }
 
     /**

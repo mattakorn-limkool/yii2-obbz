@@ -44,11 +44,11 @@ class ObbzYii
     /**
      * @return string
      */
-    public static function baseUrl($path = null){
+    public static function baseUrl($path = null, $scheme = false){
         if($path){
             $path = "/" . $path;
         }
-        return \Yii::$app->request->getBaseUrl() . $path;
+        return Url::base($scheme) . $path;
     }
 
     /**
@@ -614,6 +614,10 @@ class ObbzYii
             $result = ArrayHelper::merge($result, $validateModel);
         }
         return $result;
+    }
+
+    public static function setAjaxResponse(){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
     }
 
     /**

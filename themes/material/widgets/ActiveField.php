@@ -580,15 +580,18 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         return parent::widget(Captcha::class, $config);
     }
 
-    public function rte($config = []){
+    public function rte($config = [], $flexModuleConf = []){
 
 //        $this->disableFloatingLabel();
 //        $this->label(true);
+        $defaultFlexConf = ['section'=>$this->model->className() . ':' . $this->attribute];
+        $iframParam = "?" . http_build_query(array_merge($defaultFlexConf, $flexModuleConf));
         $defaultConf = [
             'options' => ['rows' => 6],
             'preset' => ObbzYii::user()->can(\common\components\Roles::THE_CREATOR) ? 'full' : 'basic',
             'clientOptions' => [
-                'filebrowserUploadUrl' => Url::to(['/site/ckeditor-upload-img'])
+                'filebrowserUploadUrl' => Url::to(['/site/ckeditor-upload-img']),
+                'obbzmodule'=> ["iframeParam"=>$iframParam]
             ]
         ];
         $paramsConf = ArrayHelper::getValue(ObbzYii::app()->params, 'ckeDefaultConf', []);

@@ -46,6 +46,7 @@ class FlexibleModuleController extends CoreController
             'image-delete' => [
                 'class'=> DeleteFileDbAction::class,
                 'modelItemClass'=>$modelObj->getUploadItemModel(),
+                'itemRefField'=>$modelClass::ITEM_REF_FIELD
             ],
         ]);
     }
@@ -55,9 +56,16 @@ class FlexibleModuleController extends CoreController
         return $this->render('index');
     }
 
-    public function actionCreate(){
+    public function actionCreate($section=null,$custom1=null, $custom2=null, $custom3=null, $custom4=null,$custom5=null){
+
         /** @var FlexibleModule $model */
         $model = new $this->modelClass;
+        $model->section = $section;
+        $model->custom_1 = $custom1;
+        $model->custom_2 = $custom2;
+        $model->custom_3 = $custom3;
+        $model->custom_4 = $custom4;
+        $model->custom_5 = $custom5;
         $model->setScenario($this->scenarios['create']);
 
         if($model->load(ObbzYii::post())){

@@ -6,6 +6,7 @@
 
 namespace obbz\yii2\actions;
 
+use obbz\yii2\utils\ObbzYii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecordInterface;
@@ -35,7 +36,8 @@ class CoreBaseAction extends Action
         }
 
         /* @var $modelClass ActiveRecordInterface */
-        $modelClass = $this->modelClass;
+        $modelClass = $this->controller->getModelClass();
+//        ObbzYii::debug($modelClass);
         $keys = $modelClass::primaryKey();
         if (count($keys) > 1) {
             $values = explode(',', $id);

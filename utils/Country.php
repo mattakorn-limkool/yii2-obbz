@@ -270,4 +270,8 @@ class Country extends Component
         return ArrayHelper::map(self::COUNTRY_DATA, 'code', 'name');
     }
 
+    public static function getValue($code){
+        return ArrayHelper::getValue(self::getList(), $code);
+    }
+
 }

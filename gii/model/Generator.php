@@ -119,7 +119,7 @@ class Generator extends \yii\gii\generators\model\Generator
                     $types['boolean'][] = $column->name;
                     break;
                 case Schema::TYPE_FLOAT:
-                case 'double': // Schema::TYPE_DOUBLE, which is available since Yii 2.0.3
+                case Schema::TYPE_DOUBLE: // Schema::TYPE_DOUBLE, which is available since Yii 2.0.3
                 case Schema::TYPE_DECIMAL:
                 case Schema::TYPE_MONEY:
                     $types['number'][] = $column->name;
@@ -133,7 +133,8 @@ class Generator extends \yii\gii\generators\model\Generator
                 default: // strings
                     if($column->comment == "Upload"){
                         // skip for upload
-                    }else{
+                    }
+                    else{
                         if ($column->size > 0) {
                             $lengths[$column->size][] = $column->name;
                         } else {
@@ -257,7 +258,12 @@ class Generator extends \yii\gii\generators\model\Generator
                         if ($this->getDbDriverName() === 'pgsql') {
                             $likeConditions[] = "->andFilterWhere(['ilike', \$t.'.{$column}', \$this->{$column}])";
                         } else {
-                            $likeConditions[] = "->andFilterWhere(['like', \$t.'.{$column}', \$this->{$column}])";
+                            if($column == 'slug'){ // hardcode to slug find by hash
+                                $hashConditions[] = "\$t.'.{$column}' => \$this->{$column},";
+                            }else{
+                                $likeConditions[] = "->andFilterWhere(['like', \$t.'.{$column}', \$this->{$column}])";
+                            }
+
                         }
                         break;
                 }

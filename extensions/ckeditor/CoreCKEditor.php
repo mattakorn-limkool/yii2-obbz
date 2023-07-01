@@ -56,10 +56,10 @@ class CoreCKEditor extends InputWidget
             : '{}';
 
         $js[] = "CKEDITOR.replace('$id', $options);";
-        $js[] = "dosamigos.ckEditorWidget.registerOnChangeHandler('$id');";
+        $js[] = "ObbzCK.ckEditorWidget.registerOnChangeHandler('$id');";
 
         if (isset($this->clientOptions['filebrowserUploadUrl']) || isset($this->clientOptions['filebrowserImageUploadUrl'])) {
-            $js[] = "dosamigos.ckEditorWidget.registerCsrfImageUploadHandler();";
+            $js[] = "ObbzCK.ckEditorWidget.registerCsrfImageUploadHandler();";
         }
 
         $view->registerJs(implode("\n", $js));
