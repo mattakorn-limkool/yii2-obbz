@@ -54,6 +54,7 @@
         "aksafan/yii2-fcm-both-api": "*",
 		"yiisoft/yii2-bootstrap4": "~2.0.6",
 		"yiisoft/yii2-queue": "*",
+        "google/cloud-text-to-speech": "*",
         "php": ">=7.0.3"
     },
 	"require-dev": {
