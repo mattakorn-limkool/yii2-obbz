@@ -3,7 +3,9 @@ namespace obbz\yii2\widgets;
 
 use Illuminate\Support\Arr;
 use obbz\yii2\utils\ArrayHelper;
+use obbz\yii2\utils\Html;
 use obbz\yii2\utils\ObbzYii;
+use yii\helpers\Url;
 use \Yii;
 
 class TranslationTool extends \yii\base\Widget
@@ -11,8 +13,9 @@ class TranslationTool extends \yii\base\Widget
     public $model;
     public $translateLanguages;
 
-    // todo - showTranslatedIcon
-    public $showTranslatedIcon = true;
+    public $showTranslatedFlag = false;
+    public $transatedFlagTemplate = '<i class="empty-translate fa fa-exclamation"></i>';
+    public $fancyConfig = [];
 
     private $_languages;
 
@@ -29,8 +32,8 @@ class TranslationTool extends \yii\base\Widget
         }else{
 
             $this->_languages = ArrayHelper::getValue( \Yii::$app->params, 'languages', []);
-            unset($this->_languages[\Yii::$app->params['defaultLanguage']]);
-
+            $defaultLanguage = ArrayHelper::getValue(\Yii::$app->params, 'defaultLanguage');
+            unset($this->_languages[$defaultLanguage]);
         }
 
 
@@ -48,11 +51,19 @@ class TranslationTool extends \yii\base\Widget
                             <button type="button" class="btn btn-default dropdown-toggle waves-effect"
                                 data-toggle="dropdown" aria-expanded="false">
                                 <i class="zmdi zmdi-refresh"></i> Translate to</button><ul class="dropdown-menu" role="menu">';
-
+                $text = '';
                 foreach($this->_languages as $key=>$value){
-                    $result .= '<li><a
-                   href="'. \yii\helpers\Url::to(["translate", 'id'=>$this->model->id, 'language'=>$key, 'key'=>$key_name]) .'"
-                   class="translate-btn">'. $value .'</a></li>';
+                    $text = $value;
+                    if($this->showTranslatedFlag && !$this->hasTranslation($key)){
+                        $text = $this->transatedFlagTemplate . $text;
+                    }
+
+                    $result .= Html::tag('li',
+                        Html::a( $text,
+                            Url::to(["translate", 'id'=>$this->model->id, 'language'=>$key, 'key'=>$key_name]),
+                            ['class'=>'translate-btn']
+                        )
+                    );
                 }
 
                 $result .= '</ul></div>';
@@ -60,10 +71,10 @@ class TranslationTool extends \yii\base\Widget
 
                 $result .= \newerton\fancybox\FancyBox::widget([
                     'target' => 'a.translate-btn',
-                    'config'=>[
+                    'config'=>ArrayHelper::merge([
                         'type'=>'iframe',
                         'width' => '80%',
-                    ]
+                    ], $this->fancyConfig)
                 ]);
                 return $result;
             }
@@ -73,6 +84,9 @@ class TranslationTool extends \yii\base\Widget
         return '';
     }
 
+    public function hasTranslation($lang){
+        return $this->model->hasTranslation($lang);
+    }
 //    public function translationLanguages(){
 //        return ArrayHelper::getValue( \Yii::$app->params, 'languages', []);
 //    }

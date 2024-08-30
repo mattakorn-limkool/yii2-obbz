@@ -40,6 +40,7 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     const CACHE_PREFIX_API = 'api-';
 
     public $uploadFolder;
+    public $languageFallback = true;
 
     /**
      * Returns the fully qualified name of this class.
@@ -80,29 +81,24 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
     public function scenarioTranslate(){
         return [self::SCENARIO_TRANSLATE_CREATE, self::SCENARIO_TRANSLATE_UPDATE];
     }
+    public function scenarioTCU(){
+        return array_merge($this->scenarioTranslate(), $this->scenarioCU());
+    }
     public function isScenario($arrayScenario){
         return in_array($this->scenario, $arrayScenario);
     }
 
     public function scenarios()
     {
-        if(self::tableName() == "{{%core_active_record}}"){
+        if(in_array(self::tableName(), ["{{%core_active_record}}", "{{%core_base_active_record}}"])){
             return parent::scenarios();
         }else{
             $attrs = $this->attributes();
             \obbz\yii2\utils\ArrayHelper::removeValue($attrs, 'id');
-            return array_merge(parent::scenarios(), [
-//                self::SCENARIO_SEARCH => $attrs,
-//                self::SCENARIO_CREATE => $attrs,
-//                self::SCENARIO_UPDATE => $attrs,
-//                self::SCENARIO_DELETE => $attrs,
-//                self::SCENARIO_BE_SEARCH => $attrs,
-//                self::SCENARIO_BE_CREATE => $attrs,
-//                self::SCENARIO_BE_UPDATE => $attrs,
-//                self::SCENARIO_BE_DELETE => $attrs,
-                self::SCENARIO_TRANSLATE_CREATE => $attrs,
-                self::SCENARIO_TRANSLATE_UPDATE => $attrs,
-            ]);
+            $scenarions = parent::scenarios();
+            $scenarions[self::SCENARIO_TRANSLATE_CREATE ] = $attrs;
+            $scenarions[self::SCENARIO_TRANSLATE_UPDATE ] = $attrs;
+            return $scenarions;
         }
 
     }
@@ -306,6 +302,9 @@ class CoreBaseActiveRecord extends \yii\db\ActiveRecord
 
     public static function supportedTranslationTable($modelClass){
         $obj = new $modelClass;
+        if($obj->languageFallback == false)
+            return false;
+
         return $obj->hasAttribute('language') &&  $obj->hasAttribute('language_pid');
     }
 

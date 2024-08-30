@@ -258,7 +258,9 @@ class Generator extends \yii\gii\generators\model\Generator
                         if ($this->getDbDriverName() === 'pgsql') {
                             $likeConditions[] = "->andFilterWhere(['ilike', \$t.'.{$column}', \$this->{$column}])";
                         } else {
-                            if($column == 'slug'){ // hardcode to slug find by hash
+                            if(    $column == 'slug'
+                                || $column == 'language' // hardcode find text by exactly  matched
+                            ){
                                 $hashConditions[] = "\$t.'.{$column}' => \$this->{$column},";
                             }else{
                                 $likeConditions[] = "->andFilterWhere(['like', \$t.'.{$column}', \$this->{$column}])";

@@ -23,11 +23,11 @@ use obbz\yii2\utils\ObbzYii;
     <?= "<?php " ?>$form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'layout' => 'inline',
 <?php if ($generator->enablePjax): ?>
         'options' => [
             'data-pjax' => 1
         ],
-		'layout' => 'inline'
 <?php endif; ?>
     ]); ?>
 

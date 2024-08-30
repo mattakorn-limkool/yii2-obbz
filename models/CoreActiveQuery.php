@@ -195,6 +195,11 @@ class CoreActiveQuery extends ActiveQuery
         return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->all();
     }
 
+    public function tKeyAll($key){
+        $modelClass = $this->modelClass;
+        return $this->andWhere([$modelClass::tableName().'.key_name'=>$key])->translateAll();
+    }
+
 
 
     /**
@@ -373,6 +378,12 @@ class CoreActiveQuery extends ActiveQuery
         if($modelClass::supportedTranslationTable($modelClass)){
             $this->andWhere([$modelClass::tableName().'.language'=>null]);
         }
+        return $this;
+    }
+
+    public function setCurrentLanguage(){
+        $modelClass = $this->modelClass;
+        $this->andWhere([$modelClass::tableName().'.language'=> ObbzYii::app()->language]);
         return $this;
     }
 

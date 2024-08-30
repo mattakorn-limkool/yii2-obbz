@@ -398,19 +398,28 @@ class ActiveField extends \yii\widgets\ActiveField
 
     /**
      * upload input img with previewer
-     * @param string $thumb
+     * @param string|array $thumb
      *          thumb = default thumb name is thumb
      *          null = real upload file
      *          other = custom thumb name
+     *          is_array = ['imgBehaviorName', $thumb]
      *
      * @param array $options
      * @return $this
      */
     public function imgInput($thumb = 'thumb', $options = []){
-        if(!isset($thumb)){ // == null
-            $imgPath = $this->model->getUploadUrl($this->attribute);
+        if(is_array($thumb)){
+            $imgBehavior =  $this->model->getBehavior($thumb[0]);
+            $thumb = isset($thumb[1]) ? $thumb[1]: null ;
         }else{
-            $imgPath = $this->model->getThumbUploadUrl($this->attribute, $thumb);
+            $imgBehavior =  $this->model;
+        }
+
+
+        if(!isset($thumb)){ // == null
+            $imgPath = $imgBehavior->getUploadUrl($this->attribute);
+        }else{
+            $imgPath = $imgBehavior->getThumbUploadUrl($this->attribute, $thumb);
         }
 
         $this->template = "{label}\n{input}\n{hint}\n{error}";

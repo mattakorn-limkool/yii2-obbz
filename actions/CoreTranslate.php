@@ -18,6 +18,7 @@ class CoreTranslate extends CoreBaseAction
     const INPUT_TYPE_RTE = 'cke';
     const INPUT_TYPE_IMAGE = 'image';
     const INPUT_TYPE_FILE = 'file';
+    const INPUT_TYPE_TAG = 'tag';
 
     public $successText = 'Save translation successfully';
     public $errorText = 'Can not save translation, please try again';
@@ -31,6 +32,7 @@ class CoreTranslate extends CoreBaseAction
         'create' => 'translate_create',
         'update' => 'translate_update',
     ];
+    public $refreshOnSave = false;
 
     private function initAttributesOptions($model){
         $attributes = $this->getTranslationAttributes($model);
@@ -58,6 +60,7 @@ class CoreTranslate extends CoreBaseAction
         $this->controller->layout = $this->layout;
         $message = '';
         $hasError = false;
+        $refresh = 0;
 
         /** @var CoreActiveRecord $model */
         $model = $this->findModel($id);
@@ -92,10 +95,15 @@ class CoreTranslate extends CoreBaseAction
 
             if($translateModel->saveTranslate($language, $id)){
                 $message = \Yii::t('obbz', $this->successText);
+                if($this->refreshOnSave)
+                    $refresh = true;
+
             }else{
                 $message = \Yii::t('obbz', $this->errorText);
                 $hasError = true;
             }
+
+
         }
 
         $translateModel->replaceOriginWhenEmpty($model);
@@ -111,6 +119,7 @@ class CoreTranslate extends CoreBaseAction
             'language'=>$language,
             'message'=>$message,
             'hasError'=>$hasError,
+            'refresh' => $refresh,
         ]);
 
     }

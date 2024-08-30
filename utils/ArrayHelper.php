@@ -7,6 +7,7 @@
 namespace obbz\yii2\utils;
 
 
+use yii\base\Exception;
 use yii\base\Model;
 use yii\widgets\ListView;
 
@@ -183,6 +184,21 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
             $options[$value] = $value;
         }
         return $options;
+    }
+
+    /**
+     * required attribute must be have value in model
+     * make easier to handle exception when set config wrong on yii component
+     *
+     * @param $model
+     * @param $attribute
+     * @throws Exception
+     * @throws \Exception
+     */
+    public static function requiredModelValue($model, $attribute){
+        if(ArrayHelper::getValue($model, $attribute) === null){
+            throw new Exception("Please define $attribute on ". get_class($model));
+        }
     }
 
 }

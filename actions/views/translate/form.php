@@ -51,6 +51,9 @@ $this->title =   \Yii::t('obbz', 'Translate to ') . $languageLabel;
                         case CoreTranslate::INPUT_TYPE_FILE :
                             echo $form->field($translateModel, $attribute)->fileInput($options);
                             break;
+                        case CoreTranslate::INPUT_TYPE_TAG :
+                            echo $form->field($translateModel, $attribute)->tagsInput($options);
+                            break;
                         default:
                             echo $form->field($translateModel, $attribute)->textarea($options);
                             break;
@@ -82,5 +85,18 @@ $this->title =   \Yii::t('obbz', 'Translate to ') . $languageLabel;
 
 
     <?php ActiveForm::end(); ?>
-</div>
+</div><?php
+$this->registerJs( <<<JS
+
+JS
+    , \yii\web\View::POS_HEAD);
+
+
+$this->registerJs( <<<JS
+    if($refresh){
+         parent.location.reload(true);
+    }
+JS
+); ?>
+
 
