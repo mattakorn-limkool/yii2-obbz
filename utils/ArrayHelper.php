@@ -36,7 +36,7 @@ class ArrayHelper extends \yii\helpers\ArrayHelper
     public static function modelFilterEqual($models, $field, $value, $reIndex = true){
         $result = [];
         foreach($models as $key => $model){
-            if(!$model->hasAttribute($field))
+            if( !property_exists(get_class($model) , $field))
                 return [];
 
             if( $model->$field == $value){
