@@ -26,12 +26,20 @@ class ThailandPost
 
         $rate = 0;
         if($shippingType == self::SHIPPING_TYPE_NORMAL){
-            $rate = 20;
-            $iWeight = $weight -1000;
-            while($iWeight  > 0){
-                $rate  += 15;
-                $iWeight -= 1000;
-            }
+            if($weight < 2000) $rate = 50;
+            else if($weight < 3000) $rate = 65;
+            else if($weight < 4000) $rate = 65;
+            else if($weight < 5000) $rate = 80;
+            else if($weight < 6000) $rate = 95;
+            else if($weight < 7000) $rate = 110;
+            else if($weight < 8000) $rate = 125;
+            else if($weight < 9000) $rate = 140;
+            else if($weight < 10000) $rate = 155;
+            else if($weight < 11000) $rate = 170;
+            else{
+                $trackError = "ERROR!! - CAN NOT SEND MORE THAN 11 Gram";
+                return false;
+            };
 
         }else if($shippingType == self::SHIPPING_TYPE_REGISTER){
             if($weight <= 100) $rate = 18;
