@@ -16,8 +16,12 @@ class ServerStatus extends Model
 {
     // storage
     public $maxStorageSize = 2000000000; // 2gb
+    public $notifyAtRemainSize = 200000000; //200mb
     public $currentStorageSize = 0;
     public $overMaxStorageSize = 0;
+    public $remainingStorageSize = 0;
+
+    private $notifyStorage = false;
     protected $storages = [
         // files
         'vendor' => ['name'=>'Core System Files', 'path'=>"@vendor", 'size'=>0, 'show'=>true, 'include'=>true, 'cache'=>2592000 /* 30 days*/],
@@ -67,6 +71,10 @@ class ServerStatus extends Model
 
     #region Storages
 
+    public function needNotifyStorage(){
+        return $this->notifyStorage;
+    }
+
     public function getStorages(){
         $this->storages['database']['path'] = \Yii::$app->params['dbPath'];
         $this->storages['backup']['path'] = \Yii::$app->params['backupPath'];
@@ -95,9 +103,14 @@ class ServerStatus extends Model
                 $this->currentStorageSize += $storages[$key]['size'];
             }
         }
-
-        if($this->currentStorageSize > $this->maxStorageSize){
+        $this->remainingStorageSize =  $this->maxStorageSize - $this->currentStorageSize;
+        if($this->remainingStorageSize < 0){
             $this->overMaxStorageSize = $this->currentStorageSize - $this->maxStorageSize;
+        }
+
+
+        if($this->remainingStorageSize <= $this->notifyAtRemainSize){
+            $this->notifyStorage = true;
         }
 
         $this->setStorages($storages);
@@ -133,21 +146,53 @@ class ServerStatus extends Model
 
         }else{ // calculate folder size
             if(is_file($dir) || is_dir($dir)){
-                $countSize = 0;
-                $count = 0;
-                $dirArray = scandir($dir);
-                foreach($dirArray as $key=>$filename){
-                    if($filename!=".." && $filename!="."){
-                        if(is_dir($dir."/".$filename)){
-                            $newFoldersize = $this->folderSize($dir."/".$filename);
-                            $countSize = $countSize+ $newFoldersize;
-                        }else if(is_file($dir."/".$filename)){
-                            $countSize = $countSize + filesize($dir."/".$filename);
-                            $count++;
-                        }
+//                $countSize = 0;
+//                $count = 0;
+//                $dirArray = scandir($dir);
+//                foreach($dirArray as $key=>$filename){
+//                    if($filename!=".." && $filename!="."){
+//                        if(is_dir($dir."/".$filename)){
+//                            $newFoldersize = $this->folderSize($dir."/".$filename);
+//                            $countSize = $countSize+ $newFoldersize;
+//                        }else if(is_file($dir."/".$filename)){
+//                            $countSize = $countSize + filesize($dir."/".$filename);
+//                            $count++;
+//                        }
+//                    }
+//                }
+//                return $countSize;
+
+                $size = 0;
+                // linux
+                if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+                    $io = popen("du -sb " . escapeshellarg($dir), 'r');
+                    if ($io) {
+                        $size = fgets($io, 4096);
+                        $size = explode("\t", $size)[0];
+                        pclose($io);
+                        if (is_numeric($size)) return (float)$size;
                     }
+                }else{ // other
+                    try{
+                        $files = new \RecursiveIteratorIterator(
+                            new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
+                            \RecursiveIteratorIterator::SELF_FIRST
+                        );
+                        foreach ($files as $file) {
+                            try {
+                                if ($file->isFile()) {
+                                    $size += $file->getSize();
+                                }
+                            } catch (Exception $e) {
+                                continue;
+                            }
+                        }
+                    }catch (Exception $e) {
+                        return 0;
+                    }
+
                 }
-                return $countSize;
+                return $size;
             }
         }
 
