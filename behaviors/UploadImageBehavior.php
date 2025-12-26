@@ -89,6 +89,8 @@ class UploadImageBehavior extends UploadBehavior
 
     public $thumbOriginalName = 'original';
 
+    public $convertWebp = false;
+
 
     /**
      * @inheritdoc
@@ -181,6 +183,10 @@ class UploadImageBehavior extends UploadBehavior
         $attribute = ($old === true) ? $model->getOldAttribute($attribute) : $model->$attribute;
         $filename = $this->getThumbFileName($attribute, $profile);
 
+        if($this->convertWebp){
+            $filename = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $filename);
+        }
+
         return $filename ? Yii::getAlias($path . '/' . $filename) : null;
     }
 
@@ -206,6 +212,7 @@ class UploadImageBehavior extends UploadBehavior
             }
             $url = $this->resolvePath($this->thumbUrl);
             $fileName = $model->getOldAttribute($attribute);
+
             $thumbName = $this->getThumbFileName($fileName, $profile);
             return Yii::getAlias($url . '/' . $thumbName);
         } elseif ($this->placeholder) {
@@ -215,6 +222,9 @@ class UploadImageBehavior extends UploadBehavior
         }
     }
 
+    /**
+     * require remove via old config only
+     */
     public function removeThumbs($attribute, $old = false){
         $profiles = array_keys($this->thumbs);
         foreach ($profiles as $profile) {
@@ -223,6 +233,14 @@ class UploadImageBehavior extends UploadBehavior
                 unlink($path);
             }
         }
+    }
+
+    /**
+     *  require regenerate via new config only
+     */
+    public function regenerateThumbs($attribute){
+        $this->removeThumbs($attribute);
+        $this->createThumbs();
     }
 
 
@@ -272,6 +290,11 @@ class UploadImageBehavior extends UploadBehavior
         if($profile == $this->thumbOriginalName){
             return $filename;
         }
+
+        if($this->convertWebp){
+            $filename = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $filename);
+        }
+
         return $profile . '-' . $filename;
     }
 
@@ -284,7 +307,7 @@ class UploadImageBehavior extends UploadBehavior
     {
         $width = ArrayHelper::getValue($config, 'width');
         $height = ArrayHelper::getValue($config, 'height');
-        $quality = ArrayHelper::getValue($config, 'quality', 100);
+        $quality = ArrayHelper::getValue($config, 'quality', 80);
         $mode = ArrayHelper::getValue($config, 'mode', ManipulatorInterface::THUMBNAIL_OUTBOUND);
         $bg_color = ArrayHelper::getValue($config, 'bg_color', 'FFF');
 
@@ -301,7 +324,20 @@ class UploadImageBehavior extends UploadBehavior
         $defaulMemLimit = ini_get ('memory_limit');
         ini_set('memory_limit', '512M');
         Image::$thumbnailBackgroundColor = $bg_color;
-        Image::thumbnail($path, $width, $height, $mode)->save($thumbPath, ['quality' => $quality]);
+
+        if($this->convertWebp){
+            $thumbPathWebp = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $thumbPath);
+
+            Image::thumbnail($path, $width, $height, $mode)
+                ->save($thumbPathWebp, [
+                    'quality' => $quality,
+                    'format' => 'webp'
+                ]);
+        }else{
+            Image::thumbnail($path, $width, $height, $mode)->save($thumbPath, ['quality' => $quality]);
+        }
+
+//
         ini_set ('memory_limit',$defaulMemLimit);
     }
 

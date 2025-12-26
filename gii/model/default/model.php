@@ -56,7 +56,11 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
 
 	public function behaviors(){
         return array_merge(parent::behaviors(),[
-			'uploadImage' => $this->defaultImgBehavior('image', $this->defaultThumbs, ['scenarios' => $this->scenarioCU()]) ,
+			'uploadImage' => $this->defaultImgBehavior('image', $this->defaultThumbs,[
+                    'scenarios' => $this->scenarioCU(),
+                    'convertWebp'=>true,
+                    'deleteOriginalFile' => true,
+                ]) ,
 //            'translateable' => [
 //                'class' => \obbz\yii2\behaviors\TranslationBehavior::class,
 //                'translationAttributes' => ['title','detail'],
