@@ -475,7 +475,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
             if($validator instanceof ImageValidator){
                 if($validator->minWidth && $validator->minHeight){
                     $labelName = $this->model->getAttributeLabel($this->attribute);
-                    $hint = \Yii::t('obbz',  '{field} size must be greater than {width}x{height}',
+                    $hint = \Yii::t('obbz',  '{field} size must be greater than {width}x{height} px',
                             [
                                 'field' => $labelName,
                                 'width' => $validator->minWidth,
