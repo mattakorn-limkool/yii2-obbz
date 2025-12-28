@@ -58,7 +58,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
         return array_merge(parent::behaviors(),[
 			'uploadImage' => $this->defaultImgBehavior('image', $this->defaultThumbs,[
                     'scenarios' => $this->scenarioCU(),
-                    'convertWebp'=>true,
+//                    'convertWebp'=>true,
                     'deleteOriginalFile' => true,
                 ]) ,
 //            'translateable' => [
