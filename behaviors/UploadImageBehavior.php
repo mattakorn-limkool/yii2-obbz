@@ -211,6 +211,7 @@ class UploadImageBehavior extends UploadBehavior
                 $this->createThumbs();
             }
             $url = $this->resolvePath($this->thumbUrl);
+//            ObbzYii::debug(Yii::getAlias($url));
             $fileName = $model->getOldAttribute($attribute);
 
             $thumbName = $this->getThumbFileName($fileName, $profile);
@@ -307,7 +308,7 @@ class UploadImageBehavior extends UploadBehavior
     {
         $width = ArrayHelper::getValue($config, 'width');
         $height = ArrayHelper::getValue($config, 'height');
-        $quality = ArrayHelper::getValue($config, 'quality', 80);
+        $quality = ArrayHelper::getValue($config, 'quality', 100);
         $mode = ArrayHelper::getValue($config, 'mode', ManipulatorInterface::THUMBNAIL_OUTBOUND);
         $bg_color = ArrayHelper::getValue($config, 'bg_color', 'FFF');
 
@@ -331,10 +332,12 @@ class UploadImageBehavior extends UploadBehavior
             Image::thumbnail($path, $width, $height, $mode)
                 ->save($thumbPathWebp, [
                     'quality' => $quality,
-                    'format' => 'webp'
+                    'format' => 'webp',
+                    'webp_lossless' => false,
                 ]);
         }else{
-            Image::thumbnail($path, $width, $height, $mode)->save($thumbPath, ['quality' => $quality]);
+            Image::thumbnail($path, $width, $height, $mode)
+                ->save($thumbPath, ['quality' => $quality]);
         }
 
 //

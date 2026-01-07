@@ -46,7 +46,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
         $thumbWidth = ArrayHelper::getValue($this->defaultThumbs, 'thumb.width');
         $thumbHeight = ArrayHelper::getValue($this->defaultThumbs, 'thumb.height');
         return array_merge(parent::rules(),[
-			['image', 'image', 'extensions' => 'jpg, jpeg, webp',
+			['image', 'image', 'extensions' => 'jpg, jpeg, png, webp',
                 'maxSize' => \Yii::$app->params['upload.maxSize'],
                 //'minWidth'=> $thumbWidth, 'minHeight' => $thumbHeight,
                 'on'=>$this->scenarioCU()],
@@ -58,7 +58,7 @@ class <?= $className ?> extends <?= '\\'.$generator->ns.'\\base\\'.$className.'B
         return array_merge(parent::behaviors(),[
 			'uploadImage' => $this->defaultImgBehavior('image', $this->defaultThumbs,[
                     'scenarios' => $this->scenarioCU(),
-//                    'convertWebp'=>true,
+                    'convertWebp'=>true,
                     'deleteOriginalFile' => true,
                 ]) ,
 //            'translateable' => [

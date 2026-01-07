@@ -588,7 +588,7 @@ class ActiveField extends \obbz\yii2\widgets\ActiveField
         $iframParam = "?" . http_build_query(array_merge($defaultFlexConf, $flexModuleConf));
         $defaultConf = [
             'options' => ['rows' => 6],
-            'preset' => ObbzYii::user()->can(\common\components\Roles::THE_CREATOR) ? 'full' : 'basic',
+            'preset' => ObbzYii::user()->can(\common\components\Roles::THE_CREATOR) ? 'full' : '@backend/widgets/ckeditor/presets/admin.php',
             'clientOptions' => [
                 'filebrowserUploadUrl' => Url::to(['/site/ckeditor-upload-img']),
                 'obbzmodule'=> ["iframeParam"=>$iframParam]
