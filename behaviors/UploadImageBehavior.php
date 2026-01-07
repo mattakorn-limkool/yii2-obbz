@@ -175,20 +175,22 @@ class UploadImageBehavior extends UploadBehavior
      * @param boolean $old
      * @return string
      */
-    public function getThumbUploadPath($attribute, $profile = 'thumb', $old = false)
+    public function getThumbUploadPath($attribute, $profile = 'thumb', $old = false, $legacyFile = false)
     {
         /** @var BaseActiveRecord $model */
         $model = $this->owner;
         $path = $this->resolvePath($this->thumbPath);
         $attribute = ($old === true) ? $model->getOldAttribute($attribute) : $model->$attribute;
-        $filename = $this->getThumbFileName($attribute, $profile);
+        $filename = $this->getThumbFileName($attribute, $profile, $legacyFile);
 
-        if($this->convertWebp){
-            $filename = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $filename);
-        }
+//        if($this->convertWebp && !$legacyFile){
+//            $filename = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $filename);
+//        }
 
         return $filename ? Yii::getAlias($path . '/' . $filename) : null;
     }
+
+
 
     /**
      * @param string $attribute
@@ -203,6 +205,7 @@ class UploadImageBehavior extends UploadBehavior
             $path = $this->getUploadPath($attribute, true);
         }else{
             $path = $this->getThumbUploadPath($attribute, $profile, true);
+
         }
 
 
@@ -219,6 +222,19 @@ class UploadImageBehavior extends UploadBehavior
         } elseif ($this->placeholder) {
             return $this->getPlaceholderUrl($profile);
         } else {
+            if($this->convertWebp){ // reverse to jpg file
+                $lagecyPath = $this->getThumbUploadPath($attribute, $profile, true, true);
+
+                if(is_file($lagecyPath)){
+                    $url = $this->resolvePath($this->thumbUrl);
+                    $fileName = $model->getOldAttribute($attribute);
+                    $lagecyName = $this->getThumbFileName($fileName, $profile, true);
+
+                    return Yii::getAlias($url . '/' . $lagecyName);
+                }
+
+            }
+
             return null;
         }
     }
@@ -284,15 +300,16 @@ class UploadImageBehavior extends UploadBehavior
     /**
      * @param $filename
      * @param string $profile
+     * @param string $legacyFile
      * @return string
      */
-    protected function getThumbFileName($filename, $profile = 'thumb')
+    protected function getThumbFileName($filename, $profile = 'thumb', $legacyFile = false)
     {
         if($profile == $this->thumbOriginalName){
             return $filename;
         }
 
-        if($this->convertWebp){
+        if($this->convertWebp && !$legacyFile){
             $filename = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $filename);
         }
 
