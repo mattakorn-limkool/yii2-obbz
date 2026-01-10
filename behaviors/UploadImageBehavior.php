@@ -219,9 +219,8 @@ class UploadImageBehavior extends UploadBehavior
 
             $thumbName = $this->getThumbFileName($fileName, $profile);
             return Yii::getAlias($url . '/' . $thumbName);
-        } elseif ($this->placeholder) {
-            return $this->getPlaceholderUrl($profile);
-        } else {
+        }
+        else{
             if($this->convertWebp){ // reverse to jpg file
                 $lagecyPath = $this->getThumbUploadPath($attribute, $profile, true, true);
 
@@ -233,10 +232,17 @@ class UploadImageBehavior extends UploadBehavior
                     return Yii::getAlias($url . '/' . $lagecyName);
                 }
 
+                if ($this->placeholder) {
+                    return $this->getPlaceholderUrl($profile);
+                }
+
             }
 
-            return null;
+
         }
+
+
+        return null;
     }
 
     /**
