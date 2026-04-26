@@ -11,6 +11,7 @@ use obbz\yii2\utils\ObbzYii;
 use yii\base\Model;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 
 class ServerStatus extends Model
 {
@@ -91,11 +92,14 @@ class ServerStatus extends Model
         foreach($storages as $key => $storage){
             $cacheKey = 'storage.' . $key . '.size';
             if($storage['cache'] && $cache && ObbzYii::cache()->get($cacheKey)){
+
                 $storages[$key]['size'] = ObbzYii::cache()->get($cacheKey);
+
             }else{
                 $storages[$key]['size'] = $this->allStorageSize($storage['path']);
+
                 if($storage['cache']){
-                    ObbzYii::cache()->set($cacheKey,  $storage['size'], $storage['cache']);
+                    ObbzYii::cache()->set($cacheKey,  $storages[$key]['size'], $storage['cache']);
                 }
             }
 
@@ -121,15 +125,15 @@ class ServerStatus extends Model
         if(is_array($dirs)){
             $size = 0;
             foreach($dirs as $dir){
-                $size += $this->folderSize(\Yii::getAlias($dir));
+                $size += $this->calSize(\Yii::getAlias($dir));
             }
             return $size;
         }else{
-            return $this->folderSize(\Yii::getAlias($dirs));
+            return $this->calSize(\Yii::getAlias($dirs));
         }
     }
 
-    public function folderSize($dir)
+    public function calSize($dir)
     {
         $isDb = substr($dir, 0, 3);
         if($isDb == 'db:'){ // calculate db size
@@ -145,43 +149,69 @@ class ServerStatus extends Model
             return 0;
 
         }else{ // calculate folder size
-            if(is_file($dir) || is_dir($dir)){
-//                $countSize = 0;
-//                $count = 0;
-//                $dirArray = scandir($dir);
-//                foreach($dirArray as $key=>$filename){
-//                    if($filename!=".." && $filename!="."){
-//                        if(is_dir($dir."/".$filename)){
-//                            $newFoldersize = $this->folderSize($dir."/".$filename);
-//                            $countSize = $countSize+ $newFoldersize;
-//                        }else if(is_file($dir."/".$filename)){
-//                            $countSize = $countSize + filesize($dir."/".$filename);
-//                            $count++;
-//                        }
-//                    }
-//                }
-//                return $countSize;
+            return $this->getWildcardFileFolderSize($dir);
+        }
 
-                $size = 0;
-                // linux
+        return 0;
+
+    }
+
+    public function getWildcardFileFolderSize($path) {
+        $total_size = 0;
+
+        // 1. แยกส่วนที่เป็น Path หลัก และส่วนที่เป็น Pattern (Wildcard)
+        // เช่น /var/www/../dbbackup/*domain* // เราจะหา Path หลักก่อน เพื่อให้ FileHelper ทำงานได้
+
+        if (strpos($path, '*') !== false) {
+            // กรณีมี Wildcard: แยกโฟลเดอร์หลักออกมา
+            $baseDir = preg_replace('/\*.*$/', '', $path); // ตัดตั้งแต่ * ออกไป
+            $baseDir = rtrim($baseDir, DIRECTORY_SEPARATOR);
+//            ObbzYii::debug($baseDir);
+            $pattern = basename($path); // เช่น *domain*
+
+        } else {
+            $baseDir = $path;
+            $pattern = null;
+        }
+
+        if (!file_exists($baseDir)) return 0;
+
+        // 2. ถ้าเป็นไฟล์เดี่ยวๆ ให้คืนค่าเลย
+        if (is_file($baseDir)) {
+            return filesize($baseDir);
+        }
+
+        // 3. ถ้าเป็นโฟลเดอร์ ใช้ FileHelper หาไฟล์ทั้งหมดตามเงื่อนไข
+        try {
+
+            if($pattern){
+                $options = [
+                    'only' => [$pattern],
+                    'recursive' => false,
+                ];
+                $files = FileHelper::findFiles($baseDir, $options);
+                foreach ($files as $file) {
+                    $total_size += filesize($file);
+                }
+            }else{
                 if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-                    $io = popen("du -sb " . escapeshellarg($dir), 'r');
+                    $io = popen("du -sb " . escapeshellarg($baseDir), 'r');
                     if ($io) {
-                        $size = fgets($io, 4096);
-                        $size = explode("\t", $size)[0];
+                        $total_size = fgets($io, 4096);
+                        $total_size = explode("\t", $total_size)[0];
                         pclose($io);
-                        if (is_numeric($size)) return (float)$size;
+                        if (is_numeric($total_size)) return (float)$total_size;
                     }
                 }else{ // other
                     try{
                         $files = new \RecursiveIteratorIterator(
-                            new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
+                            new \RecursiveDirectoryIterator($baseDir, \RecursiveDirectoryIterator::SKIP_DOTS),
                             \RecursiveIteratorIterator::SELF_FIRST
                         );
                         foreach ($files as $file) {
                             try {
                                 if ($file->isFile()) {
-                                    $size += $file->getSize();
+                                    $total_size += $file->getSize();
                                 }
                             } catch (Exception $e) {
                                 continue;
@@ -192,12 +222,15 @@ class ServerStatus extends Model
                     }
 
                 }
-                return $size;
             }
+
+
+
+        } catch (\Exception $e) {
+            return 0;
         }
-
-        return 0;
-
+//        ObbzYii::debug($total_size);
+        return $total_size;
     }
 
 
